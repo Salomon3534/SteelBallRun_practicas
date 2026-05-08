@@ -9,9 +9,6 @@ public class Person {
 	private int age;
 	private String dni;
 
-	public Person() {
-	}
-
 	public Person(int id, String name, String surnames, int age, String dni) {
 		this.id = id;
 		this.name = name;
