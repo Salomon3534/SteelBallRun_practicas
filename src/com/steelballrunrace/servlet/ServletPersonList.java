@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet("/listarEstudiantes")
-public class ServletCharacterList extends HttpServlet {
+public class ServletPersonList extends HttpServlet {
 
 	private PersonDAO estudianteDAO;
 
