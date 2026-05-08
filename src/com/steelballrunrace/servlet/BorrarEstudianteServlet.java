@@ -12,26 +12,26 @@ import com.steelballrunrace.dao.EstudianteDAO;
 @WebServlet("/borrarEstudiante")
 public class BorrarEstudianteServlet extends HttpServlet {
 
-    private EstudianteDAO estudianteDAO;
+	private EstudianteDAO estudianteDAO;
 
-    @Override
-    public void init() throws ServletException {
-        estudianteDAO = new EstudianteDAO();
-    }
+	@Override
+	public void init() throws ServletException {
+		estudianteDAO = new EstudianteDAO();
+	}
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-        String idStr = request.getParameter("id");
+		String idStr = request.getParameter("id");
 
-        try {
-            int id = Integer.parseInt(idStr);
-            estudianteDAO.eliminarEstudiante(id);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
+		try {
+			int id = Integer.parseInt(idStr);
+			estudianteDAO.eliminarEstudiante(id);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		}
 
-        response.sendRedirect("listarEstudiantes");
-    }
+		response.sendRedirect("listarEstudiantes");
+	}
 }

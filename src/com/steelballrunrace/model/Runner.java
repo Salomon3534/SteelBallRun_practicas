@@ -1,5 +1,7 @@
 package com.steelballrunrace.model;
 
+import java.util.Objects;
+
 public class Runner {
 	private int characterId;
 	private int horseId;
@@ -56,5 +58,24 @@ public class Runner {
 
 	public void setStatueCarrera(String statueCarrera) {
 		this.statueCarrera = statueCarrera;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(Integer.valueOf(characterId), Integer.valueOf(horseId), Integer.valueOf(place),
+				Integer.valueOf(points), statueCarrera);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Runner other = (Runner) obj;
+		return characterId == other.characterId && horseId == other.horseId && place == other.place
+				&& points == other.points && Objects.equals(statueCarrera, other.statueCarrera);
 	}
 }

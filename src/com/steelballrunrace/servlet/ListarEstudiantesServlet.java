@@ -14,22 +14,22 @@ import java.util.List;
 @WebServlet("/listarEstudiantes")
 public class ListarEstudiantesServlet extends HttpServlet {
 
-    private EstudianteDAO estudianteDAO;
+	private EstudianteDAO estudianteDAO;
 
-    @Override
-    public void init() throws ServletException {
-        estudianteDAO = new EstudianteDAO();
-    }
+	@Override
+	public void init() throws ServletException {
+		estudianteDAO = new EstudianteDAO();
+	}
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-        request.setCharacterEncoding("UTF-8");
+		request.setCharacterEncoding("UTF-8");
 
-        List<Estudiante> listaEstudiantes = estudianteDAO.listarEstudiantes();
-        request.setAttribute("listaEstudiantes", listaEstudiantes);
+		List<Estudiante> listaEstudiantes = estudianteDAO.listarEstudiantes();
+		request.setAttribute("listaEstudiantes", listaEstudiantes);
 
-        request.getRequestDispatcher("/listar.jsp").forward(request, response);
-    }
+		request.getRequestDispatcher("/listar.jsp").forward(request, response);
+	}
 }

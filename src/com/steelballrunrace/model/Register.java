@@ -1,5 +1,7 @@
 package com.steelballrunrace.model;
 
+import java.util.Objects;
+
 public class Register {
 	private String characterDni;
 	private int saddleNumber;
@@ -26,5 +28,22 @@ public class Register {
 
 	public void setSaddleNumber(int saddleNumber) {
 		this.saddleNumber = saddleNumber;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(characterDni, Integer.valueOf(saddleNumber));
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Register other = (Register) obj;
+		return Objects.equals(characterDni, other.characterDni) && saddleNumber == other.saddleNumber;
 	}
 }

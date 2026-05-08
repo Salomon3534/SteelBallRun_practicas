@@ -1,5 +1,7 @@
 package com.steelballrunrace.model;
 
+import java.util.Objects;
+
 public class Stand {
 	private int characterId;
 	private String standName;
@@ -36,5 +38,23 @@ public class Stand {
 
 	public void setAbility(String ability) {
 		this.ability = ability;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(ability, Integer.valueOf(characterId), standName);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Stand other = (Stand) obj;
+		return Objects.equals(ability, other.ability) && characterId == other.characterId
+				&& Objects.equals(standName, other.standName);
 	}
 }
