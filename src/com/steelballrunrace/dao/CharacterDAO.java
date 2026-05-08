@@ -12,7 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EstudianteDAO {
+public class CharacterDAO {
 
 	public List<Estudiante> listarEstudiantes() {
 		List<Estudiante> lista = new ArrayList<>();
