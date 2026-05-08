@@ -1,9 +1,7 @@
 package com.steelballrunrace.servlet;
 
 import com.steelballrunrace.dao.PersonDAO;
-import com.steelballrunrace.model.Estudiante;
-import com.steelballrunrace.model.Persona;
-
+import com.steelballrunrace.model.Person;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,14 +9,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@SuppressWarnings("serial")
 @WebServlet("/insertarEstudiante")
 public class ServletPersonCreate extends HttpServlet {
 
-	private PersonDAO estudianteDAO;
+	private PersonDAO personDAO;
 
 	@Override
 	public void init() throws ServletException {
-		estudianteDAO = new PersonDAO();
+		personDAO = new PersonDAO();
 	}
 
 	@Override
@@ -27,37 +26,37 @@ public class ServletPersonCreate extends HttpServlet {
 
 		request.setCharacterEncoding("UTF-8");
 
-		String nombre = request.getParameter("nombre");
-		String edadStr = request.getParameter("edad");
+		String id = request.getParameter("id");  // no estoy muy seguro de que pilla y por que
+		String name = request.getParameter("nombre");
+		String surnames = request.getParameter("apellidos");
+		String age = request.getParameter("edad");
 		String dni = request.getParameter("dni");
-		String carrera = request.getParameter("carrera");
-		String promedioStr = request.getParameter("promedio");
+		
 
 		try {
-			int edad = Integer.parseInt(edadStr);
-			double promedio = Double.parseDouble(promedioStr);
+			int parsedId = Integer.parseInt(id);
+			int parsedAge = Integer.parseInt(age);
 
-			Persona persona = new Persona(nombre, edad, dni);
-			Estudiante estudiante = new Estudiante(carrera, promedio);
+			Person p = new Person(parsedId, name, surnames, parsedAge, dni);
 
-			boolean exito = estudianteDAO.insertarEstudiante(persona, estudiante);
+			boolean success = personDAO.insertPerson(p);
 
-			if (exito) {
-				response.sendRedirect("listarEstudiantes");
+			if (success) {
+				response.sendRedirect("listPersons");
 				return;
 			} else {
-				request.setAttribute("mensaje", "Error al insertar el estudiante");
-				request.setAttribute("tipo", "error");
+				request.setAttribute("message", "Error when inserting new person");
+				request.setAttribute("type", "error");
 			}
 
 		} catch (NumberFormatException e) {
-			request.setAttribute("mensaje", "Error en el formato de los datos numericos");
-			request.setAttribute("tipo", "error");
+			request.setAttribute("message", "Error in the number's format");
+			request.setAttribute("type", "error");
 		} catch (Exception e) {
-			request.setAttribute("mensaje", "Error: " + e.getMessage());
-			request.setAttribute("tipo", "error");
+			request.setAttribute("message", "Error: " + e.getMessage());
+			request.setAttribute("type", "error");
 		}
 
-		request.getRequestDispatcher("/insertar.jsp").forward(request, response);
+		request.getRequestDispatcher("/insertPerson.jsp").forward(request, response);
 	}
 }
