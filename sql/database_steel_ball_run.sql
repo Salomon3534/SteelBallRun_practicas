@@ -36,5 +36,3 @@ CREATE TABLE character_sbr (
     age INT,
     dni VARCHAR(20) UNIQUE NOT NULL
 );
--- Verificación de datos
-SELECT * FROM character_sbr;
