@@ -1,8 +1,8 @@
-package com.gestionescuela.servlet;
+package com.steelballrunrace.servlet;
 
-import com.gestionescuela.dao.EstudianteDAO;
-import com.gestionescuela.model.Estudiante;
-import com.gestionescuela.model.Persona;
+import com.steelballrunrace.dao.EstudianteDAO;
+import com.steelballrunrace.model.Estudiante;
+import com.steelballrunrace.model.Persona;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

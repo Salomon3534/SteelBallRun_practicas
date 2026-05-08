@@ -1,4 +1,4 @@
-package com.gestionescuela.util;
+package com.steelballrunrace.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

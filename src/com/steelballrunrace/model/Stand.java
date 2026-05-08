@@ -1,4 +1,4 @@
-package com.gestionescuela.model;
+package com.steelballrunrace.model;
 
 public class Stand {
 	private int characterId;

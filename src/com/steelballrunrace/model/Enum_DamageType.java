@@ -1,4 +1,4 @@
-package com.gestionescuela.model;
+package com.steelballrunrace.model;
 
 public enum Enum_DamageType {
 	PHYSICAL("Daño Físico"), STAND("Ataque de Stand"), DISEASE("Enfermedad"), ENVIRONMENTAL("Clima/Entorno"),

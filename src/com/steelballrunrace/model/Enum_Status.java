@@ -1,4 +1,4 @@
-package com.gestionescuela.model;
+package com.steelballrunrace.model;
 
 public enum Enum_Status {
 	DEAD("Muerto"), INJURED("Lesionado"), MEDIUM_HEALTH("Salud Media"), HEALTHY("Saludable");

@@ -1,8 +1,8 @@
-package com.gestionescuela.dao;
+package com.steelballrunrace.dao;
 
-import com.gestionescuela.model.Estudiante;
-import com.gestionescuela.model.Persona;
-import com.gestionescuela.util.DatabaseConnection;
+import com.steelballrunrace.model.Estudiante;
+import com.steelballrunrace.model.Persona;
+import com.steelballrunrace.util.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

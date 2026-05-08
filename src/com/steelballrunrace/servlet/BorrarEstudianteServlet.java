@@ -1,7 +1,4 @@
-package com.gestionescuela.servlet;
-
-import com.gestionescuela.dao.EstudianteDAO;
-import com.gestionescuela.model.Estudiante;
+package com.steelballrunrace.servlet;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,10 +6,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet("/listarEstudiantes")
-public class ListarEstudiantesServlet extends HttpServlet {
+import com.steelballrunrace.dao.EstudianteDAO;
+
+@WebServlet("/borrarEstudiante")
+public class BorrarEstudianteServlet extends HttpServlet {
 
     private EstudianteDAO estudianteDAO;
 
@@ -25,11 +23,15 @@ public class ListarEstudiantesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        request.setCharacterEncoding("UTF-8");
+        String idStr = request.getParameter("id");
 
-        List<Estudiante> listaEstudiantes = estudianteDAO.listarEstudiantes();
-        request.setAttribute("listaEstudiantes", listaEstudiantes);
+        try {
+            int id = Integer.parseInt(idStr);
+            estudianteDAO.eliminarEstudiante(id);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
 
-        request.getRequestDispatcher("/listar.jsp").forward(request, response);
+        response.sendRedirect("listarEstudiantes");
     }
 }
