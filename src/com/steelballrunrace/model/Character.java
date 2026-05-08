@@ -62,19 +62,24 @@ public class Character {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(Integer.valueOf(age), dni, Integer.valueOf(id), name, surnames);
+
+		return Objects.hash(id, name, surnames, age, dni);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Character))
 			return false;
 		Character other = (Character) obj;
-		return age == other.age && Objects.equals(dni, other.dni) && id == other.id && Objects.equals(name, other.name)
-				&& Objects.equals(surnames, other.surnames);
+		return id == other.id && age == other.age && Objects.equals(name, other.name)
+				&& Objects.equals(surnames, other.surnames) && Objects.equals(dni, other.dni);
+	}
+
+	@Override
+	public String toString() {
+		return "Character [id=" + id + ", name=" + name + ", surnames=" + surnames + ", age=" + age + ", dni=" + dni
+				+ "]";
 	}
 }
