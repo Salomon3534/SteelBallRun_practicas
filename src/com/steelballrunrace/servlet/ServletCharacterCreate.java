@@ -1,6 +1,6 @@
 package com.steelballrunrace.servlet;
 
-import com.steelballrunrace.dao.CharacterDAO;
+import com.steelballrunrace.dao.PersonDAO;
 import com.steelballrunrace.model.Estudiante;
 import com.steelballrunrace.model.Persona;
 
@@ -14,11 +14,11 @@ import java.io.IOException;
 @WebServlet("/insertarEstudiante")
 public class ServletCharacterCreate extends HttpServlet {
 
-	private CharacterDAO estudianteDAO;
+	private PersonDAO estudianteDAO;
 
 	@Override
 	public void init() throws ServletException {
-		estudianteDAO = new CharacterDAO();
+		estudianteDAO = new PersonDAO();
 	}
 
 	@Override

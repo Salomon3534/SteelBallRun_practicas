@@ -2,17 +2,17 @@ package com.steelballrunrace.model;
 
 import java.util.Objects;
 
-public class Character {
+public class Person {
 	private int id;
 	private String name;
 	private String surnames;
 	private int age;
 	private String dni;
 
-	public Character() {
+	public Person() {
 	}
 
-	public Character(int id, String name, String surnames, int age, String dni) {
+	public Person(int id, String name, String surnames, int age, String dni) {
 		this.id = id;
 		this.name = name;
 		this.surnames = surnames;
@@ -64,7 +64,7 @@ public class Character {
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
-		if (!(o instanceof Character character))
+		if (!(o instanceof Person character))
 			return false;
 		return id == character.id && age == character.age && Objects.equals(name, character.name)
 				&& Objects.equals(surnames, character.surnames) && Objects.equals(dni, character.dni);

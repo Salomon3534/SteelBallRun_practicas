@@ -1,7 +1,6 @@
 package com.steelballrunrace.dao;
 
-import com.steelballrunrace.model.Estudiante;
-import com.steelballrunrace.model.Persona;
+import com.steelballrunrace.model.Person;
 import com.steelballrunrace.util.DatabaseConnection;
 
 import java.sql.Connection;
@@ -12,23 +11,24 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CharacterDAO {
+public class PersonDAO {
 
-	public List<Estudiante> listarEstudiantes() {
-		List<Estudiante> lista = new ArrayList<>();
-		Connection conn = null;
+	public List<Person> listPersons() {
+		
+		List<Person> list = new ArrayList<>();
+		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
 		try {
-			conn = DatabaseConnection.getConnection();
+			con = DatabaseConnection.getConnection();
 			String sql = "SELECT p.id, p.nombre, p.edad, p.dni, e.carrera, e.promedio_notas "
 					+ "FROM persona p INNER JOIN estudiante e ON p.id = e.persona_id";
-			pstmt = conn.prepareStatement(sql);
+			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				Persona persona = new Persona(rs.getInt("id"), rs.getString("nombre"), rs.getInt("edad"),
+				Person p = new Person(rs.getInt("id"), rs.getString("nombre"), sql, rs.getInt("edad"),
 						rs.getString("dni"));
 
 				Estudiante estudiante = new Estudiante(rs.getInt("id"), rs.getString("carrera"),

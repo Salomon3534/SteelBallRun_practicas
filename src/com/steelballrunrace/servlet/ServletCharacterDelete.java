@@ -7,16 +7,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import com.steelballrunrace.dao.CharacterDAO;
+import com.steelballrunrace.dao.PersonDAO;
 
 @WebServlet("/borrarEstudiante")
 public class ServletCharacterDelete extends HttpServlet {
 
-	private CharacterDAO estudianteDAO;
+	private PersonDAO estudianteDAO;
 
 	@Override
 	public void init() throws ServletException {
-		estudianteDAO = new CharacterDAO();
+		estudianteDAO = new PersonDAO();
 	}
 
 	@Override

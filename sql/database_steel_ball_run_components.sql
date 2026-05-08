@@ -4,7 +4,7 @@ DROP PROCEDURE IF EXISTS genTestData;
 DELIMITER //
 CREATE PROCEDURE genTestData ()
 BEGIN
-INSERT INTO character_sbr (id, name, surnames, age, dni) VALUES
+INSERT INTO person (id, name, surnames, age, dni) VALUES
 (1, 'Johnny', 'Joestar', 19, '12345678A'),
 (2, 'Gyro', 'Zeppeli', 24, '87654321B'),
 (3, 'Diego', 'Brando', 20, '11223344C'),
@@ -25,6 +25,6 @@ INSERT INTO character_sbr (id, name, surnames, age, dni) VALUES
 (18, 'Mike', 'O.', 35, '34343434O'),
 (19, 'Pork Pie', 'Hat Kid', 14, '56565656Q'),
 (20, 'Urmd', 'Avdol', 35, '78787878R');
-SELECT * FROM character_sbr;
+SELECT * FROM person;
 END //
 DELIMITER ;
