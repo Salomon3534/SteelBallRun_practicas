@@ -14,28 +14,23 @@ import java.util.List;
 public class PersonDAO {
 
 	public List<Person> listPersons() {
-		
+
 		List<Person> list = new ArrayList<>();
-		Connection con = null;
+		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
 		try {
-			con = DatabaseConnection.getConnection();
-			String sql = "SELECT p.id, p.nombre, p.edad, p.dni, e.carrera, e.promedio_notas "
-					+ "FROM persona p INNER JOIN estudiante e ON p.id = e.persona_id";
-			pstmt = con.prepareStatement(sql);
+			conn = DatabaseConnection.getConnection();
+			String sql = "SELECT * FROM person";
+			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				Person p = new Person(rs.getInt("id"), rs.getString("nombre"), sql, rs.getInt("edad"),
-						rs.getString("dni"));
+				Person p = new Person(rs.getInt("id"), rs.getString("name"), rs.getString("surnames"),
+						rs.getInt("edad"), rs.getString("dni"));
 
-				Estudiante estudiante = new Estudiante(rs.getInt("id"), rs.getString("carrera"),
-						rs.getDouble("promedio_notas"));
-				estudiante.setPersona(persona);
-
-				lista.add(estudiante);
+				list.add(p);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -52,14 +47,14 @@ public class PersonDAO {
 			}
 		}
 
-		return lista;
+		return list;
 	}
 
-	public Estudiante obtenerEstudiantePorId(int id) {
+	public Person getPersonByID(int id) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		Estudiante estudiante = null;
+		Person p = null;
 
 		try {
 			conn = DatabaseConnection.getConnection();
