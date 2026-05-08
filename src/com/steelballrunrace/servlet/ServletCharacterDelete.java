@@ -10,7 +10,7 @@ import java.io.IOException;
 import com.steelballrunrace.dao.EstudianteDAO;
 
 @WebServlet("/borrarEstudiante")
-public class BorrarEstudianteServlet extends HttpServlet {
+public class ServletCharacterDelete extends HttpServlet {
 
 	private EstudianteDAO estudianteDAO;
 
