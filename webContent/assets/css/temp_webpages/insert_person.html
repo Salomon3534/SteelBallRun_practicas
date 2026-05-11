@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SBR - Insertar Personaje</title>
+    <link rel="stylesheet" href="sbrstyles.css">
+    <link rel="icon" type="image/png" href="../../web_images/sbr_logo.png">
+</head>
+
+<body>
+    <header class="main-header">
+        <h1>Sistema de gestión</h1>
+    </header>
+
+    <main class="container">
+        <h2>Nuevo Personaje</h2>
+
+        <form action="#" method="post" class="sbr-form">
+            <fieldset>
+                <legend>Datos Personales</legend>
+
+                <div class="field">
+                    <label for="name">Nombre</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="field">
+                    <label for="surnames">Apellidos</label>
+                    <input type="text" id="surnames" name="surnames" required>
+                </div>
+
+                <div class="field-group">
+                    <div class="field">
+                        <label for="age">Edad</label>
+                        <input type="number" id="age" name="age" min="16" required>
+                    </div>
+                    <div class="field">
+                        <label for="dni">DNI</label>
+                        <input type="text" id="dni" name="dni" required>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="form-actions">
+                <input type="submit" value="Insertar" class="btn btn-save">
+                <input type="reset" value="Limpiar" class="btn btn-reset">
+            </div>
+        </form>
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; Steel Ball Run</p>
+        <div class="character-corner">
+            <img src="../../web_images/assistant_footer.png" alt="Personaje">
+        </div>
+    </footer>
+</body>
+
+</html>

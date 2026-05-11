@@ -1,0 +1,160 @@
+/* 1. FUENTE Y RESET */
+@font-face {
+    font-family: 'SBR-Custom';
+    src: url('../../fonts/texas bold.otf') format('truetype');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'SBR-Custom', Arial, sans-serif;
+    background-color: #d6b285;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 2. TIPOGRAFÍA REFRESCADA */
+h1 {
+    font-size: clamp(2rem, 10vw, 5.5rem);
+    text-align: center;
+    padding: 20px;
+}
+
+h2 {
+    font-size: clamp(1.5rem, 6vw, 3.5rem);
+    text-align: center;
+    margin: 10px 0;
+}
+
+/* 3. CONTENEDORES */
+.main-header {
+    background-color: #fff;
+    border-bottom: 2px solid #333;
+}
+
+.container {
+    padding: 20px;
+    flex: 1;
+}
+
+/* 4. FORMULARIO RESPONSIVE */
+.sbr-form {
+    max-width: 500px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+legend {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    padding: 0;
+}
+
+.field {
+    margin-bottom: 15px;
+}
+
+.field label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.field input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+}
+
+/* Grupo de campos (Edad y DNI en una fila) */
+.field-group {
+    display: flex;
+    gap: 15px;
+}
+
+.field-group .field {
+    flex: 1;
+}
+
+/* 5. BOTONES */
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: inherit;
+    transition: transform 0.2s;
+}
+
+.btn:active {
+    transform: scale(0.95);
+}
+
+.btn-save {
+    background: #4CAF50;
+    color: white;
+}
+
+.btn-reset {
+    background: #f44336;
+    color: white;
+}
+
+/* 6. FOOTER Y PERSONAJE */
+.main-footer {
+    margin-top: auto;
+    background-color: #222;
+    color: white;
+    padding: 40px 0;
+    text-align: center;
+    position: relative;
+    width: 100%;
+}
+
+.character-corner img {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: clamp(100px, 20vw, 180px);
+    display: block;
+    clip-path: inset(0 0 5px 0);
+}
+
+/* 7. MEDIA QUERIES (MÓVIL) */
+@media (max-width: 480px) {
+    .field-group {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .sbr-form {
+        padding: 15px;
+    }
+}
