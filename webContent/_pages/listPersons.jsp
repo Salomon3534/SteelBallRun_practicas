@@ -95,34 +95,31 @@
             <tr>
                 <th>ID</th>
                 <th>Nombre</th>
+                <th>Apellidos</th>
                 <th>Edad</th>
                 <th>DNI</th>
-                <th>Carrera</th>
-                <th>Promedio</th>
-                <th>Acciones</th>
             </tr>
-            <% for (Estudiante est : listaEstudiantes) { %>
+            <% for (Person p : listPersons) { %>
                 <tr>
-                    <td><%= est.getPersona().getId() %></td>
-                    <td><%= est.getPersona().getNombre() %></td>
-                    <td><%= est.getPersona().getEdad() %></td>
-                    <td><%= est.getPersona().getDni() %></td>
-                    <td><%= est.getCarrera() %></td>
-                    <td><%= est.getPromedioNotas() %></td>
+                    <td><%= p.getId() %></td>
+                    <td><%= p.getName() %></td>
+                    <td><%= p.getSurnames() %></td>
+                    <td><%= p.getAge() %></td>
+                    <td><%= p.getDni() %></td>
                     <td>
-                        <a class="btn btn-modificar" href="modificarEstudiante?id=<%= est.getPersona().getId() %>">Modificar</a>
-                        <a class="btn btn-borrar" href="borrarEstudiante?id=<%= est.getPersona().getId() %>"
-                           onclick="return confirm('¿Está seguro de que desea borrar este estudiante?');">Borrar</a>
+                        <a class="btn btn-modificar" href="modificarEstudiante?id=<%= p.getId() %>">Modificar</a>
+                        <a class="btn btn-borrar" href="borrarEstudiante?id=<%= p.getId() %>"
+                           onclick="return confirm('¿Está seguro de que desea borrar este personaje?');">Borrar</a>
                     </td>
                 </tr>
             <% } %>
         </table>
     <% } else { %>
-        <p><strong>No hay estudiantes registrados.</strong></p>
+        <p><strong>No hay personajes registrados.</strong></p>
     <% } %>
 
     <div class="acciones">
-        <a class="btn btn-insertar" href="insertar.jsp">Insertar Nuevo Estudiante</a>
+        <a class="btn btn-insertar" href="insertPerson.jsp">Insertar Nuevo personaje</a>
     </div>
 </body>
 </html>

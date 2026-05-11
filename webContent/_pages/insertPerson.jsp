@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Insertar Estudiante - Gestión de Escuela</title>
+    <title>Insertar personaje</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -43,47 +43,37 @@
     </style>
 </head>
 <body>
-    <h1>Sistema de Gestión de Estudiantes</h1>
-    <h2>Insertar Nuevo Estudiante</h2>
+    <h1>Sistema de gestión de personajes</h1>
+    <h2>Insertar nuevo personaje</h2>
 
     <% if (request.getAttribute("mensaje") != null) { %>
-        <p class="<%= "exito".equals(request.getAttribute("tipo")) ? "mensaje-exito" : "mensaje-error" %>">
-            <%= request.getAttribute("mensaje") %>
+        <p class="<%= "succes".equals(request.getAttribute("type")) ? "mensaje-exito" : "mensaje-error" %>">
+            <%= request.getAttribute("messge") %>
         </p>
     <% } %>
 
-    <form action="insertarEstudiante" method="post">
+    <form action="createPerson" method="post">
         <fieldset>
-            <legend>Datos Personales</legend>
+            <legend>Datos personales</legend>
 
-            <label for="nombre">Nombre:</label><br>
-            <input type="text" id="nombre" name="nombre" required><br><br>
+            <label for="name">Nombre:</label><br>
+            <input type="text" id="name" name="name" required><br><br>
+            
+             <label for="surnames">Apellidos:</label><br>
+            <input type="text" id="surnames" name="surnames" required><br><br>
 
-            <label for="edad">Edad:</label><br>
-            <input type="number" id="edad" name="edad" min="0" max="120" required><br><br>
+            <label for="age">Edad:</label><br>
+            <input type="number" id="age" name="age" min="16" required><br><br>
 
             <label for="dni">DNI:</label><br>
             <input type="text" id="dni" name="dni" required><br><br>
         </fieldset>
-
         <br>
 
-        <fieldset>
-            <legend>Datos Académicos</legend>
-
-            <label for="carrera">Carrera:</label><br>
-            <input type="text" id="carrera" name="carrera" required><br><br>
-
-            <label for="promedio">Promedio de Notas (0-10):</label><br>
-            <input type="number" id="promedio" name="promedio" step="0.01" min="0" max="10" required><br><br>
-        </fieldset>
-
-        <br>
-
-        <input type="submit" value="Insertar Estudiante">
+        <input type="submit" value="Insertar personaje">
         <input type="reset" value="Limpiar">
     </form>
 
-    <a class="volver" href="listarEstudiantes">← Volver al listado</a>
+    <a class="volver" href="listPersons">Volver al listado</a>
 </body>
 </html>
