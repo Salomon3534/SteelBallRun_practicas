@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <title>Listado de personajes</title>
     <link rel="stylesheet" href="assets/css/styles.css">
+    <icon rel="icon" href="assets/web_images/assistant_footer.png">
 </head>
 <body>
     <h1>Sistema de gestión de personajes</h1>
