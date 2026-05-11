@@ -53,13 +53,13 @@
         <nav>
             <a href="#">Privacidad</a>
         </nav>
-        <div class="footer-image">
-            <img src="assets/web_images/assistant_footer.png" alt="Footer Icon">
-        </div>
+       
+		<div class="character-corner">
+			<img src="assets/web_images/assistant_footer.png" alt="Personaje">
+    	</div>
+
     </footer>
 
-    <div class="character-corner">
-        <img src="assets/characters/gyro_zeppeli.png" alt="Personaje">
-    </div>
+    
 </body>
 </html>
