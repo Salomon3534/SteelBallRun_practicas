@@ -1,12 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
-<%@ page import="com.steelballrunrace.model.Estudiante" %>
-<%@ page import="com.steelballrunrace.model.Persona" %>
+<%@ page import="com.steelballrunrace.model.Person" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Listado de Estudiantes</title>
+    <title>Listado de personajes</title>
     <style>
         table {
             border-collapse: collapse;
@@ -78,20 +77,20 @@
     </style>
 </head>
 <body>
-    <h1>Sistema de Gestión de Estudiantes</h1>
-    <h2>Listado de Estudiantes</h2>
+    <h1>Sistema de gestión de personajes</h1>
+    <h2>Listado de personajes</h2>
 
-    <% if (request.getAttribute("mensaje") != null) { %>
-        <p class="<%= "exito".equals(request.getAttribute("tipo")) ? "mensaje-exito" : "mensaje-error" %>">
-            <%= request.getAttribute("mensaje") %>
+    <% if (request.getAttribute("message") != null) { %>
+        <p class="<%= "succes".equals(request.getAttribute("type")) ? "mensaje-exito" : "mensaje-error" %>">
+            <%= request.getAttribute("message") %>
         </p>
     <% } %>
 
     <%
-        List<Estudiante> listaEstudiantes = (List<Estudiante>) request.getAttribute("listaEstudiantes");
+        List<Person> listPersons = (List<Person>) request.getAttribute("listPersons");
     %>
 
-    <% if (listaEstudiantes != null && !listaEstudiantes.isEmpty()) { %>
+    <% if (listPersons != null) { %>
         <table>
             <tr>
                 <th>ID</th>
