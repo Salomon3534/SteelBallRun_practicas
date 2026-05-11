@@ -1,80 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
-<%@ page import="com.steelballrunrace.model.Person" %>
+<%@ page import="com.steelballrun.model.Person" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Listado de personajes</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 90%;
-            margin: 20px auto;
-        }
-        th, td {
-            border: 1px solid #333;
-            padding: 8px 12px;
-            text-align: center;
-        }
-        th {
-            background-color: #4CAF50;
-            color: white;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        h1, h2, p {
-            text-align: center;
-        }
-        .btn {
-            padding: 5px 12px;
-            margin: 2px;
-            border: none;
-            cursor: pointer;
-            border-radius: 3px;
-            font-size: 13px;
-            text-decoration: none;
-            display: inline-block;
-        }
-        .btn-modificar {
-            background-color: #2196F3;
-            color: white;
-        }
-        .btn-modificar:hover {
-            background-color: #1976D2;
-        }
-        .btn-borrar {
-            background-color: #f44336;
-            color: white;
-        }
-        .btn-borrar:hover {
-            background-color: #d32f2f;
-        }
-        .btn-insertar {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 25px;
-            font-size: 15px;
-        }
-        .btn-insertar:hover {
-            background-color: #388E3C;
-        }
-        .acciones {
-            text-align: center;
-            margin: 20px;
-        }
-        .mensaje-exito {
-            color: green;
-            text-align: center;
-            font-weight: bold;
-        }
-        .mensaje-error {
-            color: red;
-            text-align: center;
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
     <h1>Sistema de gestión de personajes</h1>
@@ -87,6 +19,7 @@
     <% } %>
 
     <%
+    	@SuppressWarnings("unchecked")
         List<Person> listPersons = (List<Person>) request.getAttribute("listPersons");
     %>
 

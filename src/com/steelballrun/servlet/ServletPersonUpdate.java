@@ -1,7 +1,7 @@
-package com.steelballrunrace.servlet;
+package com.steelballrun.servlet;
 
-import com.steelballrunrace.dao.PersonDAO;
-import com.steelballrunrace.model.Person;
+import com.steelballrun.dao.PersonDAO;
+import com.steelballrun.model.Person;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

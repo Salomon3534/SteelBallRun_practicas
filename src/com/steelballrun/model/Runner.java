@@ -1,4 +1,4 @@
-package com.steelballrunrace.model;
+package com.steelballrun.model;
 
 import java.util.Objects;
 

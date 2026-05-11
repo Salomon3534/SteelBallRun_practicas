@@ -1,7 +1,7 @@
-package com.steelballrunrace.dao;
+package com.steelballrun.dao;
 
-import com.steelballrunrace.model.Person;
-import com.steelballrunrace.util.DatabaseConnection;
+import com.steelballrun.model.Person;
+import com.steelballrun.util.DatabaseConnection;
 
 import java.sql.*;
 import java.util.ArrayList;

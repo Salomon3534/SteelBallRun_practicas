@@ -4,43 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Insertar personaje</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        h1, h2 {
-            text-align: center;
-        }
-        form {
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        fieldset {
-            padding: 15px;
-            margin-bottom: 10px;
-        }
-        input[type="submit"], input[type="reset"] {
-            padding: 8px 20px;
-            margin-right: 10px;
-            cursor: pointer;
-        }
-        .mensaje-exito {
-            color: green;
-            text-align: center;
-            font-weight: bold;
-        }
-        .mensaje-error {
-            color: red;
-            text-align: center;
-            font-weight: bold;
-        }
-        .volver {
-            display: block;
-            text-align: center;
-            margin: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
     <h1>Sistema de gestión de personajes</h1>

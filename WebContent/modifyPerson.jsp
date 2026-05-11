@@ -1,55 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.steelballrunrace.model.Person" %>
+<%@ page import="com.steelballrun.model.Person" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Modificar Personaje - Sistema de Gestión de Personajes</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        h1, h2 {
-            text-align: center;
-        }
-        form {
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        fieldset {
-            padding: 15px;
-            margin-bottom: 10px;
-        }
-        input[type="submit"] {
-            padding: 8px 20px;
-            margin-right: 10px;
-            cursor: pointer;
-            background-color: #2196F3;
-            color: white;
-            border: none;
-            border-radius: 3px;
-            font-size: 14px;
-        }
-        input[type="submit"]:hover {
-            background-color: #1976D2;
-        }
-        .mensaje-exito {
-            color: green;
-            text-align: center;
-            font-weight: bold;
-        }
-        .mensaje-error {
-            color: red;
-            text-align: center;
-            font-weight: bold;
-        }
-        .volver {
-            display: block;
-            text-align: center;
-            margin: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
     <h1>Sistema de gestión de personajes</h1>

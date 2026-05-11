@@ -1,4 +1,4 @@
-package com.steelballrunrace.servlet;
+package com.steelballrun.servlet;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import com.steelballrunrace.dao.PersonDAO;
+import com.steelballrun.dao.PersonDAO;
 
 @SuppressWarnings("serial")
 @WebServlet("/deletePerson")
