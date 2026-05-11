@@ -46,20 +46,20 @@
     <h1>Sistema de gestión de personajes</h1>
     <h2>Insertar nuevo personaje</h2>
 
-    <% if (request.getAttribute("mensaje") != null) { %>
-        <p class="<%= "succes".equals(request.getAttribute("type")) ? "mensaje-exito" : "mensaje-error" %>">
-            <%= request.getAttribute("messge") %>
+    <% if (request.getAttribute("message") != null) { %>
+        <p class="<%= "success".equals(request.getAttribute("type")) ? "mensaje-exito" : "mensaje-error" %>">
+            <%= request.getAttribute("message") %>
         </p>
     <% } %>
 
-    <form action="createPerson" method="post">
+    <form action="insertCharacter" method="post">
         <fieldset>
             <legend>Datos personales</legend>
 
             <label for="name">Nombre:</label><br>
             <input type="text" id="name" name="name" required><br><br>
-            
-             <label for="surnames">Apellidos:</label><br>
+             
+            <label for="surnames">Apellidos:</label><br>
             <input type="text" id="surnames" name="surnames" required><br><br>
 
             <label for="age">Edad:</label><br>

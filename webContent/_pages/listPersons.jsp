@@ -81,7 +81,7 @@
     <h2>Listado de personajes</h2>
 
     <% if (request.getAttribute("message") != null) { %>
-        <p class="<%= "succes".equals(request.getAttribute("type")) ? "mensaje-exito" : "mensaje-error" %>">
+        <p class="<%= "success".equals(request.getAttribute("type")) ? "mensaje-exito" : "mensaje-error" %>">
             <%= request.getAttribute("message") %>
         </p>
     <% } %>
@@ -107,8 +107,8 @@
                     <td><%= p.getAge() %></td>
                     <td><%= p.getDni() %></td>
                     <td>
-                        <a class="btn btn-modificar" href="modificarEstudiante?id=<%= p.getId() %>">Modificar</a>
-                        <a class="btn btn-borrar" href="borrarEstudiante?id=<%= p.getId() %>"
+                        <a class="btn btn-modificar" href="modificarEstudiantes?id=<%= p.getId() %>">Modificar</a>
+                        <a class="btn btn-borrar" href="deletePerson?id=<%= p.getId() %>"
                            onclick="return confirm('¿Está seguro de que desea borrar este personaje?');">Borrar</a>
                     </td>
                 </tr>

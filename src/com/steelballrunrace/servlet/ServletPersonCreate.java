@@ -26,7 +26,6 @@ public class ServletPersonCreate extends HttpServlet {
 
 		request.setCharacterEncoding("UTF-8");
 
-		String id = request.getParameter("id");  // no estoy muy seguro de que pilla y por que
 		String name = request.getParameter("name");
 		String surnames = request.getParameter("surnames");
 		String age = request.getParameter("age");
@@ -34,10 +33,10 @@ public class ServletPersonCreate extends HttpServlet {
 		
 
 		try {
-			int parsedId = Integer.parseInt(id);
 			int parsedAge = Integer.parseInt(age);
 
-			Person p = new Person(parsedId, name, surnames, parsedAge, dni);
+			// ID is auto-incremental in database, use 0 as placeholder
+			Person p = new Person(0, name, surnames, parsedAge, dni);
 
 			boolean success = personDAO.insertPerson(p);
 
