@@ -1,17 +1,10 @@
-/* ============================================
-   STEEL BALL RUN - UNIFIED STYLESHEET
-   General Styling for all pages
-   ============================================ */
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* ============================================
-   BODY & GLOBAL STYLES
-   ============================================ */
+/* Configuración base y fuentes */
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
@@ -20,10 +13,9 @@ body {
     line-height: 1.6;
 }
 
-/* ============================================
-   HEADINGS
-   ============================================ */
-h1, h2 {
+/* Estilos de encabezados y párrafos */
+h1,
+h2 {
     text-align: center;
     margin-bottom: 20px;
 }
@@ -44,9 +36,7 @@ p {
     text-align: center;
 }
 
-/* ============================================
-   FORMS
-   ============================================ */
+/* Contenedores de formularios y campos */
 form {
     max-width: 500px;
     margin: 0 auto;
@@ -101,9 +91,7 @@ textarea:focus {
     box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
 }
 
-/* ============================================
-   BUTTONS
-   ============================================ */
+/* Botones generales (Enviar y Resetear) */
 input[type="submit"],
 input[type="reset"],
 .btn {
@@ -121,9 +109,6 @@ input[type="reset"],
     text-align: center;
 }
 
-/* ============================================
-   BUTTON STYLES - GENERAL SUBMIT/RESET
-   ============================================ */
 input[type="submit"] {
     background-color: #4CAF50;
     color: white;
@@ -142,9 +127,7 @@ input[type="reset"]:hover {
     background-color: #da190b;
 }
 
-/* ============================================
-   BUTTON STYLES - ACTION BUTTONS
-   ============================================ */
+/* Botones de acción específicos */
 .btn {
     padding: 5px 12px;
     margin: 2px;
@@ -180,9 +163,7 @@ input[type="reset"]:hover {
     background-color: #388E3C;
 }
 
-/* ============================================
-   TABLES
-   ============================================ */
+/* Estilos de tablas de datos */
 table {
     border-collapse: collapse;
     width: 90%;
@@ -193,7 +174,8 @@ table {
     overflow: hidden;
 }
 
-th, td {
+th,
+td {
     border: 1px solid #ddd;
     padding: 12px;
     text-align: center;
@@ -213,9 +195,7 @@ tr:hover {
     background-color: #f0f0f0;
 }
 
-/* ============================================
-   MESSAGES (SUCCESS/ERROR)
-   ============================================ */
+/* Alertas de éxito y error */
 .mensaje-exito {
     color: #155724;
     background-color: #d4edda;
@@ -240,9 +220,7 @@ tr:hover {
     max-width: 90%;
 }
 
-/* ============================================
-   NAVIGATION & LINKS
-   ============================================ */
+/* Enlaces de navegación */
 .volver {
     display: block;
     text-align: center;
@@ -264,9 +242,7 @@ tr:hover {
     margin: 20px;
 }
 
-/* ============================================
-   RESPONSIVE DESIGN
-   ============================================ */
+/* Ajustes para dispositivos móviles */
 @media (max-width: 768px) {
     body {
         margin: 10px;
@@ -289,7 +265,8 @@ tr:hover {
         font-size: 12px;
     }
 
-    th, td {
+    th,
+    td {
         padding: 8px;
     }
 
