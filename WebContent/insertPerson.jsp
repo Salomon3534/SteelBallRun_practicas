@@ -49,11 +49,9 @@
     </main>
 
     <footer style="margin-top: 20px; border-top: 1px solid #ccc; padding-top: 10px; text-align: center;">
-        <p>&copy; 2026 Sistema de Gestión de Personajes. Todos los derechos reservados.</p>
+        <p>&copy; 1890 Steel Ball Run Race</p>
         <nav>
-            <a href="privacy.jsp">Privacidad</a> | 
-            <a href="terms.jsp">Términos de uso</a> | 
-            <a href="contact.jsp">Soporte</a>
+            <a href=".jsp">Privacidad</a>
         </nav>
         <div class="footer-image" style="margin-top: 10px;">
             <img src="assets/web_images/assistant_footer.png" alt="Footer Icon" style="width: 30px;">
