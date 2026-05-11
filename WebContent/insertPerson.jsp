@@ -39,5 +39,6 @@
     </form>
 
     <a class="volver" href="listPersons">Volver al listado</a>
+    <footer><a href="assets/web_images/assistant_footer.png"></a></footer>
 </body>
 </html>
