@@ -7,38 +7,57 @@
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-    <h1>Sistema de gestión de personajes</h1>
-    <h2>Insertar nuevo personaje</h2>
+    <header>
+        <div class="logo-container">
+            <img src="assets/img/logo.png" alt="Logo Sistema" id="main-logo" style="height: 50px;">
+        </div>
+        <h1>Sistema de gestión de personajes</h1>
+    </header>
 
-    <% if (request.getAttribute("message") != null) { %>
-        <p class="<%= "success".equals(request.getAttribute("type")) ? "mensaje-exito" : "mensaje-error" %>">
-            <%= request.getAttribute("message") %>
-        </p>
-    <% } %>
+    <main>
+        <h2>Insertar nuevo personaje</h2>
 
-    <form action="insertCharacter" method="post">
-        <fieldset>
-            <legend>Datos personales</legend>
+        <% if (request.getAttribute("message") != null) { %>
+            <p class="<%= "success".equals(request.getAttribute("type")) ? "mensaje-exito" : "mensaje-error" %>">
+                <%= request.getAttribute("message") %>
+            </p>
+        <% } %>
 
-            <label for="name">Nombre:</label><br>
-            <input type="text" id="name" name="name" required><br><br>
-             
-            <label for="surnames">Apellidos:</label><br>
-            <input type="text" id="surnames" name="surnames" required><br><br>
+        <form action="insertCharacter" method="post">
+            <fieldset>
+                <legend>Datos personales</legend>
 
-            <label for="age">Edad:</label><br>
-            <input type="number" id="age" name="age" min="16" required><br><br>
+                <label for="name">Nombre:</label><br>
+                <input type="text" id="name" name="name" required><br><br>
+                 
+                <label for="surnames">Apellidos:</label><br>
+                <input type="text" id="surnames" name="surnames" required><br><br>
 
-            <label for="dni">DNI:</label><br>
-            <input type="text" id="dni" name="dni" required><br><br>
-        </fieldset>
-        <br>
+                <label for="age">Edad:</label><br>
+                <input type="number" id="age" name="age" min="16" required><br><br>
 
-        <input type="submit" value="Insertar personaje">
-        <input type="reset" value="Limpiar">
-    </form>
+                <label for="dni">DNI:</label><br>
+                <input type="text" id="dni" name="dni" required><br><br>
+            </fieldset>
+            <br>
 
-    <a class="volver" href="listPersons">Volver al listado</a>
-    <footer><a href="assets/web_images/assistant_footer.png"></a></footer>
+            <input type="submit" value="Insertar personaje">
+            <input type="reset" value="Limpiar">
+        </form>
+
+        <a class="volver" href="listPersons">Volver al listado</a>
+    </main>
+
+    <footer style="margin-top: 20px; border-top: 1px solid #ccc; padding-top: 10px; text-align: center;">
+        <p>&copy; 2026 Sistema de Gestión de Personajes. Todos los derechos reservados.</p>
+        <nav>
+            <a href="privacy.jsp">Privacidad</a> | 
+            <a href="terms.jsp">Términos de uso</a> | 
+            <a href="contact.jsp">Soporte</a>
+        </nav>
+        <div class="footer-image" style="margin-top: 10px;">
+            <img src="assets/web_images/assistant_footer.png" alt="Footer Icon" style="width: 30px;">
+        </div>
+    </footer>
 </body>
 </html>
