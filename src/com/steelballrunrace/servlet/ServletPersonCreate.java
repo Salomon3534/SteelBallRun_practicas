@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @SuppressWarnings("serial")
-@WebServlet("/insertarEstudiante")
+@WebServlet("/insertCharacter")
 public class ServletPersonCreate extends HttpServlet {
 
 	private PersonDAO personDAO;
@@ -45,7 +45,7 @@ public class ServletPersonCreate extends HttpServlet {
 				response.sendRedirect("listPersons");
 				return;
 			} else {
-				request.setAttribute("message", "Error when inserting new person");
+				request.setAttribute("message", "Error when inserting a new person");
 				request.setAttribute("type", "error");
 			}
 

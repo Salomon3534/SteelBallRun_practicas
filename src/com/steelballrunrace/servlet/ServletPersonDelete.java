@@ -9,29 +9,30 @@ import java.io.IOException;
 
 import com.steelballrunrace.dao.PersonDAO;
 
-@WebServlet("/borrarEstudiante")
+@SuppressWarnings("serial")
+@WebServlet("/deletePerson")
 public class ServletPersonDelete extends HttpServlet {
 
-	private PersonDAO estudianteDAO;
+	private PersonDAO personDAO;
 
 	@Override
 	public void init() throws ServletException {
-		estudianteDAO = new PersonDAO();
+		personDAO = new PersonDAO();
 	}
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String idStr = request.getParameter("id");
+		String id = request.getParameter("id");
 
 		try {
-			int id = Integer.parseInt(idStr);
-			estudianteDAO.eliminarEstudiante(id);
+			int parsedId = Integer.parseInt(id);
+			personDAO.deletePerson(parsedId);
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		}
 
-		response.sendRedirect("listarEstudiantes");
+		response.sendRedirect("listPersons");
 	}
 }

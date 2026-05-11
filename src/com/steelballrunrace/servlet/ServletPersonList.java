@@ -1,7 +1,7 @@
 package com.steelballrunrace.servlet;
 
 import com.steelballrunrace.dao.PersonDAO;
-import com.steelballrunrace.model.Estudiante;
+import com.steelballrunrace.model.Person;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,14 +11,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/listarEstudiantes")
+@SuppressWarnings("serial")
+@WebServlet("/listPersons")
 public class ServletPersonList extends HttpServlet {
 
-	private PersonDAO estudianteDAO;
+	private PersonDAO personDAO;
 
 	@Override
 	public void init() throws ServletException {
-		estudianteDAO = new PersonDAO();
+		personDAO = new PersonDAO();
 	}
 
 	@Override
@@ -27,9 +28,9 @@ public class ServletPersonList extends HttpServlet {
 
 		request.setCharacterEncoding("UTF-8");
 
-		List<Estudiante> listaEstudiantes = estudianteDAO.listarEstudiantes();
-		request.setAttribute("listaEstudiantes", listaEstudiantes);
+		List<Person> listPersons = personDAO.listPersons();
+		request.setAttribute("listPersons", listPersons);
 
-		request.getRequestDispatcher("/listar.jsp").forward(request, response);
+		request.getRequestDispatcher("/listPersons.jsp").forward(request, response);
 	}
 }
