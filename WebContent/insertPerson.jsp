@@ -48,14 +48,18 @@
         <a class="volver" href="listPersons">Volver al listado</a>
     </main>
 
-    <footer style="margin-top: 20px; border-top: 1px solid #ccc; padding-top: 10px; text-align: center;">
+    <footer>
         <p>&copy; 1890 Steel Ball Run Race</p>
         <nav>
-            <a href=".jsp">Privacidad</a>
+            <a href="#">Privacidad</a>
         </nav>
-        <div class="footer-image" style="margin-top: 10px;">
-            <img src="assets/web_images/assistant_footer.png" alt="Footer Icon" style="width: 30px;">
+        <div class="footer-image">
+            <img src="assets/web_images/assistant_footer.png" alt="Footer Icon">
         </div>
     </footer>
+
+    <div class="character-corner">
+        <img src="assets/characters/gyro_zeppeli.png" alt="Personaje">
+    </div>
 </body>
 </html>

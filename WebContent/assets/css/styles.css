@@ -242,6 +242,61 @@ tr:hover {
     margin: 20px;
 }
 
+/* Footer genérico */
+footer {
+    margin-top: 40px;
+    border-top: 2px solid #ddd;
+    padding: 20px;
+    text-align: center;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+footer p {
+    margin: 10px 0;
+    color: #666;
+    font-size: 0.95em;
+}
+
+footer nav {
+    margin: 10px 0;
+}
+
+footer nav a {
+    margin: 0 15px;
+    color: #2196F3;
+    text-decoration: none;
+    font-size: 0.9em;
+}
+
+footer nav a:hover {
+    text-decoration: underline;
+}
+
+.footer-image {
+    margin-top: 15px;
+}
+
+.footer-image img {
+    width: 40px;
+    height: auto;
+}
+
+/* Character corner image */
+.character-corner {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    max-width: 150px;
+    z-index: 100;
+}
+
+.character-corner img {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.2));
+}
+
 /* Ajustes para dispositivos móviles */
 @media (max-width: 768px) {
     body {
