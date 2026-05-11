@@ -1,8 +1,7 @@
 package com.steelballrunrace.servlet;
 
 import com.steelballrunrace.dao.PersonDAO;
-import com.steelballrunrace.model.Estudiante;
-import com.steelballrunrace.model.Persona;
+import com.steelballrunrace.model.Person;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,11 +13,11 @@ import java.io.IOException;
 @WebServlet("/modificarEstudiantes")
 public class ServletPersonUpdate extends HttpServlet {
 
-	private PersonDAO estudianteDAO;
+	private PersonDAO personDAO;
 
 	@Override
 	public void init() throws ServletException {
-		estudianteDAO = new PersonDAO();
+		personDAO = new PersonDAO();
 	}
 
 	@Override
@@ -31,19 +30,19 @@ public class ServletPersonUpdate extends HttpServlet {
 
 		try {
 			int id = Integer.parseInt(idStr);
-			Estudiante estudiante = estudianteDAO.obtenerEstudiantePorId(id);
+			Person p = personDAO.getPersonByID(id);
 
-			if (estudiante != null) {
-				request.setAttribute("estudiante", estudiante);
-				request.getRequestDispatcher("/modificar.jsp").forward(request, response);
+			if (p != null) {
+				request.setAttribute("person", p);
+				request.getRequestDispatcher("/modifyPerson.jsp").forward(request, response);
 			} else {
-				request.setAttribute("mensaje", "No se encontró el estudiante con ID: " + id);
-				request.setAttribute("tipo", "error");
-				response.sendRedirect("listarEstudiantes");
+				request.setAttribute("message", "There was no found match for a person with the ID: " + id);
+				request.setAttribute("type", "error");
+				response.sendRedirect("listPersons");
 			}
 
 		} catch (NumberFormatException e) {
-			response.sendRedirect("listarEstudiantes");
+			response.sendRedirect("listPersons");
 		}
 	}
 
@@ -53,41 +52,37 @@ public class ServletPersonUpdate extends HttpServlet {
 
 		request.setCharacterEncoding("UTF-8");
 
-		String idStr = request.getParameter("id");
-		String nombre = request.getParameter("nombre");
-		String edadStr = request.getParameter("edad");
+		String id = request.getParameter("id");
+		String name = request.getParameter("name");
+		String surnames = request.getParameter("surnames");
+		String age = request.getParameter("age");
 		String dni = request.getParameter("dni");
-		String carrera = request.getParameter("carrera");
-		String promedioStr = request.getParameter("promedio");
 
 		try {
-			int id = Integer.parseInt(idStr);
-			int edad = Integer.parseInt(edadStr);
-			double promedio = Double.parseDouble(promedioStr);
+			int parsedId = Integer.parseInt(id);
+			int parsedAge = Integer.parseInt(age);
 
-			Persona persona = new Persona(id, nombre, edad, dni);
-			Estudiante estudiante = new Estudiante(id, carrera, promedio);
-			estudiante.setPersona(persona);
+			Person p = new Person(parsedId, name, surnames, parsedAge, dni);
 
-			boolean exito = estudianteDAO.actualizarEstudiante(persona, estudiante);
+			boolean exito = personDAO.updatePerson(p);
 
 			if (exito) {
-				response.sendRedirect("listarEstudiantes");
+				response.sendRedirect("listPersons");
 			} else {
-				request.setAttribute("mensaje", "Error al modificar el estudiante");
-				request.setAttribute("tipo", "error");
-				request.setAttribute("estudiante", estudiante);
-				request.getRequestDispatcher("/modificar.jsp").forward(request, response);
+				request.setAttribute("message", "Error when updating the person with ID: " + id);
+				request.setAttribute("type", "error");
+				request.setAttribute("person", p);
+				request.getRequestDispatcher("/modifyPerson.jsp").forward(request, response);
 			}
 
 		} catch (NumberFormatException e) {
-			request.setAttribute("mensaje", "Error en el formato de los datos numéricos");
-			request.setAttribute("tipo", "error");
-			request.getRequestDispatcher("/modificar.jsp").forward(request, response);
+			request.setAttribute("message", "Error in the number's format");
+			request.setAttribute("type", "error");
+			request.getRequestDispatcher("/modifyPerson.jsp").forward(request, response);
 		} catch (Exception e) {
-			request.setAttribute("mensaje", "Error: " + e.getMessage());
-			request.setAttribute("tipo", "error");
-			request.getRequestDispatcher("/modificar.jsp").forward(request, response);
+			request.setAttribute("message", "Error: " + e.getMessage());
+			request.setAttribute("type", "error");
+			request.getRequestDispatcher("/modifyPerson.jsp").forward(request, response);
 		}
 	}
 }

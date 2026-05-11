@@ -27,9 +27,9 @@ public class ServletPersonCreate extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 
 		String id = request.getParameter("id");  // no estoy muy seguro de que pilla y por que
-		String name = request.getParameter("nombre");
-		String surnames = request.getParameter("apellidos");
-		String age = request.getParameter("edad");
+		String name = request.getParameter("name");
+		String surnames = request.getParameter("surnames");
+		String age = request.getParameter("age");
 		String dni = request.getParameter("dni");
 		
 
