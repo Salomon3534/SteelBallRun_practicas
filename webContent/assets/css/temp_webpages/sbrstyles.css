@@ -1,8 +1,37 @@
-/* 1. FUENTE Y RESET */
+/* ============================================================
+   SBRSTYLES.CSS — Steel Ball Run
+   Estructura:
+   1. Fuente personalizada
+   2. Reset y base
+   3. Tipografía
+   4. Layout general (header, footer, container)
+   5. Banner principal (index)
+   6. Tabla de clasificación (index)
+   7. Spacer + imagen asistentes (index)
+   8. Formulario genérico (insert_person)
+   9. Página de registro con personaje (inscryption)
+   10. Botones
+   ============================================================ */
+
+
+/* ============================================================
+   1. FUENTE PERSONALIZADA
+   ============================================================ */
+
 @font-face {
     font-family: 'SBR-Custom';
-    src: url('../../fonts/texas bold.otf') format('truetype');
+    src: url('../../fonts/NexaRustSansDemo-Black.otf') format('truetype');
 }
+
+@font-face {
+    font-family: 'Manga';
+    src: url('../../fonts/animeace2_bld.ttf') format('truetype');
+}
+
+
+/* ============================================================
+   2. RESET Y BASE
+   ============================================================ */
 
 * {
     margin: 0;
@@ -12,56 +41,190 @@
 
 body {
     font-family: 'SBR-Custom', Arial, sans-serif;
-    background-color: #d6b285;
-    color: #333;
+    color: #000000;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    background: url('../../web_images/old_paper.png') center / cover no-repeat #222;
 }
 
-/* 2. TIPOGRAFÍA REFRESCADA */
+
+/* ============================================================
+   3. TIPOGRAFÍA
+   ============================================================ */
+
 h1 {
-    font-size: clamp(2rem, 10vw, 5.5rem);
     text-align: center;
     padding: 20px;
 }
 
 h2 {
-    font-size: clamp(1.5rem, 6vw, 3.5rem);
     text-align: center;
     margin: 10px 0;
 }
 
-/* 3. CONTENEDORES */
+
+/* ============================================================
+   4. LAYOUT GENERAL — header, footer, container
+   ============================================================ */
+
 .main-header {
-    background-color: #fff;
     border-bottom: 2px solid #333;
+    background: url('../../web_images/old_est_wood.jpg') center / cover no-repeat #222;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    padding: 0 20px;
+}
+
+/* Nav dentro del header (inscryption) */
+.main-header ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.main-header ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.main-header ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Logo en el header */
+.main-header .logo {
+    height: 70px;
+    width: auto;
+    object-fit: contain;
+}
+
+.main-footer {
+    margin-top: auto;
+    background: url('../../web_images/old_est_wood.jpg') center / cover no-repeat #222;
+    color: white;
+    padding: 40px 20px 20px;
+    text-align: center;
+    position: relative;
+    width: 100%;
+    max-height: 250px;
+}
+
+.main-footer p {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+}
+
+/* Imagen decorativa en la esquina del footer */
+.character-corner {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+.character-corner img {
+    width: auto;
+    height: 200px;
+    display: block;
 }
 
 .container {
     padding: 20px;
-    flex: 1;
 }
 
-/* 4. FORMULARIO RESPONSIVE */
+
+/* ============================================================
+   5. BANNER PRINCIPAL (index.html)
+   ============================================================ */
+
+.main-banner {
+    position: relative;
+    width: 100%;
+    height: 800px;
+    background: url('../../web_images/main_banner.png') bottom / cover no-repeat #222;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding: 40px 80px;
+}
+
+.banner-logo {
+    position: absolute;
+    left: 5%;
+    top: 8%;
+    transform: translate(10%, 10%);
+    width: 800px;
+    height: auto;
+    object-fit: contain;
+}
+
+
+/* ============================================================
+   6. TABLA DE CLASIFICACIÓN (index.html)
+   ============================================================ */
+
+.sbr-table {
+    align-self: center;
+    width: 80%;
+    border-collapse: collapse;
+    border: 2px solid #333;
+    margin-top: 20px;
+}
+
+.sbr-table th,
+.sbr-table td {
+    border: 1px solid #333;
+    padding: 12px 10px;
+    text-align: left;
+    background-color: rgba(255, 255, 255, 0.85);
+}
+
+
+/* ============================================================
+   7. SPACER + IMAGEN ASISTENTES (index.html)
+   ============================================================ */
+
+.spacer-big {
+    position: relative;
+    height: 320px;
+    width: 100%;
+}
+
+/* Imagen de asistentes flotante a la derecha del spacer */
+.assistants-table {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%) scale(1.1);
+    height: 350px;
+    width: auto;
+}
+
+
+/* ============================================================
+   8. FORMULARIO GENÉRICO (insert_person.html)
+   ============================================================ */
+
 .sbr-form {
-    max-width: 500px;
-    margin: 0 auto;
-    background: #fff;
+    background: #ffc266;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 fieldset {
     border: none;
     padding: 0;
-    margin: 0;
+    margin: 0 0 15px 0;
 }
 
 legend {
     margin-bottom: 15px;
-    font-size: 1.2rem;
     font-weight: bold;
     color: #333;
     padding: 0;
@@ -77,7 +240,8 @@ legend {
     margin-bottom: 5px;
 }
 
-.field input {
+.field input,
+.field select {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -85,7 +249,7 @@ legend {
     font-family: inherit;
 }
 
-/* Grupo de campos (Edad y DNI en una fila) */
+/* Dos campos en la misma fila */
 .field-group {
     display: flex;
     gap: 15px;
@@ -95,14 +259,87 @@ legend {
     flex: 1;
 }
 
-/* 5. BOTONES */
+
+/* ============================================================
+   9. PÁGINA DE REGISTRO CON PERSONAJE (inscryption.html)
+   ============================================================ */
+
+/* Contenedor principal de la página de registro */
+.register-page {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    gap: 20px;
+}
+
+/* Zona de dos columnas: personaje + formulario */
+.register-layout {
+    position: relative;
+    width: 100%;
+    max-width: 1100px;
+    display: flex;
+    align-items: stretch;
+    min-height: 500px;
+}
+
+/* Columna izquierda: imagen del personaje */
+.inscryption-guy {
+    width: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.inscryption-guy img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Burbuja de diálogo sobre el personaje */
+.bubble {
+    position: absolute;
+    left: 31%;
+    top: 17%;
+    width: 13%;
+    padding: 10px 14px;
+    font-size: 12px;
+    font-family: 'Manga', Arial, sans-serif;
+    color: #000000;
+    z-index: 2;
+}
+
+/* Columna derecha: formulario */
+.inscryption-form {
+    width: 75%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.inscryption-form .sbr-form {
+    width: 100%;
+    max-width: 500px;
+}
+
+
+/* ============================================================
+   10. BOTONES
+   ============================================================ */
+
 .form-actions {
     display: flex;
     gap: 10px;
     margin-top: 10px;
 }
 
-.btn {
+button,
+input[type="submit"],
+input[type="reset"] {
     flex: 1;
     padding: 12px;
     border: none;
@@ -110,9 +347,31 @@ legend {
     font-weight: bold;
     cursor: pointer;
     font-family: inherit;
-    transition: transform 0.2s;
 }
 
+/* Botón de registro en el banner principal */
+.btn-register {
+    position: absolute;
+    left: 45%;
+    bottom: 35%;
+    background: gold;
+    color: black;
+    font-weight: bold;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1rem;
+    flex: unset;
+    z-index: 1;
+}
+
+.btn-register:hover {
+    background: #e6c200;
+}
+
+/* Feedback de pulsación en todos los botones con clase .btn */
 .btn:active {
     transform: scale(0.95);
 }
@@ -122,39 +381,217 @@ legend {
     color: white;
 }
 
+.btn-save:hover {
+    background: #45a049;
+}
+
 .btn-reset {
     background: #f44336;
     color: white;
 }
 
-/* 6. FOOTER Y PERSONAJE */
-.main-footer {
-    margin-top: auto;
-    background-color: #222;
-    color: white;
-    padding: 40px 0;
-    text-align: center;
-    position: relative;
-    width: 100%;
+.btn-reset:hover {
+    background: #d32f2f;
 }
 
-.character-corner img {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: clamp(100px, 20vw, 180px);
-    display: block;
-    clip-path: inset(0 0 5px 0);
+
+/* ============================================================
+   11. RESPONSIVE — Media Queries
+   ============================================================ */
+
+/* ── Tablet (≤ 900px) ── */
+@media (max-width: 900px) {
+
+    /* Banner */
+    .main-banner {
+        height: 500px;
+        padding: 20px 30px;
+        justify-content: center;
+        align-items: flex-end;
+    }
+
+    .banner-logo {
+        width: 90%;
+        left: 5%;
+        top: 5%;
+        transform: none;
+    }
+
+    .btn-register {
+        left: 50%;
+        bottom: 10%;
+        transform: translateX(-50%);
+    }
+
+    /* Tabla */
+    .sbr-table {
+        width: 95%;
+    }
+
+    /* Spacer + asistentes */
+    .spacer-big {
+        height: 220px;
+    }
+
+    .assistants-table {
+        height: 240px;
+    }
+
+    /* Registro con personaje */
+    .register-layout {
+        max-width: 100%;
+    }
+
+    .inscryption-guy {
+        width: 50%;
+    }
+
+    .inscryption-form {
+        width: 50%;
+    }
+
+    .bubble {
+        left: 28%;
+        width: 18%;
+        font-size: 11px;
+    }
+
+    /* Footer */
+    .character-corner img {
+        height: 140px;
+    }
+
+    .main-footer {
+        max-height: 200px;
+    }
 }
 
-/* 7. MEDIA QUERIES (MÓVIL) */
-@media (max-width: 480px) {
+/* ── Móvil (≤ 600px) ── */
+@media (max-width: 600px) {
+
+    /* Header */
+    .main-header {
+        height: auto;
+        flex-direction: column;
+        padding: 15px 10px;
+        gap: 10px;
+    }
+
+    .main-header ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .main-header .logo {
+        height: 50px;
+    }
+
+    /* Banner */
+    .main-banner {
+        height: 320px;
+        padding: 15px;
+        align-items: flex-end;
+        justify-content: center;
+    }
+
+    .banner-logo {
+        width: 85%;
+        left: 7.5%;
+        top: 5%;
+        transform: none;
+    }
+
+    .btn-register {
+        position: relative;
+        left: auto;
+        bottom: auto;
+        transform: none;
+        display: block;
+        width: 90%;
+        margin: 15px auto 0;
+        text-align: center;
+    }
+
+    /* Cuando el banner no puede contener el botón absolute, reubicamos */
+    .main-banner .btn-register {
+        position: absolute;
+        left: 50%;
+        bottom: 8%;
+        transform: translateX(-50%);
+        width: auto;
+        margin: 0;
+    }
+
+    /* Tabla scroll horizontal en móvil */
+    .sbr-table {
+        width: 100%;
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Spacer reducido */
+    .spacer-big {
+        height: 140px;
+    }
+
+    .assistants-table {
+        height: 150px;
+    }
+
+    /* Registro: columna única en móvil */
+    .register-layout {
+        flex-direction: column;
+        min-height: auto;
+    }
+
+    .inscryption-guy {
+        width: 100%;
+        max-height: 260px;
+        overflow: hidden;
+    }
+
+    .inscryption-guy img {
+        width: 100%;
+        height: 260px;
+        object-fit: cover;
+        object-position: top;
+    }
+
+    .bubble {
+        position: relative;
+        left: auto;
+        top: auto;
+        width: 90%;
+        margin: 10px auto;
+        font-size: 13px;
+        text-align: center;
+    }
+
+    .inscryption-form {
+        width: 100%;
+        padding: 10px;
+    }
+
+    /* Formularios: groups en columna */
     .field-group {
         flex-direction: column;
         gap: 0;
     }
 
-    .sbr-form {
-        padding: 15px;
+    /* Botones */
+    .form-actions {
+        flex-direction: column;
+    }
+
+    /* Footer */
+    .character-corner img {
+        height: 100px;
+    }
+
+    .main-footer {
+        padding-left: 110px; /* espacio para la imagen de personaje */
+        max-height: none;
     }
 }
