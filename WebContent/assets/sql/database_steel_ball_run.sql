@@ -9,7 +9,7 @@ USE sbr;
 -- ==========================================================
 -- TABLAS COMENTADAS O AUXILIARES
 -- ==========================================================
-/*
+
 CREATE TABLE mount (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -27,7 +27,6 @@ CREATE TABLE runner (
     current_place INT,
     total_points INT DEFAULT 0
 );
-*/
 
 CREATE TABLE person (
     id INT PRIMARY KEY,
