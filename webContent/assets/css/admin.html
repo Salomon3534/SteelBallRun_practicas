@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SBR Admin — Panel</title>
+    <link rel="stylesheet" href="sbrstyles.css">
+    <link rel="icon" type="image/png" href="../web_images/sbr_logo.png">
+</head>
+
+<body>
+
+    <header class="main-header">
+        <img src="../web_images/Logo_Steel_Ball_Run.png" alt="Steel Ball Run Logo" class="logo">
+        <nav>
+            <ul>
+                <li><a href="index.html">← Sitio público</a></li>
+                <li style="color:gold; font-weight:bold; list-style:none;">⚙ Panel Admin</li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <span class="sidebar-section-label">General</span>
+            <button class="sidebar-btn active" onclick="showSection('dashboard')" id="sb-dashboard">
+                <span class="icon">📊</span> Dashboard
+            </button>
+
+            <span class="sidebar-section-label">Gestión</span>
+            <button class="sidebar-btn" onclick="showSection('registros')" id="sb-registros">
+                <span class="icon">📋</span> Registros
+            </button>
+            <button class="sidebar-btn" onclick="showSection('corredores')" id="sb-corredores">
+                <span class="icon">🏇</span> Corredores
+            </button>
+            <button class="sidebar-btn" onclick="showSection('monturas')" id="sb-monturas">
+                <span class="icon">🐴</span> Monturas
+            </button>
+            <button class="sidebar-btn" onclick="showSection('etapas')" id="sb-etapas">
+                <span class="icon">🗺️</span> Etapas
+            </button>
+            <button class="sidebar-btn" onclick="showSection('patrocinadores')" id="sb-patrocinadores">
+                <span class="icon">💰</span> Patrocinadores
+            </button>
+
+            <span class="sidebar-section-label">Datos</span>
+            <button class="sidebar-btn" onclick="showSection('personajes')" id="sb-personajes">
+                <span class="icon">👤</span> Personajes
+            </button>
+            <button class="sidebar-btn" onclick="showSection('medico')" id="sb-medico">
+                <span class="icon">🏥</span> Chequeo Médico
+            </button>
+
+            <div class="sidebar-logout">
+                <button onclick="doLogout()">🚪 Cerrar sesión</button>
+            </div>
+        </aside>
+
+        <!-- Contenido principal -->
+        <main class="admin-content">
+
+            <!-- DASHBOARD -->
+            <section class="admin-section active" id="sec-dashboard">
+                <h2>📊 Dashboard</h2>
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="stat-num">3.021</div><div class="stat-label">Participantes inscritos</div></div>
+                    <div class="stat-card"><div class="stat-num">2.847</div><div class="stat-label">En carrera activos</div></div>
+                    <div class="stat-card"><div class="stat-num">142</div><div class="stat-label">Descalificados</div></div>
+                    <div class="stat-card"><div class="stat-num">32</div><div class="stat-label">Retirados</div></div>
+                    <div class="stat-card"><div class="stat-num">5</div><div class="stat-label">Etapa actual</div></div>
+                    <div class="stat-card"><div class="stat-num">4</div><div class="stat-label">Patrocinadores</div></div>
+                </div>
+                <div class="admin-form-box">
+                    <h3>Resumen de actividad reciente</h3>
+                    <table class="admin-table">
+                        <thead><tr><th>Evento</th><th>Corredor</th><th>Fecha</th><th>Estado</th></tr></thead>
+                        <tbody>
+                            <tr><td>Nuevo registro</td><td>Pocoloco —</td><td>25/09/1890</td><td><span class="badge badge-ok">OK</span></td></tr>
+                            <tr><td>Descalificación</td><td>Wekapipo —</td><td>02/10/1890</td><td><span class="badge badge-dq">DQ</span></td></tr>
+                            <tr><td>Chequeo médico</td><td>Gyro Zeppeli</td><td>04/10/1890</td><td><span class="badge badge-ok">Apto</span></td></tr>
+                            <tr><td>Montura eliminada</td><td>Sandman —</td><td>05/10/1890</td><td><span class="badge badge-dq">DQ corredor</span></td></tr>
+                            <tr><td>Nuevo registro</td><td>Hot Pants —</td><td>06/10/1890</td><td><span class="badge badge-pending">Pendiente médico</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- REGISTROS -->
+            <section class="admin-section" id="sec-registros">
+                <h2>📋 Gestión de Registros</h2>
+                <button class="add-row-btn" onclick="toggleForm('form-registro')">+ Nuevo Registro</button>
+
+                <table class="admin-table">
+                    <thead><tr><th>#</th><th>Nombre</th><th>DNI</th><th>Fecha</th><th>Estado</th><th>Acciones</th></tr></thead>
+                    <tbody>
+                        <tr><td>001</td><td>Gyro Zeppeli</td><td>IT-00124</td><td>20/09/1890</td><td><span class="badge badge-ok">Aprobado</span></td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('registro')">Eliminar</button></div></td></tr>
+                        <tr><td>002</td><td>Johnny Joestar</td><td>US-00887</td><td>20/09/1890</td><td><span class="badge badge-ok">Aprobado</span></td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('registro')">Eliminar</button></div></td></tr>
+                        <tr><td>003</td><td>Diego Brando</td><td>GB-00345</td><td>21/09/1890</td><td><span class="badge badge-ok">Aprobado</span></td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('registro')">Eliminar</button></div></td></tr>
+                        <tr><td>007</td><td>Sandman —</td><td>US-00712</td><td>22/09/1890</td><td><span class="badge badge-dq">Descalificado</span></td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('registro')">Eliminar</button></div></td></tr>
+                        <tr><td>004</td><td>Hot Pants —</td><td>US-00561</td><td>23/09/1890</td><td><span class="badge badge-pending">Pendiente</span></td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('registro')">Eliminar</button></div></td></tr>
+                    </tbody>
+                </table>
+
+                <div class="admin-form-box" id="form-registro" style="display:none;">
+                    <h3>Nuevo Registro</h3>
+                    <div class="form-grid">
+                        <div class="field"><label>Nombre</label><input type="text" placeholder="Nombre del corredor"></div>
+                        <div class="field"><label>Apellidos</label><input type="text" placeholder="Apellidos"></div>
+                        <div class="field"><label>DNI / Documento</label><input type="text" placeholder="XX-00000"></div>
+                        <div class="field"><label>Edad</label><input type="number" min="16" placeholder="Edad"></div>
+                        <div class="field"><label>País de origen</label><input type="text" placeholder="País"></div>
+                        <div class="field"><label>Número de corredor</label><input type="number" placeholder="#"></div>
+                    </div>
+                    <div class="form-actions" style="margin-top:16px; max-width:300px;">
+                        <button class="btn btn-save">Guardar</button>
+                        <button class="btn btn-reset" onclick="toggleForm('form-registro')">Cancelar</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CORREDORES -->
+            <section class="admin-section" id="sec-corredores">
+                <h2>🏇 Gestión de Corredores</h2>
+                <button class="add-row-btn" onclick="toggleForm('form-corredor')">+ Nuevo Corredor</button>
+
+                <table class="admin-table">
+                    <thead><tr><th>#</th><th>Nombre</th><th>Origen</th><th>Montura</th><th>Estado</th><th>Acciones</th></tr></thead>
+                    <tbody>
+                        <tr><td>1</td><td>Gyro Zeppeli</td><td>Nápoles</td><td>Valkyrie</td><td><span class="badge badge-active">Activo</span></td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-dq">DQ</button><button class="btn-sm btn-del" onclick="showDeleteModal('corredor')">Eliminar</button></div></td></tr>
+                        <tr><td>2</td><td>Johnny Joestar</td><td>Kentucky</td><td>Slow Dancer</td><td><span class="badge badge-active">Activo</span></td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-dq">DQ</button><button class="btn-sm btn-del" onclick="showDeleteModal('corredor')">Eliminar</button></div></td></tr>
+                        <tr><td>3</td><td>Diego Brando</td><td>Reino Unido</td><td>Silver Bullet</td><td><span class="badge badge-active">Activo</span></td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-dq">DQ</button><button class="btn-sm btn-del" onclick="showDeleteModal('corredor')">Eliminar</button></div></td></tr>
+                        <tr><td>7</td><td>Sandman</td><td>EE. UU.</td><td>In a Silent Way</td><td><span class="badge badge-dq">Descalificado</span></td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('corredor')">Eliminar</button></div></td></tr>
+                        <tr><td>5</td><td>Mountain Tim</td><td>EE. UU.</td><td>Oh Lonesome Me</td><td><span class="badge badge-retired">Retirado</span></td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('corredor')">Eliminar</button></div></td></tr>
+                    </tbody>
+                </table>
+
+                <div class="admin-form-box" id="form-corredor" style="display:none;">
+                    <h3>Nuevo Corredor</h3>
+                    <div class="form-grid">
+                        <div class="field"><label>Nombre</label><input type="text"></div>
+                        <div class="field"><label>Apellidos</label><input type="text"></div>
+                        <div class="field"><label>Origen</label><input type="text"></div>
+                        <div class="field"><label>Número</label><input type="number"></div>
+                        <div class="field field-full"><label>Montura asignada</label><select><option>Valkyrie</option><option>Slow Dancer</option><option>Silver Bullet</option><option>— Sin asignar —</option></select></div>
+                    </div>
+                    <div class="form-actions" style="margin-top:16px; max-width:300px;">
+                        <button class="btn btn-save">Guardar</button>
+                        <button class="btn btn-reset" onclick="toggleForm('form-corredor')">Cancelar</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MONTURAS -->
+            <section class="admin-section" id="sec-monturas">
+                <h2>🐴 Gestión de Monturas</h2>
+                <p style="font-family:'Formal',serif; color:#721c24; background:#f8d7da; border:1px solid #f5c6cb; padding:10px 14px; border-radius:5px; margin-bottom:16px; font-size:0.9rem;">
+                    ⚠️ <strong>Atención:</strong> Eliminar una montura <strong>descalifica automáticamente</strong> al corredor asociado.
+                </p>
+                <button class="add-row-btn" onclick="toggleForm('form-montura')">+ Nueva Montura</button>
+
+                <table class="admin-table">
+                    <thead><tr><th>Nombre</th><th>Raza</th><th>Corredor asignado</th><th>Estado</th><th>Acciones</th></tr></thead>
+                    <tbody>
+                        <tr><td>Valkyrie</td><td>Pura sangre</td><td>Gyro Zeppeli</td><td><span class="badge badge-ok">Apta</span></td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('montura')">Eliminar → DQ</button></div></td></tr>
+                        <tr><td>Slow Dancer</td><td>Appaloosa</td><td>Johnny Joestar</td><td><span class="badge badge-ok">Apta</span></td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('montura')">Eliminar → DQ</button></div></td></tr>
+                        <tr><td>Silver Bullet</td><td>Thoroughbred</td><td>Diego Brando</td><td><span class="badge badge-ok">Apta</span></td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('montura')">Eliminar → DQ</button></div></td></tr>
+                        <tr><td>In a Silent Way</td><td>Mustang</td><td>Sandman (DQ)</td><td><span class="badge badge-fail">No apta</span></td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('montura')">Eliminar → DQ</button></div></td></tr>
+                    </tbody>
+                </table>
+
+                <div class="admin-form-box" id="form-montura" style="display:none;">
+                    <h3>Nueva Montura</h3>
+                    <div class="form-grid">
+                        <div class="field"><label>Nombre de la montura</label><input type="text"></div>
+                        <div class="field"><label>Raza</label><input type="text"></div>
+                        <div class="field"><label>Corredor asignado</label><select><option>Gyro Zeppeli</option><option>Johnny Joestar</option><option>— Sin asignar —</option></select></div>
+                        <div class="field"><label>Estado</label><select><option>Apta</option><option>No apta</option></select></div>
+                    </div>
+                    <div class="form-actions" style="margin-top:16px; max-width:300px;">
+                        <button class="btn btn-save">Guardar</button>
+                        <button class="btn btn-reset" onclick="toggleForm('form-montura')">Cancelar</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ETAPAS -->
+            <section class="admin-section" id="sec-etapas">
+                <h2>🗺️ Gestión de Etapas</h2>
+                <button class="add-row-btn" onclick="toggleForm('form-etapa')">+ Nueva Etapa</button>
+
+                <table class="admin-table">
+                    <thead><tr><th>#</th><th>Nombre</th><th>Ruta</th><th>Km</th><th>Estado</th><th>Acciones</th></tr></thead>
+                    <tbody>
+                        <tr><td>1</td><td>El Gran Inicio</td><td>San Diego → Phoenix</td><td>480</td><td><span class="badge badge-ok">Completada</span></td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('etapa')">Eliminar</button></div></td></tr>
+                        <tr><td>2</td><td>Las Mesetas Rojas</td><td>Phoenix → Albuquerque</td><td>560</td><td><span class="badge badge-ok">Completada</span></td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('etapa')">Eliminar</button></div></td></tr>
+                        <tr><td>3</td><td>Las Grandes Llanuras</td><td>Albuquerque → Abilene</td><td>720</td><td><span class="badge badge-ok">Completada</span></td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('etapa')">Eliminar</button></div></td></tr>
+                        <tr><td>4</td><td>Corazón de América</td><td>Abilene → Kansas City</td><td>640</td><td><span class="badge badge-ok">Completada</span></td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('etapa')">Eliminar</button></div></td></tr>
+                        <tr><td>5</td><td>Los Grandes Lagos</td><td>Kansas City → Chicago</td><td>690</td><td><span class="badge badge-pending">En curso</span></td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('etapa')">Eliminar</button></div></td></tr>
+                        <tr><td>6</td><td>Los Apalaches</td><td>Chicago → Pittsburgh</td><td>730</td><td><span class="badge badge-retired">Próxima</span></td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('etapa')">Eliminar</button></div></td></tr>
+                    </tbody>
+                </table>
+
+                <div class="admin-form-box" id="form-etapa" style="display:none;">
+                    <h3>Nueva Etapa</h3>
+                    <div class="form-grid">
+                        <div class="field"><label>Número</label><input type="number"></div>
+                        <div class="field"><label>Nombre</label><input type="text"></div>
+                        <div class="field"><label>Ciudad inicio</label><input type="text"></div>
+                        <div class="field"><label>Ciudad fin</label><input type="text"></div>
+                        <div class="field"><label>Distancia (km)</label><input type="number"></div>
+                        <div class="field"><label>Estado</label><select><option>Próxima</option><option>En curso</option><option>Completada</option></select></div>
+                        <div class="field field-full"><label>Descripción</label><input type="text" placeholder="Breve descripción del terreno"></div>
+                    </div>
+                    <div class="form-actions" style="margin-top:16px; max-width:300px;">
+                        <button class="btn btn-save">Guardar</button>
+                        <button class="btn btn-reset" onclick="toggleForm('form-etapa')">Cancelar</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PATROCINADORES -->
+            <section class="admin-section" id="sec-patrocinadores">
+                <h2>💰 Gestión de Patrocinadores</h2>
+                <button class="add-row-btn" onclick="toggleForm('form-sponsor')">+ Nuevo Patrocinador</button>
+
+                <table class="admin-table">
+                    <thead><tr><th>Nombre</th><th>Sector</th><th>Aportación</th><th>Acciones</th></tr></thead>
+                    <tbody>
+                        <tr><td>East and West Tribune</td><td>Comunicaciones</td><td>$500.000</td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('patrocinador')">Eliminar</button></div></td></tr>
+                        <tr><td>B &amp; C Meat Company</td><td>Alimentación</td><td>$750.000</td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('patrocinador')">Eliminar</button></div></td></tr>
+                        <tr><td>Horizontal Continental Railway Co.</td><td>Transporte</td><td>$2.000.000</td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('patrocinador')">Eliminar</button></div></td></tr>
+                        <tr><td>Speedwagon Oil Company</td><td>Energía</td><td>$5.000.000</td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('patrocinador')">Eliminar</button></div></td></tr>
+                    </tbody>
+                </table>
+
+                <div class="admin-form-box" id="form-sponsor" style="display:none;">
+                    <h3>Nuevo Patrocinador</h3>
+                    <div class="form-grid">
+                        <div class="field"><label>Nombre empresa</label><input type="text"></div>
+                        <div class="field"><label>Sector</label><input type="text"></div>
+                        <div class="field field-full"><label>Aportación ($)</label><input type="number"></div>
+                    </div>
+                    <div class="form-actions" style="margin-top:16px; max-width:300px;">
+                        <button class="btn btn-save">Guardar</button>
+                        <button class="btn btn-reset" onclick="toggleForm('form-sponsor')">Cancelar</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PERSONAJES -->
+            <section class="admin-section" id="sec-personajes">
+                <h2>👤 Gestión de Personajes</h2>
+                <button class="add-row-btn" onclick="toggleForm('form-personaje')">+ Nuevo Personaje</button>
+
+                <table class="admin-table">
+                    <thead><tr><th>Nombre</th><th>Rol</th><th>Afiliación</th><th>Acciones</th></tr></thead>
+                    <tbody>
+                        <tr><td>Gyro Zeppeli</td><td>Corredor</td><td>Reino de Nápoles</td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('personaje')">Eliminar</button></div></td></tr>
+                        <tr><td>Johnny Joestar</td><td>Corredor</td><td>EE. UU.</td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('personaje')">Eliminar</button></div></td></tr>
+                        <tr><td>Steven Steel</td><td>Presidente / Organizador</td><td>EE. UU.</td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('personaje')">Eliminar</button></div></td></tr>
+                        <tr><td>Lucy Steel</td><td>Staff</td><td>EE. UU.</td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('personaje')">Eliminar</button></div></td></tr>
+                        <tr><td>Valentine</td><td>Seguridad</td><td>EE. UU.</td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('personaje')">Eliminar</button></div></td></tr>
+                    </tbody>
+                </table>
+
+                <div class="admin-form-box" id="form-personaje" style="display:none;">
+                    <h3>Nuevo Personaje</h3>
+                    <div class="form-grid">
+                        <div class="field"><label>Nombre</label><input type="text"></div>
+                        <div class="field"><label>Apellidos</label><input type="text"></div>
+                        <div class="field"><label>Edad</label><input type="number"></div>
+                        <div class="field"><label>DNI</label><input type="text"></div>
+                        <div class="field"><label>Rol</label><select><option>Corredor</option><option>Staff</option><option>Organizador</option><option>Seguridad</option><option>Médico</option></select></div>
+                        <div class="field"><label>Afiliación</label><input type="text"></div>
+                    </div>
+                    <div class="form-actions" style="margin-top:16px; max-width:300px;">
+                        <button class="btn btn-save">Guardar</button>
+                        <button class="btn btn-reset" onclick="toggleForm('form-personaje')">Cancelar</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CHEQUEO MÉDICO -->
+            <section class="admin-section" id="sec-medico">
+                <h2>🏥 Chequeo Médico</h2>
+                <button class="add-row-btn" onclick="toggleForm('form-medico')">+ Nuevo Chequeo</button>
+
+                <table class="admin-table">
+                    <thead><tr><th>Corredor</th><th>Montura</th><th>Etapa</th><th>Fecha</th><th>Resultado</th><th>Acciones</th></tr></thead>
+                    <tbody>
+                        <tr><td>Gyro Zeppeli</td><td>Valkyrie</td><td>Etapa 5</td><td>04/10/1890</td><td><span class="badge badge-ok">Apto</span></td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('chequeo')">Eliminar</button></div></td></tr>
+                        <tr><td>Johnny Joestar</td><td>Slow Dancer</td><td>Etapa 5</td><td>04/10/1890</td><td><span class="badge badge-ok">Apto</span></td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('chequeo')">Eliminar</button></div></td></tr>
+                        <tr><td>Diego Brando</td><td>Silver Bullet</td><td>Etapa 5</td><td>04/10/1890</td><td><span class="badge badge-ok">Apto</span></td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('chequeo')">Eliminar</button></div></td></tr>
+                        <tr><td>Hot Pants</td><td>Costello</td><td>Etapa 5</td><td>05/10/1890</td><td><span class="badge badge-pending">Pendiente</span></td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('chequeo')">Eliminar</button></div></td></tr>
+                        <tr><td>Sandman</td><td>In a Silent Way</td><td>Etapa 4</td><td>01/10/1890</td><td><span class="badge badge-fail">No apto → DQ</span></td><td><div class="actions"><button class="btn-sm btn-edit">Editar</button><button class="btn-sm btn-del" onclick="showDeleteModal('chequeo')">Eliminar</button></div></td></tr>
+                    </tbody>
+                </table>
+
+                <div class="admin-form-box" id="form-medico" style="display:none;">
+                    <h3>Nuevo Chequeo Médico</h3>
+                    <div class="form-grid">
+                        <div class="field"><label>Corredor</label><select><option>Gyro Zeppeli</option><option>Johnny Joestar</option><option>Diego Brando</option><option>Hot Pants</option></select></div>
+                        <div class="field"><label>Montura</label><select><option>Valkyrie</option><option>Slow Dancer</option><option>Silver Bullet</option><option>Costello</option></select></div>
+                        <div class="field"><label>Etapa</label><select><option>Etapa 5</option><option>Etapa 6</option></select></div>
+                        <div class="field"><label>Fecha</label><input type="date"></div>
+                        <div class="field"><label>Resultado</label><select><option>Apto</option><option>No apto</option><option>Pendiente</option></select></div>
+                        <div class="field field-full"><label>Observaciones</label><input type="text" placeholder="Notas médicas opcionales"></div>
+                    </div>
+                    <div class="form-actions" style="margin-top:16px; max-width:300px;">
+                        <button class="btn btn-save">Guardar</button>
+                        <button class="btn btn-reset" onclick="toggleForm('form-medico')">Cancelar</button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Modal de confirmación de borrado -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal-box">
+            <h3>⚠️ Confirmar eliminación</h3>
+            <p id="deleteModalMsg">¿Estás seguro de que quieres eliminar este elemento? Esta acción no se puede deshacer.</p>
+            <div class="modal-actions">
+                <button class="btn-confirm-del" onclick="confirmDelete()">Sí, eliminar</button>
+                <button class="btn-cancel-modal" onclick="closeModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Verificar autenticación al cargar
+        if (sessionStorage.getItem('sbr_admin_auth') !== 'true') {
+            window.location.href = 'admin_login.html';
+        }
+
+        function showSection(name) {
+            // Ocultar todas las secciones
+            document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
+
+            // Mostrar la seleccionada
+            document.getElementById('sec-' + name).classList.add('active');
+            document.getElementById('sb-' + name).classList.add('active');
+        }
+
+        function toggleForm(formId) {
+            const form = document.getElementById(formId);
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+            if (form.style.display === 'block') {
+                form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        let deleteTarget = null;
+
+        function showDeleteModal(type) {
+            deleteTarget = type;
+            const messages = {
+                montura: '¿Eliminar esta montura? El corredor asociado quedará automáticamente DESCALIFICADO.',
+                corredor: '¿Eliminar este corredor? Se perderán todos sus datos de carrera.',
+                registro: '¿Eliminar este registro de inscripción?',
+                etapa: '¿Eliminar esta etapa de la carrera?',
+                patrocinador: '¿Eliminar este patrocinador?',
+                personaje: '¿Eliminar este personaje?',
+                chequeo: '¿Eliminar este registro médico?',
+            };
+            document.getElementById('deleteModalMsg').textContent = messages[type] || '¿Confirmar eliminación?';
+            document.getElementById('deleteModal').classList.add('visible');
+        }
+
+        function closeModal() {
+            document.getElementById('deleteModal').classList.remove('visible');
+            deleteTarget = null;
+        }
+
+        function confirmDelete() {
+            // En producción, aquí se haría la llamada al servidor
+            alert(`Elemento de tipo "${deleteTarget}" eliminado (demo — sin backend).`);
+            closeModal();
+        }
+
+        function doLogout() {
+            sessionStorage.removeItem('sbr_admin_auth');
+            window.location.href = 'admin_login.html';
+        }
+
+        // Cerrar modal con Escape
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
+</body>
+</html>
