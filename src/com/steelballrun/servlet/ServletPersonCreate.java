@@ -13,49 +13,49 @@ import java.io.IOException;
 @WebServlet("/insertCharacter")
 public class ServletPersonCreate extends HttpServlet {
 
-	private PersonDAO personDAO;
+    private PersonDAO personDAO;
 
-	@Override
-	public void init() throws ServletException {
-		personDAO = new PersonDAO();
-	}
+    @Override
+    public void init() throws ServletException {
+        personDAO = new PersonDAO();
+    }
 
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-		request.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");
 
-		String name = request.getParameter("name");
-		String surnames = request.getParameter("surnames");
-		String age = request.getParameter("age");
-		String dni = request.getParameter("dni");
-		
+        String name     = request.getParameter("name");
+        String surnames = request.getParameter("surnames");
+        String age      = request.getParameter("age");
+        String dni      = request.getParameter("dni");
 
-		try {
-			int parsedAge = Integer.parseInt(age);
+        try {
+            int parsedAge = Integer.parseInt(age);
 
-			// ID is auto-incremental in database, use 0 as placeholder
-			Person p = new Person(0, name, surnames, parsedAge, dni);
+            // person.id es PK sin AUTO_INCREMENT: lo calculamos
+            int nextId = personDAO.getNextId();
 
-			boolean success = personDAO.insertPerson(p);
+            Person p = new Person(nextId, name, surnames, parsedAge, dni);
+            boolean success = personDAO.insertPerson(p);
 
-			if (success) {
-				response.sendRedirect("listPersons");
-				return;
-			} else {
-				request.setAttribute("message", "Error when inserting a new person");
-				request.setAttribute("type", "error");
-			}
+            if (success) {
+                response.sendRedirect("listRunners");
+                return;
+            } else {
+                request.setAttribute("message", "Error al insertar la persona");
+                request.setAttribute("type", "error");
+            }
 
-		} catch (NumberFormatException e) {
-			request.setAttribute("message", "Error in the number's format");
-			request.setAttribute("type", "error");
-		} catch (Exception e) {
-			request.setAttribute("message", "Error: " + e.getMessage());
-			request.setAttribute("type", "error");
-		}
+        } catch (NumberFormatException e) {
+            request.setAttribute("message", "Error en el formato del número");
+            request.setAttribute("type", "error");
+        } catch (Exception e) {
+            request.setAttribute("message", "Error: " + e.getMessage());
+            request.setAttribute("type", "error");
+        }
 
-		request.getRequestDispatcher("/insertPerson.jsp").forward(request, response);
-	}
+        request.getRequestDispatcher("/insertRunner.jsp").forward(request, response);
+    }
 }

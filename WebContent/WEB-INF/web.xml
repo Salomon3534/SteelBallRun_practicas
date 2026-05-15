@@ -1,14 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app id="WebApp_ID" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-	<display-name>SteelBallRunRace</display-name>
-	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
-		<welcome-file>index.htm</welcome-file>
-		<welcome-file>index.jsp</welcome-file>
-		<welcome-file>index.xhtml</welcome-file>
-		<welcome-file>default.html</welcome-file>
-		<welcome-file>default.htm</welcome-file>
-		<welcome-file>default.jsp</welcome-file>
-		<welcome-file>default.xhtml</welcome-file>
-	</welcome-file-list>
+<web-app id="WebApp_ID" version="3.1"
+    xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                        http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+
+    <display-name>SteelBallRunRace</display-name>
+
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <!-- ===== PERSON SERVLETS ===== -->
+    <servlet>
+        <servlet-name>ServletPersonCreate</servlet-name>
+        <servlet-class>com.steelballrun.servlet.ServletPersonCreate</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletPersonCreate</servlet-name>
+        <url-pattern>/insertCharacter</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ServletPersonList</servlet-name>
+        <servlet-class>com.steelballrun.servlet.ServletPersonList</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletPersonList</servlet-name>
+        <url-pattern>/listPersons</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ServletPersonUpdate</servlet-name>
+        <servlet-class>com.steelballrun.servlet.ServletPersonUpdate</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletPersonUpdate</servlet-name>
+        <url-pattern>/modificarEstudiantes</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ServletPersonDelete</servlet-name>
+        <servlet-class>com.steelballrun.servlet.ServletPersonDelete</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletPersonDelete</servlet-name>
+        <url-pattern>/deletePerson</url-pattern>
+    </servlet-mapping>
+
+    <!-- ===== RUNNER SERVLETS ===== -->
+    <servlet>
+        <servlet-name>ServletRunnerCreate</servlet-name>
+        <servlet-class>com.steelballrun.servlet.ServletRunnerCreate</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletRunnerCreate</servlet-name>
+        <url-pattern>/insertRunner</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ServletRunnerList</servlet-name>
+        <servlet-class>com.steelballrun.servlet.ServletRunnerList</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletRunnerList</servlet-name>
+        <url-pattern>/listRunners</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ServletRunnerUpdate</servlet-name>
+        <servlet-class>com.steelballrun.servlet.ServletRunnerUpdate</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletRunnerUpdate</servlet-name>
+        <url-pattern>/modifyRunner</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ServletRunnerDelete</servlet-name>
+        <servlet-class>com.steelballrun.servlet.ServletRunnerDelete</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletRunnerDelete</servlet-name>
+        <url-pattern>/deleteRunner</url-pattern>
+    </servlet-mapping>
+
 </web-app>

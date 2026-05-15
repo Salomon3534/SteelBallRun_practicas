@@ -9,93 +9,111 @@ import java.util.List;
 
 public class PersonDAO {
 
-	public List<Person> listPersons() {
-		List<Person> list = new ArrayList<>();
-		String sql = "SELECT id, name, surnames, age, dni FROM person";
+    public List<Person> listPersons() {
+        List<Person> list = new ArrayList<>();
+        String sql = "SELECT id, name, surnames, age, dni FROM person";
 
-		try (Connection conn = DatabaseConnection.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(sql);
-				ResultSet rs = pstmt.executeQuery()) {
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                ResultSet rs = pstmt.executeQuery()) {
 
-			while (rs.next()) {
-				list.add(new Person(rs.getInt("id"), rs.getString("name"), rs.getString("surnames"), rs.getInt("age"),
-						rs.getString("dni")));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return list;
-	}
+            while (rs.next()) {
+                list.add(new Person(rs.getInt("id"), rs.getString("name"), rs.getString("surnames"),
+                        rs.getInt("age"), rs.getString("dni")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
-	public Person getPersonByID(int id) {
-		String sql = "SELECT id, name, surnames, age, dni FROM person WHERE id = ?";
+    public Person getPersonByID(int id) {
+        String sql = "SELECT id, name, surnames, age, dni FROM person WHERE id = ?";
 
-		try (Connection conn = DatabaseConnection.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-			pstmt.setInt(1, id);
-			
-			try (ResultSet rs = pstmt.executeQuery()) {
-				if (rs.next()) {
-					return new Person(rs.getInt("id"), rs.getString("name"), rs.getString("surnames"), rs.getInt("age"),
-							rs.getString("dni"));
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+            pstmt.setInt(1, id);
 
-	public boolean insertPerson(Person person) {
-		String sql = "INSERT INTO person (id, name, surnames, age, dni) VALUES (?, ?, ?, ?, ?)";
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Person(rs.getInt("id"), rs.getString("name"), rs.getString("surnames"),
+                            rs.getInt("age"), rs.getString("dni"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-		try (Connection conn = DatabaseConnection.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+    /**
+     * Calcula el siguiente ID disponible para una nueva persona.
+     * La columna person.id es PK pero NO AUTO_INCREMENT.
+     */
+    public int getNextId() {
+        String sql = "SELECT COALESCE(MAX(id), 0) + 1 FROM person";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 1;
+    }
 
-			pstmt.setInt(1, person.getId());
-			pstmt.setString(2, person.getName());
-			pstmt.setString(3, person.getSurnames());
-			pstmt.setInt(4, person.getAge());
-			pstmt.setString(5, person.getDni());
+    public boolean insertPerson(Person person) {
+        String sql = "INSERT INTO person (id, name, surnames, age, dni) VALUES (?, ?, ?, ?, ?)";
 
-			return pstmt.executeUpdate() > 0;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-	public boolean updatePerson(Person person) {
-		String sql = "UPDATE person SET name = ?, surnames = ?, age = ?, dni = ? WHERE id = ?";
+            pstmt.setInt(1, person.getId());
+            pstmt.setString(2, person.getName());
+            pstmt.setString(3, person.getSurnames());
+            pstmt.setInt(4, person.getAge());
+            pstmt.setString(5, person.getDni());
 
-		try (Connection conn = DatabaseConnection.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
-			pstmt.setString(1, person.getName());
-			pstmt.setString(2, person.getSurnames());
-			pstmt.setInt(3, person.getAge());
-			pstmt.setString(4, person.getDni());
-			pstmt.setInt(5, person.getId());
+    public boolean updatePerson(Person person) {
+        String sql = "UPDATE person SET name = ?, surnames = ?, age = ?, dni = ? WHERE id = ?";
 
-			return pstmt.executeUpdate() > 0;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-	public boolean deletePerson(int id) {
-		String sql = "DELETE FROM person WHERE id = ?";
+            pstmt.setString(1, person.getName());
+            pstmt.setString(2, person.getSurnames());
+            pstmt.setInt(3, person.getAge());
+            pstmt.setString(4, person.getDni());
+            pstmt.setInt(5, person.getId());
 
-		try (Connection conn = DatabaseConnection.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
-			pstmt.setInt(1, id);
-			return pstmt.executeUpdate() > 0;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
+    public boolean deletePerson(int id) {
+        String sql = "DELETE FROM person WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
