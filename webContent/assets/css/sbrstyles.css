@@ -991,7 +991,7 @@ legend {
 .sidebar-btn.active {
     background: rgba(212, 160, 23, 0.2);
     color: gold;
-    border-left: 3px solid gold;
+    border: 3px solid gold;
 }
 
 .sidebar-btn .icon { font-size: 1rem; width: 22px; text-align: center; }
@@ -1156,6 +1156,12 @@ legend {
     font-size: 0.82rem;
     color: #555;
     margin-top: 4px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
 }
 
 
