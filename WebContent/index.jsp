@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="sbrstyles.css">
     <link rel="icon" type="image/png" href="assets/web_images/sbr_logo.png">
 </head>
-<body>
+<body max-width="100%" crop-to-fit="cover">
 
     <!-- Banner principal -->
     <div class="main-banner">
