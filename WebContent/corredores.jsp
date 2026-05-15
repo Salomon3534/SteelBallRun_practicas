@@ -37,41 +37,36 @@
 
     <main class="runners-page">
         <h1>Corredores</h1>
-            <% if (request.getAttribute("message") != null) { %>
-                <p class="<%= "success".equals(request.getAttribute("type")) ? "mensaje-exito" : "mensaje-error" %>">
-                    <%= request.getAttribute("message") %>
-                </p>
-            <% } %>
-            <% if (listRunners != null && !listRunners.isEmpty()) %>
-                <div class="runners-container">
-                    <% for (Runner r : listRunners) { %>
-                        <div class="runner-card">
-                            <div class="runner-img">
-                                <img src="../web_images/characters/" +  <%= r.getName() %>> + ".webp">>
+        <% if (request.getAttribute("message") != null) { %>
+            <p class="<%= "success".equals(request.getAttribute("type")) ? "mensaje-exito" : "mensaje-error" %>">
+                <%= request.getAttribute("message") %>
+            </p>
+        <% } %>
+        
+        <% if (listRunners != null && !listRunners.isEmpty()) { %>
+            <div class="runners-container">
+                <% for (Runner r : listRunners) { %>
+                    <div class="runner-card">
+                        <div class="runner-img-container">
+                            <img src="../web_images/characters/<%= r.getName() %>.webp" alt="<%= r.getName() %>">
+                        </div>
+                        <div class="runner-stats">
+                            <h3>#<%= r.getNum() %> <%= r.getName() %> <%= r.getSurname() %></h3>
+                            <div class="runner-meta">
+                                <span><strong>Origen:</strong> <%= r.getOrigin() %></span>
+                                <span><strong>Montura:</strong> <%= r.getHorse() %></span>
+                                <span><strong>Última posición:</strong> <%= r.getLastPos() %></span>
+                            </div>
+                            <span class="runner-badge status-<%= r.getStatus() %>"><%= r.getStatus() %></span>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        <% } %>
     </main>
 
     <footer class="main-footer">
         <p>Steel Ball Run 1890</p>
     </footer>
-
-    
-            runners.forEach(r => {
-                const card = document.createElement('div');
-                card.className = 'runner-card';
-
-                // Se han eliminado los listeners de clic y la gestiÃ³n de la clase 'selected'
-                card.innerHTML = `
-                    <div class="runner-img-container">
-                        <img src="../_SOURCE/characters/blackmore.jpg" alt="${r.name}">
-                    </div>
-                    <div class="runner-stats">
-                        <h3>#${r.num} ${r.name} ${r.surname}</h3>
-                        <div class="runner-meta">
-                            <span><strong>Origen:</strong> ${r.origin}</span>
-                            <span><strong>Montura:</strong> ${r.horse}</span>
-                            <span><strong>Ãltima posiciÃ³n:</strong> ${r.lastPos}</span>
-                        </div>
-                        <span class="runner-badge ${statusBadge[r.status]}">${statusLabel[r.status]}</span>
 </body>
-
 </html>
