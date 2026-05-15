@@ -6,10 +6,6 @@ COLLATE utf8mb4_unicode_ci;
 
 USE sbr;
 
--- ==========================================================
--- TABLAS COMENTADAS O AUXILIARES
--- ==========================================================
-
 CREATE TABLE mount (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
