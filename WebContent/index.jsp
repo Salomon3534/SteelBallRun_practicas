@@ -23,7 +23,7 @@
 
     <!-- Banner principal -->
     <div class="main-banner">
-        <a class="btn-register btn" href="inscryption.html">Registrarse</a>
+        <a class="btn-register btn" href="inscryption.jsp">Registrarse</a>
         <img class="banner-logo" src="assets/web_images/Logo_Steel_Ball_Run.png" alt="Steel Ball Run Logo">
     </div>
 
@@ -50,7 +50,7 @@
     <% } %>
 
     <% if (listRunners != null && !listRunners.isEmpty()) { %>
-        <table>
+        <table class="sbr-table">
             <tr>
                 <th>ID</th>
                 <th>Nombre</th>
@@ -60,7 +60,6 @@
                 <th>Dorsal</th>
                 <th>Puesto</th>
                 <th>Puntos</th>
-                <th>Acciones</th>
             </tr>
             <% for (Runner r : listRunners) { %>
                 <tr>
@@ -72,11 +71,6 @@
                     <td><%= r.getBib() %></td>
                     <td><%= r.getCurrentPlace() %></td>
                     <td><%= r.getTotalPoints() %></td>
-                    <td>
-                        <a class="btn btn-modificar" href="modifyRunner?id=<%= r.getId() %>">Modificar</a>
-                        <a class="btn btn-borrar" href="deleteRunner?id=<%= r.getId() %>"
-                           onclick="return confirm('¿Está seguro de que desea borrar este corredor?');">Borrar</a>
-                    </td>
                 </tr>
             <% } %>
         </table>

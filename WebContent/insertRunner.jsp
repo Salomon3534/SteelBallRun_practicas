@@ -10,7 +10,7 @@
 <body>
     <!-- Banner principal -->
     <div class="main-banner">
-        <a class="btn-register btn" href="inscryption.html">Registrarse</a>
+        <a class="btn-register btn" href="inscryption.jsp">Registrarse</a>
         <img class="banner-logo" src="assets/web_images/Logo_Steel_Ball_Run.png" alt="Steel Ball Run Logo">
     </div>
 
