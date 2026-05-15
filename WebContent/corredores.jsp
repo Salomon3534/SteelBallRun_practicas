@@ -1,17 +1,32 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.HashMap" %>
 <%@ page import="com.steelballrun.model.Runner" %>
 <%@ page import="com.steelballrun.dao.RunnerDAO" %>
 <%
+    // Recupera la lista desde el request (si viene de un Servlet) o la consulta directamente a la BBDD
     List<Runner> listRunners = (List<Runner>) request.getAttribute("listRunners");
     if (listRunners == null) {
         RunnerDAO runnerDAO = new RunnerDAO();
         listRunners = runnerDAO.listRunners();
         request.setAttribute("listRunners", listRunners);
     }
+
+    // Mapas para gestionar las etiquetas y clases de los estados dinámicamente
+    Map<String, String> statusLabel = new HashMap<>();
+    statusLabel.put("active", "En carrera");
+    statusLabel.put("dq", "Descalificado");
+    statusLabel.put("retired", "Retirado");
+
+    Map<String, String> statusBadge = new HashMap<>();
+    statusBadge.put("active", "badge-active");
+    statusBadge.put("dq", "badge-dq");
+    statusBadge.put("retired", "badge-retired");
 %>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,36 +52,34 @@
 
     <main class="runners-page">
         <h1>Corredores</h1>
-        <% if (request.getAttribute("message") != null) { %>
-            <p class="<%= "success".equals(request.getAttribute("type")) ? "mensaje-exito" : "mensaje-error" %>">
-                <%= request.getAttribute("message") %>
-            </p>
-        <% } %>
-        
-        <% if (listRunners != null && !listRunners.isEmpty()) { %>
-            <div class="runners-container">
+        <div class="runners-grid" id="runnersGrid">
+            <% if (listRunners != null && !listRunners.isEmpty()) { %>
                 <% for (Runner r : listRunners) { %>
                     <div class="runner-card">
                         <div class="runner-img-container">
-                            <img src="../web_images/characters/<%= r.getName() %>.webp" alt="<%= r.getName() %>">
+                            <img src="../_SOURCE/characters/<%= r.getName%>.webp" alt="<%= r.getName() %>">
                         </div>
                         <div class="runner-stats">
-                            <h3>#<%= r.getNum() %> <%= r.getName() %> <%= r.getSurname() %></h3>
+                            <h3><%= r.getName() %> <%= r.getSurname() %> #<%= r.getNum() %></h3>
                             <div class="runner-meta">
                                 <span><strong>Origen:</strong> <%= r.getOrigin() %></span>
                                 <span><strong>Montura:</strong> <%= r.getHorse() %></span>
-                                <span><strong>Última posición:</strong> <%= r.getLastPos() %></span>
                             </div>
-                            <span class="runner-badge status-<%= r.getStatus() %>"><%= r.getStatus() %></span>
+                            <span class="runner-badge <%= statusBadge.getOrDefault(r.getStatus(), "badge-retired") %>">
+                                <%= statusLabel.getOrDefault(r.getStatus(), "Desconocido") %>
+                            </span>
                         </div>
                     </div>
                 <% } %>
-            </div>
-        <% } %>
+            <% } else { %>
+                <p>No se encontraron corredores en la base de datos.</p>
+            <% } %>
+        </div>
     </main>
 
     <footer class="main-footer">
         <p>Steel Ball Run 1890</p>
     </footer>
 </body>
+
 </html>
