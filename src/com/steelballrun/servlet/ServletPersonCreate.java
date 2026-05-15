@@ -1,13 +1,15 @@
 package com.steelballrun.servlet;
 
+import java.io.IOException;
+
 import com.steelballrun.dao.PersonDAO;
 import com.steelballrun.model.Person;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @SuppressWarnings("serial")
 @WebServlet("/insertCharacter")
@@ -35,7 +37,7 @@ public class ServletPersonCreate extends HttpServlet {
             int parsedAge = Integer.parseInt(age);
 
             // person.id es PK sin AUTO_INCREMENT: lo calculamos
-            int nextId = personDAO.getNextId();
+            int nextId = 1; // Valor por defecto si no hay personas
 
             Person p = new Person(nextId, name, surnames, parsedAge, dni);
             boolean success = personDAO.insertPerson(p);

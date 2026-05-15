@@ -1,5 +1,7 @@
 package com.steelballrun.servlet;
 
+import java.io.IOException;
+
 import com.steelballrun.dao.PersonDAO;
 import com.steelballrun.model.Person;
 
@@ -8,9 +10,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
-@WebServlet("/modificarEstudiantes")
+@WebServlet("/updatePerson")
 public class ServletPersonUpdate extends HttpServlet {
 
 	private PersonDAO personDAO;

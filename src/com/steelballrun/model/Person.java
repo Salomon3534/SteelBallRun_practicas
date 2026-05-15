@@ -59,10 +59,12 @@ public class Person {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o)
+		if (this == o) {
 			return true;
-		if (!(o instanceof Person character))
+		}
+		if (!(o instanceof Person character)) {
 			return false;
+		}
 		return id == character.id && age == character.age && Objects.equals(name, character.name)
 				&& Objects.equals(surnames, character.surnames) && Objects.equals(dni, character.dni);
 	}

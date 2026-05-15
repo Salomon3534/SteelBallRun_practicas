@@ -107,12 +107,12 @@ public class Runner {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if ((obj == null) || (getClass() != obj.getClass())) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
+		}
 		Runner other = (Runner) obj;
 		return id == other.id && age == other.age && mountId == other.mountId && bib == other.bib
 				&& currentPlace == other.currentPlace && totalPoints == other.totalPoints

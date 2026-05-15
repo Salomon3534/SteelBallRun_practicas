@@ -47,12 +47,12 @@ public class Stand {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if ((obj == null) || (getClass() != obj.getClass())) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
+		}
 		Stand other = (Stand) obj;
 		return Objects.equals(ability, other.ability) && characterId == other.characterId
 				&& Objects.equals(standName, other.standName);
