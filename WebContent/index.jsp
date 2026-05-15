@@ -32,7 +32,7 @@
         <img src="assets/web_images/Logo_Steel_Ball_Run.png" alt="Steel Ball Run Logo" class="logo">
         <nav>
             <ul>
-                <li><a href="listRunners">Corredores</a></li>
+                <li><a href="corredores.jsp">Corredores</a></li>
                 <li><a href="etapas.jsp">Etapas</a></li>
                 <li><a href="acerca.jsp">Acerca de</a></li>
                 <li><a href="patrocinadores.jsp">Patrocinadores</a></li>

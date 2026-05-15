@@ -40,11 +40,11 @@
         <img src="../web_images/Logo_Steel_Ball_Run.png" alt="Steel Ball Run Logo" style="height: 50px;">
         <nav>
             <ul>
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="corredores.html" style="text-decoration:underline">Corredores</a></li>
-                <li><a href="etapas.html">Etapas</a></li>
-                <li><a href="patrocinadores.html">Patrocinadores</a></li>
-                <li><a href="acerca.html">Acerca de</a></li>
+                <li><a href="index.jsp">Inicio</a></li>
+                <li><a href="corredores.jsp" style="text-decoration:underline">Corredores</a></li>
+                <li><a href="etapas.jsp">Etapas</a></li>
+                <li><a href="patrocinadores.jsp">Patrocinadores</a></li>
+                <li><a href="acerca.jsp">Acerca de</a></li>
                 <li id="session-nav-item"><a href="admin_login.html" id="session-btn">Iniciar sesion</a></li>
             </ul>
         </nav>
@@ -62,8 +62,8 @@
                         <div class="runner-stats">
                             <h3><%= r.getName() %> <%= r.getSurname() %> #<%= r.getNum() %></h3>
                             <div class="runner-meta">
-                                <span><strong>Origen:</strong> <%= r.getOrigin() %></span>
-                                <span><strong>Montura:</strong> <%= r.getHorse() %></span>
+                                <span><strong>Origen:</strong> <%= r.getNationality() %></span>
+                                <span><strong>Montura:</strong> <%= r.getMountId %></span>
                             </div>
                             <span class="runner-badge <%= statusBadge.getOrDefault(r.getStatus(), "badge-retired") %>">
                                 <%= statusLabel.getOrDefault(r.getStatus(), "Desconocido") %>
