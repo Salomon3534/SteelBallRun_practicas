@@ -28,11 +28,11 @@
    ============================================================ */
 @font-face {
     font-family: 'SBR-Custom';
-    src: url('../fonts/COWBOYWILDWEST.ttf') format('truetype');
+    src: url('assets/fonts/COWBOYWILDWEST.ttf') format('truetype');
 }
 @font-face {
     font-family: 'Manga';
-    src: url('../fonts/animeace2_bld.ttf') format('truetype');
+    src: url('assets/fonts/animeace2_bld.ttf') format('truetype');
 }
 
 
@@ -51,7 +51,7 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: url('../web_images/old_paper.png') center / cover no-repeat #2a1a00;
+    background: url('assets/web_images/old_paper.png') center / cover no-repeat #2a1a00;
 }
 
 
@@ -79,7 +79,7 @@ h2 {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: url('../web_images/old_est_wood.jpg') center / cover no-repeat #3a2200;
+    background: url('assets/web_images/old_est_wood.jpg') center / cover no-repeat #3a2200;
     min-height: 90px;
     display: flex;
     align-items: center;
@@ -148,7 +148,7 @@ h2 {
 /* ── Footer ── */
 .main-footer {
     margin-top: auto;
-    background: url('../web_images/old_est_wood.jpg') center / cover no-repeat #3a2200;
+    background: url('assets/web_images/old_est_wood.jpg') center / cover no-repeat #3a2200;
     color: #f5e7c8;
     padding: 40px 20px 20px;
     text-align: center;
@@ -191,7 +191,7 @@ h2 {
     position: relative;
     width: 100%;
     height: 800px;
-    background: url('../web_images/main_banner.png') bottom / cover no-repeat #222;
+    background: url('assets/web_images/main_banner.png') bottom / cover no-repeat #222;
     display: flex;
     align-items: flex-end;
     justify-content: flex-end;

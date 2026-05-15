@@ -1,19 +1,17 @@
 package com.steelballrun.servlet;
 
-import com.steelballrun.dao.RunnerDAO;
-import com.steelballrun.model.Runner;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
+
+import com.steelballrun.dao.RunnerDAO;
 
 @SuppressWarnings("serial")
-@WebServlet("/listRunners")
-public class ServletRunnerList extends HttpServlet {
+@WebServlet("/deleteRunner")
+public class ServletRunnerDelete extends HttpServlet {
 
 	private RunnerDAO runnerDAO;
 
@@ -26,11 +24,15 @@ public class ServletRunnerList extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		request.setCharacterEncoding("UTF-8");
+		String id = request.getParameter("id");
 
-		List<Runner> listRunners = runnerDAO.listRunners();
-		request.setAttribute("listRunners", listRunners);
+		try {
+			int parsedId = Integer.parseInt(id);
+			runnerDAO.deleteRunner(parsedId);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		}
 
-		request.getRequestDispatcher("/listRunners.jsp").forward(request, response);
+		response.sendRedirect("listRunners");
 	}
 }
