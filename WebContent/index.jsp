@@ -1,15 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.List" %>
-<%@ page import="com.steelballrun.model.Runner" %>
-<%@ page import="com.steelballrun.dao.RunnerDAO" %>
-<%
-    List<Runner> listRunnersTop = (List<Runner>) request.getAttribute("listRunnersTop");
-    if (listRunnersTop == null) {
-        RunnerDAO runnerDAO = new RunnerDAO();
-        listRunnersTop = runnerDAO.listRunnersTop(25);
-        request.setAttribute("listRunners", listRunnersTop);
-    }
-%>
 <!DOCTYPE html>
 <html lang="es">
 <head>

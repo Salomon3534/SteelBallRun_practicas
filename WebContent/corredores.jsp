@@ -1,11 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.List" %>
-<%@ page import="com.steelballrun.model.Runner" %>
-<%@ page import="com.steelballrun.dao.RunnerDAO" %>
-<%
-    RunnerDAO runnerDAO = new RunnerDAO();
-    List<Runner> listRunners = runnerDAO.listRunners();
-%>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
