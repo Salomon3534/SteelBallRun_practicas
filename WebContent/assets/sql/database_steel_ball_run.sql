@@ -13,6 +13,12 @@ CREATE TABLE mount (
     type VARCHAR(100)
 );
 
+-- Tabla de sponsors
+CREATE TABLE sponsor (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100)
+);
+
 -- Tabla de corredores
 CREATE TABLE runner (
     id INT PRIMARY KEY,

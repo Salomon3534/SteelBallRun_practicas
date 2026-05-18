@@ -1,3 +1,12 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="com.steelballrun.model.Sponsor" %>
+<%@ page import="com.steelballrun.dao.SponsorDAO" %>
+<%
+    SponsorDAO sponsorDAO = new SponsorDAO();
+    List<Sponsor> listSponsors = sponsorDAO.listSponsors();
+%>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -28,10 +37,13 @@
         <div class="sponsors-list">
             <h1>SPONSORS</h1>
             <h4>Estos son los patrocinadores oficiales de Steel Ball Run</h4>
-            <h3>East and West Tribune</h3>
-            <h3>B &amp; C Meat Company</h3>
-            <h3>Horizontal Continental Railway Company</h3>
-            <h3>Speedwagon Oil Company</h3>
+            <% if (listSponsors != null && !listSponsors.isEmpty()) { %>
+                <% for (Sponsor s : listSponsors) { %>
+                    <h3><%= s.getName() %></h3>
+                <% } %>
+            <% } else { %>
+                <p>No hay patrocinadores registrados.</p>
+            <% } %>
         </div>
     </div>
 
@@ -41,14 +53,5 @@
             <img src="assets/web_images/assistant_footer.png" alt="Personaje">
         </div>
     </footer>
-    <script>
-        const _isAdmin = sessionStorage.getItem('sbr_admin_auth') === 'true';
-        const _isUser  = sessionStorage.getItem('sbr_user_auth') === 'true';
-        const _btn = document.getElementById('session-btn');
-        if (_btn && (_isAdmin || _isUser)) {
-            _btn.href = 'perfil.jsp';
-            _btn.textContent = 'Mi perfil';
-        }
-    </script>
 </body>
 </html>

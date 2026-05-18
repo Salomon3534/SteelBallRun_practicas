@@ -287,10 +287,8 @@ h2 {
    8. FORMULARIO GENÉRICO
    ============================================================ */
 .sbr-form {
-    background: rgba(255, 200, 100, 0.92);
     padding: 24px;
-    border-radius: 10px;
-    border: 2px solid #c8a050;
+    background-color (0,0,0,0);
 }
 
 fieldset {
@@ -342,7 +340,6 @@ legend {
 .field textarea:focus {
     outline: none;
     border-color: #7c6941;
-    box-shadow: 0 0 0 3px rgba(124, 105, 65, 0.2);
 }
 
 .field-group {
@@ -794,16 +791,11 @@ legend {
     color: #ffbb00;
     text-shadow: 1px 1px 0px rgba(94, 0, 0, 0.3);
 
-    /* Animación del fondo */
     animation: gold-shine 5s ease infinite;
 
-    /* --- NUEVO: Efecto de Brillo Alrededor (Glow) --- */
     box-shadow:
-        /* Sombra base (la original) */
         0 4px 15px rgba(0, 0, 0, 0.3),
-        /* Brillo interior (el original) */
         inset 0 0 10px rgba(255, 255, 255, 0.5),
-        /* NUEVO: Brillo Exterior Grande y Suave (Glow) */
         0 0 40px 10px rgba(255, 223, 0, 0.7);
 }
 
@@ -1166,221 +1158,7 @@ legend {
 
 
 /* ============================================================
-   16. PERFIL DE USUARIO
-   ============================================================ */
-
-/* Pantalla de carga inicial */
-#auth-loading {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    font-family: 'SBR-Custom', serif;
-    color: #f5e7c8;
-    font-size: 1.1rem;
-}
-
-.profile-page {
-    flex: 1;
-    padding: 40px 20px 60px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 28px;
-}
-
-.profile-hero {
-    width: 90%;
-    max-width: 760px;
-    background: rgba(255, 255, 255, 0.9);
-    border: 3px solid #7c6941;
-    border-radius: 12px;
-    padding: 32px 36px;
-    display: flex;
-    align-items: center;
-    gap: 28px;
-    font-family: 'SBR-Custom', serif;
-    box-shadow: 0 6px 24px rgba(0,0,0,0.2);
-}
-
-.profile-avatar {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #d4a017, #7c6941);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2.5rem;
-    flex-shrink: 0;
-    border: 4px solid #7c6941;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
-
-.profile-name h2 {
-    text-align: left;
-    font-size: 1.6rem;
-    color: #3a2a0a;
-    margin-bottom: 4px;
-}
-
-.profile-name p {
-    font-size: 0.9rem;
-    color: #7c6941;
-}
-
-.profile-role-badge {
-    margin-left: auto;
-    padding: 6px 18px;
-    border-radius: 20px;
-    font-weight: bold;
-    font-size: 0.8rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
-
-.role-admin { background: linear-gradient(135deg, #d4a017, #7c6941); color: white; }
-.role-user  { background: #d4edda; color: #155724; border: 1.5px solid #b0d8b8; }
-
-.profile-card {
-    width: 90%;
-    max-width: 760px;
-    background: rgba(255, 255, 255, 0.88);
-    border: 2px solid #7c6941;
-    border-radius: 10px;
-    padding: 28px 36px;
-    font-family: 'SBR-Custom', serif;
-    color: #2a1a0a;
-}
-
-.profile-card h3 {
-    font-size: 1.1rem;
-    color: #7c6941;
-    border-bottom: 2px solid #d6c7a7;
-    padding-bottom: 8px;
-    margin-bottom: 18px;
-    text-align: left;
-}
-
-.profile-data-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px 24px;
-}
-
-.profile-data-item label {
-    font-size: 0.78rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #7c6941;
-    display: block;
-    margin-bottom: 3px;
-}
-
-.profile-data-item span {
-    font-size: 0.97rem;
-    color: #2a1a0a;
-    font-weight: bold;
-}
-
-/* Puntos / ranking */
-.points-display {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 20px 24px;
-    background: linear-gradient(135deg, #f5e7a0, #e6c200);
-    border: 2px solid #7c6941;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 760px;
-}
-
-.points-icon { font-size: 2.5rem; }
-
-.points-info { font-family: 'SBR-Custom', serif; }
-
-.points-info .points-num {
-    font-size: 2.4rem;
-    font-weight: bold;
-    color: #3a2a0a;
-    line-height: 1;
-}
-
-.points-info .points-label {
-    font-size: 0.85rem;
-    color: #5a4010;
-    margin-top: 2px;
-}
-
-.points-rank {
-    margin-left: auto;
-    text-align: center;
-    font-family: 'SBR-Custom', serif;
-}
-
-.points-rank .rank-num {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #3a2a0a;
-}
-
-.points-rank .rank-label {
-    font-size: 0.75rem;
-    color: #5a4010;
-}
-
-/* Historial de apuestas / actividad */
-.activity-list {
-    list-style: none;
-    padding: 0;
-}
-
-.activity-list li {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 12px 0;
-    border-bottom: 1px dotted #d6c7a7;
-    font-size: 0.93rem;
-}
-
-.activity-list li:last-child { border-bottom: none; }
-
-.activity-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-    flex-shrink: 0;
-}
-
-.act-win  { background: #d4edda; }
-.act-loss { background: #f8d7da; }
-.act-bet  { background: #fff3cd; }
-.act-info { background: #d1ecf1; }
-
-.activity-text { flex: 1; color: #2a1a0a; }
-.activity-text strong { display: block; }
-.activity-text small { color: #777; font-size: 0.8rem; }
-
-.activity-points {
-    font-weight: bold;
-    font-size: 0.95rem;
-}
-
-.activity-points.positive { color: #155724; }
-.activity-points.negative { color: #721c24; }
-
-
-/* ============================================================
-   17. BOTONES
+   16. BOTONES
    ============================================================ */
 .form-actions {
     display: flex;
@@ -1409,7 +1187,7 @@ input[type="reset"] {
 
 
 /* ============================================================
-   18. BADGES
+   17. BADGES
    ============================================================ */
 .runner-badge, .badge {
     display: inline-block;
@@ -1427,7 +1205,7 @@ input[type="reset"] {
 
 
 /* ============================================================
-   19. MODAL
+   18. MODAL
    ============================================================ */
 .modal-overlay {
     position: fixed;
@@ -1489,7 +1267,7 @@ input[type="reset"] {
 
 
 /* ============================================================
-   20. RESPONSIVE
+   19. RESPONSIVE
    ============================================================ */
 
 /* ── Tablet (≤ 900px) ── */

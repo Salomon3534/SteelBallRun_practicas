@@ -40,7 +40,7 @@
                     <div class="runner-card">
                         <div class="runner-img-container">
                             <img
-                                src="assets/_SOURCE/characters/<%= r.getName().toLowerCase().replace(" ", "_") %>.webp"
+                                src="assets/characters/<%= (r.getName() != null) ? (r.getSurnames() != null ? r.getName().toLowerCase().replaceAll(" ", "_") + "_" + r.getSurnames().toLowerCase().replaceAll(" ", "_") : r.getName().toLowerCase().replaceAll(" ", "_")) : "" %>.webp"
                                 alt="<%= r.getName() %>"
                                 onerror="this.src='assets/web_images/sbr_logo.png'">
                         </div>

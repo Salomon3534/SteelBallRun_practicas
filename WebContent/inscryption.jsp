@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -6,33 +8,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SBR - Registro de Corredor</title>
     <link rel="stylesheet" href="sbrstyles.css">
-    <link rel="icon" type="image/png" href="../web_images/sbr_logo.png">
+    <link rel="icon" type="image/png" href="assets/web_images/sbr_logo.png">
 </head>
 
 <body>
-    <!-- Header con logo y navegación -->
+    <!-- Header con logo y navegaciÃ³n -->
     <header class="main-header">
-        <img src="../web_images/Logo_Steel_Ball_Run.png" alt="Steel Ball Run Logo" class="logo">
+        <img src="assets/web_images/Logo_Steel_Ball_Run.png" alt="Steel Ball Run Logo" class="logo">
         <nav>
             <ul>
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="index.html#about">Acerca de</a></li>
-                <li><a href="index.html#staff">Staff</a></li>
-                <li><a href="index.html#contact">Contacto</a></li>
+                <li><a href="index.jsp">Inicio</a></li>
+                <li><a href="acerca.jsp">Acerca de</a></li>
+                <li><a href="corredores.jsp">Corredores</a></li>
+                <li><a href="patrocinadores.jsp">Patrocinadores</a></li>
             </ul>
         </nav>
     </header>
-    <!-- Página principal de registro -->
+    <!-- PÃ¡gina principal de registro -->
     <main class="register-page">
         <h1>Registro de corredor</h1>
         <!-- Layout de dos columnas: personaje a la izquierda, formulario a la derecha -->
         <div class="register-layout">
             <!-- Columna izquierda: personaje -->
             <div class="inscryption-guy">
-                <img src="../web_images/staff_register.jpg" alt="Personaje de registro">
+                <img src="assets/web_images/staff_register.jpg" alt="Personaje de registro">
             </div>
-            <!-- Burbuja de diálogo (posicionada sobre el personaje) -->
-            <p class="bubble">Ehh... rellena los campos y pulsa el botón de registro</p>
+            <!-- Burbuja de diÃ¡logo (posicionada sobre el personaje) -->
+            <p class="bubble">Ehh... rellena los campos y pulsa el botÃ³n de registro</p>
             <!-- Columna derecha: formulario -->
             <div class="inscryption-form">
                 <form action="#" method="post" class="sbr-form">
