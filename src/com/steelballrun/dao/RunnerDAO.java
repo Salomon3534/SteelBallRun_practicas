@@ -12,136 +12,163 @@ import com.steelballrun.util.DatabaseConnection;
 
 public class RunnerDAO {
 
-    public List<Runner> listRunners() {
-        List<Runner> list = new ArrayList<>();
-        String sql = "SELECT id, name, surnames, age, nationality, mount_id, bib, current_place, total_points FROM runner ORDER BY current_place";
+	public int getNextId() {
+		String sql = "SELECT MAX(id) FROM runner";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql);
-                ResultSet rs = pstmt.executeQuery()) {
+		try (Connection conn = DatabaseConnection.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+				ResultSet rs = pstmt.executeQuery()) {
 
-            while (rs.next()) {
-                Runner runner = new Runner();
-                runner.setId(rs.getInt("id"));
-                runner.setName(rs.getString("name"));
-                runner.setSurnames(rs.getString("surnames"));
-                runner.setAge(rs.getInt("age"));
-                runner.setNationality(rs.getString("nationality"));
-                runner.setMountId(rs.getInt("mount_id"));
-                runner.setBib(rs.getInt("bib"));
-                runner.setCurrentPlace(rs.getInt("current_place"));
-                runner.setTotalPoints(rs.getInt("total_points"));
-                list.add(runner);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
+			if (rs.next()) {
+				return rs.getInt(1) + 1;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 1;
+	}
 
-    public Runner getRunnerByID(int id) {
-        String sql = "SELECT id, name, surnames, age, nationality, mount_id, bib, current_place, total_points FROM runner WHERE id = ?";
+	public List<Runner> listRunners() {
+		List<Runner> list = new ArrayList<>();
+		String sql = "SELECT id, name, surnames, age, nationality, mount_id, bib, current_place, total_points FROM runner ORDER BY current_place";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+		try (Connection conn = DatabaseConnection.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+				ResultSet rs = pstmt.executeQuery()) {
 
-            pstmt.setInt(1, id);
+			while (rs.next()) {
+				Runner runner = new Runner();
+				runner.setId(rs.getInt("id"));
+				runner.setName(rs.getString("name"));
+				runner.setSurnames(rs.getString("surnames"));
+				runner.setAge(rs.getInt("age"));
+				runner.setNationality(rs.getString("nationality"));
+				runner.setMountId(rs.getInt("mount_id"));
+				runner.setBib(rs.getInt("bib"));
+				runner.setCurrentPlace(rs.getInt("current_place"));
+				runner.setTotalPoints(rs.getInt("total_points"));
+				list.add(runner);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    Runner runner = new Runner();
-                    runner.setId(rs.getInt("id"));
-                    runner.setName(rs.getString("name"));
-                    runner.setSurnames(rs.getString("surnames"));
-                    runner.setAge(rs.getInt("age"));
-                    runner.setNationality(rs.getString("nationality"));
-                    runner.setMountId(rs.getInt("mount_id"));
-                    runner.setBib(rs.getInt("bib"));
-                    runner.setCurrentPlace(rs.getInt("current_place"));
-                    runner.setTotalPoints(rs.getInt("total_points"));
-                    return runner;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+	public List<Runner> listRunnersTop(int limit) {
+		List<Runner> list = new ArrayList<>();
+		String sql = "SELECT id, name, surnames, age, nationality, mount_id, bib, current_place, total_points FROM runner ORDER BY current_place LIMIT ?";
 
-    /**
-     * Calcula el siguiente ID disponible para un nuevo corredor.
-     * La columna runner.id es PK pero NO AUTO_INCREMENT, así que la generamos aquí.
-     */
-    public int getNextId() {
-        String sql = "SELECT COALESCE(MAX(id), 0) + 1 FROM runner";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 1;
-    }
+		try (Connection conn = DatabaseConnection.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-    public boolean insertRunner(Runner runner) {
-        // bib es AUTO_INCREMENT (UNIQUE) — no lo incluimos en el INSERT
-        String sql = "INSERT INTO runner (id, name, surnames, age, nationality, mount_id, current_place, total_points) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+			pstmt.setInt(1, limit);
+			try (ResultSet rs = pstmt.executeQuery()) {
+				while (rs.next()) {
+					Runner runner = new Runner();
+					runner.setId(rs.getInt("id"));
+					runner.setName(rs.getString("name"));
+					runner.setSurnames(rs.getString("surnames"));
+					runner.setAge(rs.getInt("age"));
+					runner.setNationality(rs.getString("nationality"));
+					runner.setMountId(rs.getInt("mount_id"));
+					runner.setBib(rs.getInt("bib"));
+					runner.setCurrentPlace(rs.getInt("current_place"));
+					runner.setTotalPoints(rs.getInt("total_points"));
+					list.add(runner);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 
-        try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	public Runner getRunnerByID(int id) {
+		String sql = "SELECT id, name, surnames, age, nationality, mount_id, bib, current_place, total_points FROM runner WHERE id = ?";
 
-            pstmt.setInt(1, runner.getId());
-            pstmt.setString(2, runner.getName());
-            pstmt.setString(3, runner.getSurnames());
-            pstmt.setInt(4, runner.getAge());
-            pstmt.setString(5, runner.getNationality());
-            pstmt.setInt(6, runner.getMountId());
-            pstmt.setInt(7, runner.getCurrentPlace());
-            pstmt.setInt(8, runner.getTotalPoints());
+		try (Connection conn = DatabaseConnection.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+			pstmt.setInt(1, id);
 
-    public boolean updateRunner(Runner runner) {
-        String sql = "UPDATE runner SET name = ?, surnames = ?, age = ?, nationality = ?, mount_id = ?, current_place = ?, total_points = ? WHERE id = ?";
+			try (ResultSet rs = pstmt.executeQuery()) {
+				if (rs.next()) {
+					Runner runner = new Runner();
+					runner.setId(rs.getInt("id"));
+					runner.setName(rs.getString("name"));
+					runner.setSurnames(rs.getString("surnames"));
+					runner.setAge(rs.getInt("age"));
+					runner.setNationality(rs.getString("nationality"));
+					runner.setMountId(rs.getInt("mount_id"));
+					runner.setBib(rs.getInt("bib"));
+					runner.setCurrentPlace(rs.getInt("current_place"));
+					runner.setTotalPoints(rs.getInt("total_points"));
+					return runner;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
-        try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	public boolean insertRunner(Runner runner) {
 
-            pstmt.setString(1, runner.getName());
-            pstmt.setString(2, runner.getSurnames());
-            pstmt.setInt(3, runner.getAge());
-            pstmt.setString(4, runner.getNationality());
-            pstmt.setInt(5, runner.getMountId());
-            pstmt.setInt(6, runner.getCurrentPlace());
-            pstmt.setInt(7, runner.getTotalPoints());
-            pstmt.setInt(8, runner.getId());
+		String sql = "INSERT INTO runner (id, name, surnames, age, nationality, mount_id, current_place, total_points) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-            return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+		try (Connection conn = DatabaseConnection.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-    public boolean deleteRunner(int id) {
-        String sql = "DELETE FROM runner WHERE id = ?";
+			pstmt.setInt(1, runner.getId());
+			pstmt.setString(2, runner.getName());
+			pstmt.setString(3, runner.getSurnames());
+			pstmt.setInt(4, runner.getAge());
+			pstmt.setString(5, runner.getNationality());
+			pstmt.setInt(6, runner.getMountId());
+			pstmt.setInt(7, runner.getCurrentPlace());
+			pstmt.setInt(8, runner.getTotalPoints());
 
-        try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			return pstmt.executeUpdate() > 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 
-            pstmt.setInt(1, id);
-            return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+	public boolean updateRunner(Runner runner) {
+		String sql = "UPDATE runner SET name = ?, surnames = ?, age = ?, nationality = ?, mount_id = ?, current_place = ?, total_points = ? WHERE id = ?";
+
+		try (Connection conn = DatabaseConnection.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+			pstmt.setString(1, runner.getName());
+			pstmt.setString(2, runner.getSurnames());
+			pstmt.setInt(3, runner.getAge());
+			pstmt.setString(4, runner.getNationality());
+			pstmt.setInt(5, runner.getMountId());
+			pstmt.setInt(6, runner.getCurrentPlace());
+			pstmt.setInt(7, runner.getTotalPoints());
+			pstmt.setInt(8, runner.getId());
+
+			return pstmt.executeUpdate() > 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean deleteRunner(int id) {
+		String sql = "DELETE FROM runner WHERE id = ?";
+
+		try (Connection conn = DatabaseConnection.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+			pstmt.setInt(1, id);
+			return pstmt.executeUpdate() > 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

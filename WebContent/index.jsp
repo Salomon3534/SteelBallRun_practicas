@@ -3,11 +3,11 @@
 <%@ page import="com.steelballrun.model.Runner" %>
 <%@ page import="com.steelballrun.dao.RunnerDAO" %>
 <%
-    List<Runner> listRunners = (List<Runner>) request.getAttribute("listRunners");
-    if (listRunners == null) {
+    List<Runner> listRunnersTop = (List<Runner>) request.getAttribute("listRunnersTop");
+    if (listRunnersTop == null) {
         RunnerDAO runnerDAO = new RunnerDAO();
-        listRunners = runnerDAO.listRunners();
-        request.setAttribute("listRunners", listRunners);
+        listRunnersTop = runnerDAO.listRunnersTop(25);
+        request.setAttribute("listRunners", listRunnersTop);
     }
 %>
 <!DOCTYPE html>
@@ -42,14 +42,15 @@
     </header>
 
     <!-- Tabla de Corredores -->
-    <h2>Corredores</h2>
+    <h2>Top <%= listRunnersTop.size() %></h2>
+    
    <% if (request.getAttribute("message") != null) { %>
         <p class="<%= "success".equals(request.getAttribute("type")) ? "mensaje-exito" : "mensaje-error" %>">
             <%= request.getAttribute("message") %>
         </p>
     <% } %>
 
-    <% if (listRunners != null && !listRunners.isEmpty()) { %>
+    <% if (listRunnersTop != null && !listRunnersTop.isEmpty()) { %>
         <table class="sbr-table">
             <tr>
                 <th>ID</th>
@@ -61,7 +62,7 @@
                 <th>Puesto</th>
                 <th>Puntos</th>
             </tr>
-            <% for (Runner r : listRunners) { %>
+            <% for (Runner r : listRunnersTop) { %>
                 <tr>
                     <td><%= r.getId() %></td>
                     <td><%= r.getName() %></td>
