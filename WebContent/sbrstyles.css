@@ -288,7 +288,6 @@ h2 {
    ============================================================ */
 .sbr-form {
     padding: 24px;
-    background-color (0,0,0,0);
 }
 
 fieldset {
@@ -303,7 +302,6 @@ legend {
     color: #3a2a0a;
     font-size: 1rem;
     font-family: 'SBR-Custom', serif;
-    border-bottom: 2px solid #c8a050;
     width: 100%;
     padding-bottom: 6px;
 }
