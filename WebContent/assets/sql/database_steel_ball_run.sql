@@ -6,12 +6,14 @@ COLLATE utf8mb4_unicode_ci;
 
 USE sbr;
 
+-- Tabla de monturas
 CREATE TABLE mount (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     type VARCHAR(100)
 );
 
+-- Tabla de corredores
 CREATE TABLE runner (
     id INT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
