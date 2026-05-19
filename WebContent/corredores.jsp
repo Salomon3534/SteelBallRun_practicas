@@ -29,8 +29,8 @@
     <main class="runners-page">
         <h1>Corredores</h1>
         <div class="runners-grid" id="runnersGrid">
-            <% if (listRunners != null && !listRunners.isEmpty()) { %>
-                <% for (Runner r : listRunners) { %>
+            <% if (${runners} != null && !${runners}.isEmpty()) { %>
+                <% for (Runner r : runners) { %>
                     <div class="runner-card">
                         <div class="runner-img-container">
                             <img

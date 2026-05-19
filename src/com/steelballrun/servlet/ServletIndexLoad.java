@@ -11,8 +11,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/modifyRunner")
-public class ServletRunnerUpdate extends HttpServlet {
+@WebServlet("/index")
+public class ServletIndexLoad extends HttpServlet {
 
 	private RunnerDAO runnerDAO;
 
