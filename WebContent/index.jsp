@@ -1,4 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="com.steelballrun.model.Runner" %>
+<%
+    //recuperamos la lista de corredores del alcance de la solicitud
+    List<Runner> listRunnersTop = (List<Runner>) request.getAttribute("listRunnersTop");
+%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -10,13 +16,11 @@
 </head>
 <body max-width="100%" crop-to-fit="cover">
 
-    <!-- Banner principal -->
     <div class="main-banner">
         <a class="btn-register btn" href="inscryption.jsp">Registrarse</a>
         <img class="banner-logo" src="assets/web_images/Logo_Steel_Ball_Run.png" alt="Steel Ball Run Logo">
     </div>
 
-    <!-- Header -->
     <header class="main-header">
         <img src="assets/web_images/Logo_Steel_Ball_Run.png" alt="Steel Ball Run Logo" class="logo">
         <nav>
@@ -30,12 +34,11 @@
         </nav>
     </header>
 
-    <!-- Tabla de Corredores -->
-    <h2>Top <%= listRunnersTop.size() %></h2>
+    <h2>Top <%= (listRunnersTop != null) ? listRunnersTop.size() : 0 %></h2>
     
-   <% if (request.getAttribute("message") != null) { %>
+    <% if (request.getAttribute("message") != null) { %>
         <p class="<%= "success".equals(request.getAttribute("type")) ? "mensaje-exito" : "mensaje-error" %>">
-            <%= request.getAttribute("message") %>
+            ${message}
         </p>
     <% } %>
 
@@ -51,16 +54,18 @@
                 <th>Puesto</th>
                 <th>Puntos</th>
             </tr>
-            <% for (Runner r : listRunnersTop) { %>
+            <% for (Runner r : listRunnersTop) { 
+                pageContext.setAttribute("r", r); 
+            %>
                 <tr>
-                    <td><%= r.getId() %></td>
-                    <td><%= r.getName() %></td>
-                    <td><%= r.getSurnames() %></td>
-                    <td><%= r.getAge() %></td>
-                    <td><%= r.getNationality() %></td>
-                    <td><%= r.getBib() %></td>
-                    <td><%= r.getCurrentPlace() %></td>
-                    <td><%= r.getTotalPoints() %></td>
+                    <td>${r.id}</td>
+                    <td>${r.name}</td>
+                    <td>${r.surnames}</td>
+                    <td>${r.age}</td>
+                    <td>${r.nationality}</td>
+                    <td>${r.bib}</td>
+                    <td>${r.currentPlace}</td>
+                    <td>${r.totalPoints}</td>
                 </tr>
             <% } %>
         </table>
@@ -68,7 +73,6 @@
         <p><strong>No hay corredores registrados.</strong></p>
     <% } %>
 
-    <!-- Spacer decorativo -->
     <div class="spacer-big">
         <img class="assistants-table" src="assets/web_images/assistants.png" alt="Asistentes">
     </div>
