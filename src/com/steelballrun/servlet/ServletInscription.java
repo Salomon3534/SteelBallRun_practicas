@@ -3,8 +3,10 @@ package com.steelballrun.servlet;
 import java.io.IOException;
 import java.util.List;
 
+import com.steelballrun.dao.MountDAO;
 import com.steelballrun.dao.PersonDAO;
-import com.steelballrun.model.Person;
+import com.steelballrun.dao.RunnerDAO;
+import com.steelballrun.model.Runner;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,26 +14,29 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@SuppressWarnings("serial")
-@WebServlet("/listPersons")
-public class ServletPersonList extends HttpServlet {
+@WebServlet("/inscription")
+public class ServletInscription extends HttpServlet {
 
+    private RunnerDAO runnerDAO;
     private PersonDAO personDAO;
+    private MountDAO mountDAO;
 
     @Override
     public void init() throws ServletException {
+        runnerDAO = new RunnerDAO();
         personDAO = new PersonDAO();
+        mountDAO = new MountDAO();
+        
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    }
 
-        request.setCharacterEncoding("UTF-8");
-
-        List<Person> listPersons = personDAO.listPersons();
-        request.setAttribute("listPersons", listPersons);
-
-        request.getRequestDispatcher("/listPersons.jsp").forward(request, response);
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        //procesar formularios aquí si es necesario
     }
 }

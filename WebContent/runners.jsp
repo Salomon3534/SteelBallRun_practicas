@@ -1,11 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.List" %>
-<%@ page import="com.steelballrun.model.Runner" %>
-<%@ page import="com.steelballrun.dao.RunnerDAO" %>
-<%
-    RunnerDAO runnerDAO = new RunnerDAO();
-    List<Runner> listRunners = runnerDAO.listRunners();
-%>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -35,8 +29,8 @@
     <main class="runners-page">
         <h1>Corredores</h1>
         <div class="runners-grid" id="runnersGrid">
-            <% if (listRunners != null && !listRunners.isEmpty()) { %>
-                <% for (Runner r : listRunners) { %>
+            <% if (${runners} != null && !${runners}.isEmpty()) { %>
+                <% for (Runner r : runners) { %>
                     <div class="runner-card">
                         <div class="runner-img-container">
                             <img
