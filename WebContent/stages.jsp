@@ -1,6 +1,10 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.List, java.util.Base64, com.steelballrun.model.Stage" %>
+<%
+    List<Stage> stages = (List<Stage>) request.getAttribute("stages");
+%>
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,173 +12,45 @@
     <link rel="stylesheet" href="sbrstyles.css">
     <link rel="icon" type="image/png" href="assets/web_images/sbr_logo.png">
 </head>
-
 <body>
-    <header class="main-header">
-        <img src="assets/web_images/Logo_Steel_Ball_Run.png" alt="Steel Ball Run Logo" class="logo">
-        <nav>
-            <ul>
-                <li><a href="index.jsp">Inicio</a></li>
-                <li><a href="corredores.jsp">Corredores</a></li>
-                <li><a href="etapas.jsp" style="text-decoration:underline">Etapas</a></li>
-                <li><a href="patrocinadores.jsp">Patrocinadores</a></li>
-                <li><a href="acerca.jsp">Acerca de</a></li>
-                <li id="session-nav-item"><a href="admin_login.html" class="header-session-btn" id="session-btn">Iniciar sesion</a></li>
-            </ul>
-        </nav>
-    </header>
+    <%@ include file="WEB-INF/nav.jspf" %>
 
     <main class="stages-page">
         <h1>Etapas de la Carrera</h1>
 
         <div class="stages-intro">
-            La <strong>Steel Ball Run</strong> atraviesa el continente americano de costa a costa — 
-            desde <em>San Diego, California</em> hasta la ciudad de <em>Nueva York</em> — 
-            a lo largo de más de <strong>6.000 millas</strong> divididas en nueve etapas épicas.
-            Año 1890.
+            La <strong>Steel Ball Run</strong> atraviesa el continente americano de costa a costa —
+            desde <em>San Diego, California</em> hasta <em>Nueva York</em> —
+            a lo largo de más de <strong>6.000 millas</strong> divididas en nueve etapas épicas. Año 1890.
         </div>
 
+        <% if (stages == null || stages.isEmpty()) { %>
+            <p>No hay etapas registradas en la base de datos.</p>
+        <% } else { %>
         <div class="stages-timeline">
-
-            <!-- ETAPA 1 — odd: card(left) | number | image(right) -->
+            <% for (Stage s : stages) {
+                String statusClass = s.isCompleted() ? "status-completed" : "status-upcoming";
+                String statusText  = s.isCompleted() ? "Completada" : "Próxima";
+                byte[] img = s.getImage();
+            %>
             <div class="stage-item">
                 <div class="stage-card">
-                    <span class="stage-status status-completed">Completada</span>
-                    <h3>Etapa 1 — El Gran Inicio</h3>
-                    <div class="stage-route">San Diego → Phoenix (Arizona)</div>
-                    <p class="stage-desc">El pistoletazo de salida en la bahía de San Diego. Miles de espectadores presencian la salida masiva. Cruce del desierto de Sonora bajo un sol abrasador.</p>
-                    <span class="stage-km">≈ 480 km</span>
+                    <span class="stage-status <%= statusClass %>"><%= statusText %></span>
+                    <h3><%= s.getName() %></h3>
+                    <div class="stage-route"><%= s.getLocation() != null ? s.getLocation() : "" %></div>
                 </div>
-                <div class="stage-number">1</div>
+                <div class="stage-number"><%= s.getId() %></div>
                 <div class="stage-image-box">
-                    <img src="assets/stages/stage1.png" alt="Etapa 1" onerror="this.parentElement.classList.add('stage-img-fallback')">
+                    <% if (img != null && img.length > 0) { %>
+                        <img src="data:image/png;base64,<%= Base64.getEncoder().encodeToString(img) %>" alt="Etapa <%= s.getId() %>">
+                    <% } else { %>
+                        <img src="assets/web_images/sbr_logo.png" alt="Sin imagen">
+                    <% } %>
                 </div>
             </div>
-
-            <!-- ETAPA 2 — even: image(left) | number | card(right) — row-reverse flips it -->
-            <div class="stage-item">
-                <div class="stage-card">
-                    <span class="stage-status status-completed">Completada</span>
-                    <h3>Etapa 2 — Las Mesetas Rojas</h3>
-                    <div class="stage-route">Phoenix → Albuquerque (Nuevo México)</div>
-                    <p class="stage-desc">Territorio accidentado de cañones y mesetas. Los caballos se enfrentan al calor extremo y los caminos de roca roja. Primera gran criba de corredores.</p>
-                    <span class="stage-km">≈ 560 km</span>
-                </div>
-                <div class="stage-number">2</div>
-                <div class="stage-image-box">
-                    <img src="assets/stages/stage2.png" alt="Etapa 2" onerror="this.parentElement.classList.add('stage-img-fallback')">
-                </div>
-            </div>
-
-            <!-- ETAPA 3 — odd -->
-            <div class="stage-item">
-                <div class="stage-card">
-                    <span class="stage-status status-completed">Completada</span>
-                    <h3>Etapa 3 — Las Grandes Llanuras</h3>
-                    <div class="stage-route">Albuquerque → Abilene (Texas)</div>
-                    <p class="stage-desc">La llanura texana: terreno aparentemente llano pero traicionero. Tormentas repentinas y manadas de bisontes dificultan el avance.</p>
-                    <span class="stage-km">≈ 720 km</span>
-                </div>
-                <div class="stage-number">3</div>
-                <div class="stage-image-box">
-                    <img src="assets/stages/stage3.png" alt="Etapa 3" onerror="this.parentElement.classList.add('stage-img-fallback')">
-                </div>
-            </div>
-
-            <!-- ETAPA 4 — even -->
-            <div class="stage-item">
-                <div class="stage-card">
-                    <span class="stage-status status-completed">Completada</span>
-                    <h3>Etapa 4 — Corazón de América</h3>
-                    <div class="stage-route">Abilene → Kansas City (Missouri)</div>
-                    <p class="stage-desc">Cruce de los grandes ríos del midwest. Los puentes son pocos y los vados peligrosos. La lluvia convierte los caminos en lodazales impenetrables.</p>
-                    <span class="stage-km">≈ 640 km</span>
-                </div>
-                <div class="stage-number">4</div>
-                <div class="stage-image-box">
-                    <img src="assets/stages/stage4.png" alt="Etapa 4" onerror="this.parentElement.classList.add('stage-img-fallback')">
-                </div>
-            </div>
-
-            <!-- ETAPA 5 — odd (ACTIVE) -->
-            <div class="stage-item">
-                <div class="stage-card">
-                    <span class="stage-status status-ongoing">En curso</span>
-                    <h3>Etapa 5 — Los Grandes Lagos</h3>
-                    <div class="stage-route">Kansas City → Chicago (Illinois)</div>
-                    <p class="stage-desc">
-                        <strong>⚑ ETAPA ACTIVA.</strong> Los corredores avanzan hacia el norte bordeando 
-                        los afluentes del Mississippi. El terreno boscoso esconde peligros naturales y emboscadas.
-                    </p>
-                    <span class="stage-km">≈ 690 km</span>
-                </div>
-                <div class="stage-number" style="background:#c0392b;">5</div>
-                <div class="stage-image-box">
-                    <img src="assets/stages/stage5.png" alt="Etapa 5" onerror="this.parentElement.classList.add('stage-img-fallback')">
-                </div>
-            </div>
-
-            <!-- ETAPA 6 — even -->
-            <div class="stage-item">
-                <div class="stage-card">
-                    <span class="stage-status status-upcoming">Próxima</span>
-                    <h3>Etapa 6 — Los Apalaches</h3>
-                    <div class="stage-route">Chicago → Pittsburgh (Pensilvania)</div>
-                    <p class="stage-desc">La primera gran cordillera del recorrido. Las montañas Apalaches pondrán a prueba la resistencia de monturas y jinetes por igual.</p>
-                    <span class="stage-km">≈ 730 km</span>
-                </div>
-                <div class="stage-number" style="background:#aaa;">6</div>
-                <div class="stage-image-box">
-                    <img src="assets/stages/stage6.png" alt="Etapa 6" onerror="this.parentElement.classList.add('stage-img-fallback')">
-                </div>
-            </div>
-
-            <!-- ETAPA 7 — odd -->
-            <div class="stage-item">
-                <div class="stage-card">
-                    <span class="stage-status status-upcoming">Próxima</span>
-                    <h3>Etapa 7 — La Costa Atlántica</h3>
-                    <div class="stage-route">Pittsburgh → Filadelfia (Pensilvania)</div>
-                    <p class="stage-desc">Descenso hacia la costa Este atravesando valles fértiles y ciudades industriales. El ritmo se acelera con la meta a la vista.</p>
-                    <span class="stage-km">≈ 480 km</span>
-                </div>
-                <div class="stage-number" style="background:#aaa;">7</div>
-                <div class="stage-image-box">
-                    <img src="assets/stages/stage7.png" alt="Etapa 7" onerror="this.parentElement.classList.add('stage-img-fallback')">
-                </div>
-            </div>
-
-            <!-- ETAPA 8 — even -->
-            <div class="stage-item">
-                <div class="stage-card">
-                    <span class="stage-status status-upcoming">Próxima</span>
-                    <h3>Etapa 8 — La Recta Final</h3>
-                    <div class="stage-route">Filadelfia → Nueva Jersey</div>
-                    <p class="stage-desc">Penúltima etapa con terreno costero. La fatiga acumulada convierte cada kilómetro en una batalla de voluntad.</p>
-                    <span class="stage-km">≈ 220 km</span>
-                </div>
-                <div class="stage-number" style="background:#aaa;">8</div>
-                <div class="stage-image-box">
-                    <img src="assets/stages/stage8.png" alt="Etapa 8" onerror="this.parentElement.classList.add('stage-img-fallback')">
-                </div>
-            </div>
-
-            <!-- ETAPA 9 — odd -->
-            <div class="stage-item">
-                <div class="stage-card">
-                    <span class="stage-status status-upcoming">Próxima</span>
-                    <h3>Etapa 9 — Nueva York, la Meta</h3>
-                    <div class="stage-route">Nueva Jersey → Central Park, Nueva York</div>
-                    <p class="stage-desc">La llegada triunfal al corazón de Nueva York. El ganador recibirá el Trofeo de la Steel Ball Run de manos del Presidente de los Estados Unidos.</p>
-                    <span class="stage-km">≈ 80 km</span>
-                </div>
-                <div class="stage-number" style="background:#aaa;">9</div>
-                <div class="stage-image-box">
-                    <img src="assets/stages/stage9.png" alt="Etapa 9" onerror="this.parentElement.classList.add('stage-img-fallback')">
-                </div>
-            </div>
-
+            <% } %>
         </div>
+        <% } %>
     </main>
 
     <footer class="main-footer">
@@ -183,14 +59,5 @@
             <img src="assets/web_images/assistant_footer.png" alt="Personaje">
         </div>
     </footer>
-    <script>
-        const _isAdmin = sessionStorage.getItem('sbr_admin_auth') === 'true';
-        const _isUser  = sessionStorage.getItem('sbr_user_auth') === 'true';
-        const _btn = document.getElementById('session-btn');
-        if (_btn && (_isAdmin || _isUser)) {
-            _btn.href = 'perfil.jsp';
-            _btn.textContent = 'Mi perfil';
-        }
-    </script>
 </body>
 </html>

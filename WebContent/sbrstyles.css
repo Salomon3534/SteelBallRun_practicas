@@ -1330,3 +1330,180 @@ input[type="reset"] {
     .form-grid { grid-template-columns: 1fr; }
     .sponsors-list { width: 95%; }
 }
+
+/* ============================================================
+   21. USUARIO EN HEADER (icono + nombre)
+   ============================================================ */
+.header-user-info {
+    display: flex;
+    align-items: center;
+    list-style: none;
+}
+
+.header-user-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #f5e6c8;
+    text-decoration: none;
+    font-size: 0.95rem;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(245,230,200,0.3);
+    transition: background 0.2s;
+}
+
+.header-user-link:hover {
+    background: rgba(245,230,200,0.15);
+}
+
+.header-user-icon {
+    font-size: 1.3rem;
+}
+
+.header-user-name {
+    font-family: 'SBR-Custom', sans-serif;
+    font-size: 0.85rem;
+    max-width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ============================================================
+   22. BOTÓN CERRAR SESIÓN EN NAV
+   ============================================================ */
+.btn-logout-nav {
+    background: transparent;
+    border: 1px solid #c0392b;
+    color: #e74c3c;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+}
+
+.btn-logout-nav:hover {
+    background: #c0392b;
+    color: #fff;
+}
+
+/* ============================================================
+   23. PERFIL DE USUARIO
+   ============================================================ */
+.profile-page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 30px 20px 60px;
+    flex: 1;
+}
+
+.profile-hero {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    background: rgba(253,246,227,0.85);
+    border: 2px solid #c9a227;
+    border-radius: 14px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+}
+
+.profile-avatar {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: #8b6914;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem;
+    flex-shrink: 0;
+    border: 3px solid #c9a227;
+}
+
+.profile-avatar-img {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #c9a227;
+    flex-shrink: 0;
+}
+
+.profile-name h2 { margin: 0 0 4px; font-size: 1.5rem; }
+.profile-name p  { margin: 0; color: #5a3a00; }
+
+.profile-role-badge {
+    margin-left: auto;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.role-user  { background: #e8f4e8; color: #2a6b2a; border: 1px solid #a8d8a8; }
+.role-admin { background: #fff3cd; color: #856404; border: 1px solid #ffc107; }
+
+.points-display {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    background: rgba(253,246,227,0.9);
+    border: 2px solid #c9a227;
+    border-radius: 14px;
+    padding: 24px 32px;
+    margin-bottom: 24px;
+}
+
+.points-icon { font-size: 2.5rem; }
+
+.points-info, .points-rank {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.points-num  { font-size: 2.2rem; font-weight: bold; color: #5a3a00; }
+.rank-num    { font-size: 2.2rem; font-weight: bold; color: #8b6914; }
+.points-label, .rank-label { font-size: 0.85rem; color: #7a5a2a; }
+
+.points-rank { margin-left: auto; text-align: right; }
+
+.profile-card {
+    background: rgba(253,246,227,0.85);
+    border: 2px solid #c9a227;
+    border-radius: 14px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+}
+
+.profile-card h3 {
+    margin: 0 0 20px;
+    font-size: 1.15rem;
+    color: #5a3a00;
+    border-bottom: 1px solid #d6c7a7;
+    padding-bottom: 10px;
+}
+
+.profile-data-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.profile-data-item label {
+    display: block;
+    font-size: 0.78rem;
+    color: #7a5a2a;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.profile-data-item span {
+    display: block;
+    font-size: 1rem;
+    color: #1a0e00;
+    font-weight: bold;
+}

@@ -1,129 +1,38 @@
 package com.steelballrun.model;
 
-import java.util.Objects;
-
 public class Runner {
-	private int id;
-	private String name;
-	private String surnames;
-	private int age;
-	private String nationality;
-	private int mountId;
-	private int bib;
-	private int currentPlace;
-	private int totalPoints;
+    private int bib;
+    private int idPerson;
+    private int idMount;
+    private byte[] image;
+    private Integer points;
+    private Integer km;
+    private Integer idStage;
+    private String passkey;
 
-	public Runner() {
-	}
+    public Runner() {}
 
-	public Runner(int id, String name, String surnames, int age, String nationality, int mountId, int bib, int currentPlace, int totalPoints) {
-		this.id = id;
-		this.name = name;
-		this.surnames = surnames;
-		this.age = age;
-		this.nationality = nationality;
-		this.mountId = mountId;
-		this.bib = bib;
-		this.currentPlace = currentPlace;
-		this.totalPoints = totalPoints;
-	}
+    public int getBib() { return bib; }
+    public void setBib(int bib) { this.bib = bib; }
 
-	public int getId() {
-		return id;
-	}
+    public int getIdPerson() { return idPerson; }
+    public void setIdPerson(int idPerson) { this.idPerson = idPerson; }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public int getIdMount() { return idMount; }
+    public void setIdMount(int idMount) { this.idMount = idMount; }
 
-	public String getName() {
-		return name;
-	}
+    public byte[] getImage() { return image; }
+    public void setImage(byte[] image) { this.image = image; }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public Integer getPoints() { return points; }
+    public void setPoints(Integer points) { this.points = points; }
 
-	public String getSurnames() {
-		return surnames;
-	}
+    public Integer getKm() { return km; }
+    public void setKm(Integer km) { this.km = km; }
 
-	public void setSurnames(String surnames) {
-		this.surnames = surnames;
-	}
+    public Integer getIdStage() { return idStage; }
+    public void setIdStage(Integer idStage) { this.idStage = idStage; }
 
-	public int getAge() {
-		return age;
-	}
-
-	public void setAge(int age) {
-		this.age = age;
-	}
-
-	public String getNationality() {
-		return nationality;
-	}
-
-	public void setNationality(String nationality) {
-		this.nationality = nationality;
-	}
-
-	public int getMountId() {
-		return mountId;
-	}
-
-	public void setMountId(int mountId) {
-		this.mountId = mountId;
-	}
-
-	public int getBib() {
-		return bib;
-	}
-
-	public void setBib(int bib) {
-		this.bib = bib;
-	}
-
-	public int getCurrentPlace() {
-		return currentPlace;
-	}
-
-	public void setCurrentPlace(int currentPlace) {
-		this.currentPlace = currentPlace;
-	}
-
-	public int getTotalPoints() {
-		return totalPoints;
-	}
-
-	public void setTotalPoints(int totalPoints) {
-		this.totalPoints = totalPoints;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, name, surnames, age, nationality, mountId, bib, currentPlace, totalPoints);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if ((obj == null) || (getClass() != obj.getClass())) {
-			return false;
-		}
-		Runner other = (Runner) obj;
-		return id == other.id && age == other.age && mountId == other.mountId && bib == other.bib
-				&& currentPlace == other.currentPlace && totalPoints == other.totalPoints
-				&& Objects.equals(name, other.name) && Objects.equals(surnames, other.surnames)
-				&& Objects.equals(nationality, other.nationality);
-	}
-
-	@Override
-	public String toString() {
-		return "Runner{" + "id=" + id + ", name='" + name + '\'' + ", surnames='" + surnames + '\''
-				+ ", age=" + age + ", nationality='" + nationality + '\'' + ", mountId=" + mountId + ", bib=" + bib
-				+ ", currentPlace=" + currentPlace + ", totalPoints=" + totalPoints + '}';
-	}
+    public String getPasskey() { return passkey; }
+    public void setPasskey(String passkey) { this.passkey = passkey; }
 }

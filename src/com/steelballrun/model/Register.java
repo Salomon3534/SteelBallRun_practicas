@@ -1,49 +1,28 @@
 package com.steelballrun.model;
 
-import java.util.Objects;
+import java.util.Date;
 
 public class Register {
-	private String characterDni;
-	private int saddleNumber;
+    private int id;
+    private int runnerId;
+    private int stageId;
+    private int saddleNumber;
+    private Date registrationDate;
 
-	public Register() {
-	}
+    public Register() {}
 
-	public Register(String characterDni, int saddleNumber) {
-		this.characterDni = characterDni;
-		this.saddleNumber = saddleNumber;
-	}
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-	public String getCharacterDni() {
-		return characterDni;
-	}
+    public int getRunnerId() { return runnerId; }
+    public void setRunnerId(int runnerId) { this.runnerId = runnerId; }
 
-	public void setCharacterDni(String characterDni) {
-		this.characterDni = characterDni;
-	}
+    public int getStageId() { return stageId; }
+    public void setStageId(int stageId) { this.stageId = stageId; }
 
-	public int getSaddleNumber() {
-		return saddleNumber;
-	}
+    public int getSaddleNumber() { return saddleNumber; }
+    public void setSaddleNumber(int saddleNumber) { this.saddleNumber = saddleNumber; }
 
-	public void setSaddleNumber(int saddleNumber) {
-		this.saddleNumber = saddleNumber;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(characterDni, Integer.valueOf(saddleNumber));
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if ((obj == null) || (getClass() != obj.getClass())) {
-			return false;
-		}
-		Register other = (Register) obj;
-		return Objects.equals(characterDni, other.characterDni) && saddleNumber == other.saddleNumber;
-	}
+    public Date getRegistrationDate() { return registrationDate; }
+    public void setRegistrationDate(Date registrationDate) { this.registrationDate = registrationDate; }
 }

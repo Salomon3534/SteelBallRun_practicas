@@ -1,8 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,43 +8,38 @@
     <link rel="stylesheet" href="sbrstyles.css">
     <link rel="icon" type="image/png" href="assets/web_images/sbr_logo.png">
 </head>
-
 <body>
-    <!-- Header con logo y navegaciÃ³n -->
-    <header class="main-header">
-        <img src="assets/web_images/Logo_Steel_Ball_Run.png" alt="Steel Ball Run Logo" class="logo">
-        <nav>
-            <ul>
-                <li><a href="index.jsp">Inicio</a></li>
-                <li><a href="acerca.jsp">Acerca de</a></li>
-                <li><a href="corredores.jsp">Corredores</a></li>
-                <li><a href="patrocinadores.jsp">Patrocinadores</a></li>
-            </ul>
-        </nav>
-    </header>
-    <!-- PÃ¡gina principal de registro -->
+    <%@ include file="WEB-INF/nav.jspf" %>
+
     <main class="register-page">
         <h1>Registro de corredor</h1>
-        <!-- Layout de dos columnas: personaje a la izquierda, formulario a la derecha -->
+        <% String msg  = (String) request.getAttribute("message");
+           String type = (String) request.getAttribute("type");
+           if (msg != null) { %>
+               <div class="form-message <%= type != null ? type : "info" %>"><%= msg %></div>
+        <% } %>
+
         <div class="register-layout">
-            <!-- Columna izquierda: personaje -->
             <div class="inscryption-guy">
                 <img src="assets/web_images/staff_register.jpg" alt="Personaje de registro">
             </div>
-            <!-- Burbuja de diÃ¡logo (posicionada sobre el personaje) -->
-            <p class="bubble">Ehh... rellena los campos y pulsa el botÃ³n de registro</p>
-            <!-- Columna derecha: formulario -->
+            <p class="bubble">Ehh... rellena los campos y pulsa el botón de registro</p>
             <div class="inscryption-form">
-                <form action="#" method="post" class="sbr-form">
+                <form action="inscription" method="post" enctype="multipart/form-data" class="sbr-form">
                     <fieldset>
                         <legend>Datos Personales</legend>
+                        <hr><br>
                         <div class="field">
                             <label for="runner-name">Nombre</label>
                             <input type="text" id="runner-name" name="runner-name" required>
                         </div>
                         <div class="field">
-                            <label for="runner-surnames">Apellidos</label>
-                            <input type="text" id="runner-surnames" name="runner-surnames" required>
+                            <label for="runner-country">País</label>
+                            <input type="text" id="runner-country" name="runner-country" required>
+                        </div>
+                        <div class="field">
+                            <label for="user-file">Foto de perfil</label>
+                            <input type="file" id="user-file" name="user-file" accept=".png, image/png" required>
                         </div>
                         <div class="field-group">
                             <div class="field">
@@ -61,6 +54,7 @@
                     </fieldset>
                     <fieldset>
                         <legend>Datos de montura</legend>
+                        <hr><br>
                         <div class="field">
                             <label for="horse-name">Nombre</label>
                             <input type="text" id="horse-name" name="horse-name" required>
@@ -78,9 +72,9 @@
             </div>
         </div>
     </main>
+
     <footer class="main-footer">
         <p>Steel Ball Run 1890</p>
     </footer>
 </body>
-
 </html>

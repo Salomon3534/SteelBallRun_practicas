@@ -1,0 +1,28 @@
+<%@ page import="com.steelballrun.model.User" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+    User _navUser = (User) (session != null ? session.getAttribute("loggedUser") : null);
+%>
+<header class="main-header">
+    <img src="assets/web_images/Logo_Steel_Ball_Run.png" alt="Steel Ball Run Logo" class="logo">
+    <nav>
+        <ul>
+            <li><a href="index">Inicio</a></li>
+            <li><a href="about.jsp">Acerca de</a></li>
+            <li><a href="runners">Corredores</a></li>
+            <li><a href="sponsors">Patrocinadores</a></li>
+            <li><a href="stages">Etapas</a></li>
+            <% if (_navUser != null) { %>
+                <li class="header-user-info">
+                    <a href="<%= "admin".equals(_navUser.getRole()) ? "admin" : "profile" %>" class="header-user-link">
+                        <span class="header-user-name"><%= _navUser.getUsername() %></span>
+                    </a>
+                </li>
+                <li><a href="logout" class="btn btn-logout-nav">Cerrar sesión</a></li>
+            <% } else { %>
+                <li><a href="login">Iniciar sesión</a></li>
+                <li><a href="inscription">Inscripción</a></li>
+            <% } %>
+        </ul>
+    </nav>
+</header>

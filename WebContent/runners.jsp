@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
+<%@ page import="java.util.List, java.util.Map" %>
+<%@ page import="com.steelballrun.model.Runner, com.steelballrun.model.Person, com.steelballrun.model.Mount" %>
+<%
+    List<Runner>         runners   = (List<Runner>)         request.getAttribute("runners");
+    Map<Integer, Person> personMap = (Map<Integer, Person>) request.getAttribute("personMap");
+    Map<Integer, Mount>  mountMap  = (Map<Integer, Mount>)  request.getAttribute("mountMap");
+%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -10,49 +16,44 @@
     <link rel="stylesheet" href="sbrstyles.css">
 </head>
 <body>
-    <header class="main-header">
-        <img src="assets/web_images/Logo_Steel_Ball_Run.png" alt="Steel Ball Run Logo" class="logo">
-        <nav>
-            <ul>
-                <li><a href="index.jsp">Inicio</a></li>
-                <li><a href="corredores.jsp" style="text-decoration:underline">Corredores</a></li>
-                <li><a href="etapas.jsp">Etapas</a></li>
-                <li><a href="patrocinadores.jsp">Patrocinadores</a></li>
-                <li><a href="acerca.jsp">Acerca de</a></li>
-                <li id="session-nav-item">
-                    <a href="login.jsp" class="header-session-btn" id="session-btn">Iniciar sesion</a>
-                </li>
-            </ul>
-        </nav>
-    </header>
+    <%@ include file="WEB-INF/nav.jspf" %>
 
     <main class="runners-page">
         <h1>Corredores</h1>
-        <div class="runners-grid" id="runnersGrid">
-            <% if (${runners} != null && !${runners}.isEmpty()) { %>
-                <% for (Runner r : runners) { %>
-                    <div class="runner-card">
-                        <div class="runner-img-container">
-                            <img
-                                src="assets/characters/<%= (r.getName() != null) ? (r.getSurnames() != null ? r.getName().toLowerCase().replaceAll(" ", "_") + "_" + r.getSurnames().toLowerCase().replaceAll(" ", "_") : r.getName().toLowerCase().replaceAll(" ", "_")) : "" %>.webp"
-                                alt="<%= r.getName() %>"
-                                onerror="this.src='assets/web_images/sbr_logo.png'">
-                        </div>
-                        <div class="runner-stats">
-                            <h3>
-                                <%= r.getName() %>
-                                <%= r.getSurnames() != null ? r.getSurnames() : "" %>
-                                &nbsp;#<%= r.getBib() %>
-                            </h3>
-                            <div class="runner-meta">
-                                <span><strong>Origen:</strong> <%= r.getNationality() %></span>
-                                <span><strong>Puesto:</strong> <%= r.getCurrentPlace() %></span>
-                                <span><strong>Puntos:</strong> <%= r.getTotalPoints() %></span>
-                            </div>
+
+        <% if (request.getAttribute("message") != null) { %>
+            <p class="<%= "success".equals(request.getAttribute("type")) ? "mensaje-exito" : "mensaje-error" %>">
+                <%= request.getAttribute("message") %>
+            </p>
+        <% } %>
+
+        <div class="runners-grid">
+            <% if (runners != null && !runners.isEmpty()) {
+                for (Runner r : runners) {
+                    Person p = personMap != null ? personMap.get(r.getIdPerson()) : null;
+                    Mount  m = mountMap  != null ? mountMap.get(r.getIdMount())   : null;
+            %>
+                <div class="runner-card">
+                    <div class="runner-img-container">
+                        <% if (r.getImage() != null && r.getImage().length > 0) { %>
+                            <img src="data:image/png;base64,<%= java.util.Base64.getEncoder().encodeToString(r.getImage()) %>" alt="Foto corredor">
+                        <% } else { %>
+                            <img src="assets/web_images/sbr_logo.png" alt="Sin foto">
+                        <% } %>
+                    </div>
+                    <div class="runner-stats">
+                        <h3><%= p != null ? p.getName() : "Desconocido" %> &nbsp;#<%= r.getBib() %></h3>
+                        <div class="runner-meta">
+                            <span><strong>País:</strong>    <%= p != null ? p.getCountry() : "-" %></span>
+                            <span><strong>Edad:</strong>    <%= p != null ? p.getAge()     : "-" %></span>
+                            <span><strong>Montura:</strong> <%= m != null ? m.getName()    : "-" %></span>
+                            <span><strong>Tipo:</strong>    <%= m != null ? m.getType()    : "-" %></span>
+                            <span><strong>Puntos:</strong>  <%= r.getPoints() != null ? r.getPoints() : 0 %></span>
+                            <span><strong>Km:</strong>      <%= r.getKm()     != null ? r.getKm()     : 0 %></span>
                         </div>
                     </div>
-                <% } %>
-            <% } else { %>
+                </div>
+            <% } } else { %>
                 <p>No se encontraron corredores en la base de datos.</p>
             <% } %>
         </div>
@@ -64,15 +65,5 @@
             <img src="assets/web_images/assistant_footer.png" alt="Personaje">
         </div>
     </footer>
-
-    <script>
-        const isAdmin = sessionStorage.getItem('sbr_admin_auth') === 'true';
-        const isUser  = sessionStorage.getItem('sbr_user_auth') === 'true';
-        const btn = document.getElementById('session-btn');
-        if (btn && (isAdmin || isUser)) {
-            btn.href = 'perfil.jsp';
-            btn.textContent = 'Mi perfil';
-        }
-    </script>
 </body>
 </html>

@@ -1,12 +1,7 @@
 package com.steelballrun.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.sql.*;
+import java.util.*;
 import com.steelballrun.model.Person;
 import com.steelballrun.util.DatabaseConnection;
 
@@ -14,109 +9,43 @@ public class PersonDAO {
 
     public List<Person> listPersons() {
         List<Person> list = new ArrayList<>();
-        String sql = "SELECT id, name, surnames, age, dni FROM person";
-
         try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql);
-                ResultSet rs = pstmt.executeQuery()) {
-
-            while (rs.next()) {
-                list.add(new Person(rs.getInt("id"), rs.getString("name"), rs.getString("surnames"),
-                        rs.getInt("age"), rs.getString("dni")));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+             PreparedStatement ps = conn.prepareStatement("SELECT id, name, age, country, dni FROM person");
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) list.add(mapRow(rs));
+        } catch (SQLException e) { e.printStackTrace(); }
         return list;
     }
 
     public Person getPersonByID(int id) {
-        String sql = "SELECT id, name, surnames, age, dni FROM person WHERE id = ?";
-
         try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setInt(1, id);
-
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    return new Person(rs.getInt("id"), rs.getString("name"), rs.getString("surnames"),
-                            rs.getInt("age"), rs.getString("dni"));
-                }
+             PreparedStatement ps = conn.prepareStatement("SELECT id, name, age, country, dni FROM person WHERE id = ?")) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return mapRow(rs);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e) { e.printStackTrace(); }
         return null;
     }
 
-    /**
-     * Calcula el siguiente ID disponible para una nueva persona.
-     * La columna person.id es PK pero NO AUTO_INCREMENT.
-     */
-    public int getNextId() {
-        String sql = "SELECT COALESCE(MAX(id), 0) + 1 FROM person";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-            if (rs.next()) {
-                return rs.getInt(1);
+    public int insertPersonAndGetId(Person p, Connection conn) throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement(
+                "INSERT INTO person (name, age, country, dni) VALUES (?,?,?,?)",
+                Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, p.getName());
+            ps.setInt(2, p.getAge());
+            ps.setString(3, p.getCountry());
+            ps.setString(4, p.getDni());
+            ps.executeUpdate();
+            try (ResultSet keys = ps.getGeneratedKeys()) {
+                if (keys.next()) return keys.getInt(1);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return 1;
+        return -1;
     }
 
-    public boolean insertPerson(Person person) {
-        String sql = "INSERT INTO person (id, name, surnames, age, dni) VALUES (?, ?, ?, ?, ?)";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setInt(1, person.getId());
-            pstmt.setString(2, person.getName());
-            pstmt.setString(3, person.getSurnames());
-            pstmt.setInt(4, person.getAge());
-            pstmt.setString(5, person.getDni());
-
-            return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public boolean updatePerson(Person person) {
-        String sql = "UPDATE person SET name = ?, surnames = ?, age = ?, dni = ? WHERE id = ?";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, person.getName());
-            pstmt.setString(2, person.getSurnames());
-            pstmt.setInt(3, person.getAge());
-            pstmt.setString(4, person.getDni());
-            pstmt.setInt(5, person.getId());
-
-            return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public boolean deletePerson(int id) {
-        String sql = "DELETE FROM person WHERE id = ?";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setInt(1, id);
-            return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+    private Person mapRow(ResultSet rs) throws SQLException {
+        return new Person(rs.getInt("id"), rs.getString("name"),
+                rs.getInt("age"), rs.getString("country"), rs.getString("dni"));
     }
 }
