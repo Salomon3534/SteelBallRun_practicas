@@ -10,17 +10,17 @@ import jakarta.servlet.http.*;
 @WebServlet("/sponsors")
 public class ServletSponsorsLoad extends HttpServlet {
 
-    private SponsorDAO sponsorDAO;
+	private SponsorDAO sponsorDAO;
 
-    @Override
-    public void init() {
-        sponsorDAO = new SponsorDAO();
-    }
+	@Override
+	public void init() {
+		sponsorDAO = new SponsorDAO();
+	}
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        req.setAttribute("listSponsors", sponsorDAO.listSponsors());
-        req.getRequestDispatcher("/sponsors.jsp").forward(req, res);
-    }
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
+		req.setAttribute("listSponsors", sponsorDAO.listSponsors());
+		req.getRequestDispatcher("/sponsors.jsp").forward(req, res);
+	}
 }

@@ -18,7 +18,7 @@
                         <span class="header-user-name"><%= _navUser.getUsername() %></span>
                     </a>
                 </li>
-                <li><a href="logout" class="btn btn-logout-nav">Cerrar sesión</a></li>
+                <li><a href="logout" class="btn-logout-nav">Cerrar sesión</a></li>
             <% } else { %>
                 <li><a href="login">Iniciar sesión</a></li>
                 <li><a href="inscription">Inscripción</a></li>

@@ -12,6 +12,7 @@
     List<Sponsor> sponsors = (List<Sponsor>) request.getAttribute("sponsors");
     List<Stage>   stages   = (List<Stage>)   request.getAttribute("stages");
     List<User>    users    = (List<User>)    request.getAttribute("users");
+    List<java.util.Map<String,Object>> medicalChecks = (List<java.util.Map<String,Object>>) request.getAttribute("medicalChecks");
     Map<Integer,Person> personMap = (Map<Integer,Person>) request.getAttribute("personMap");
     Map<Integer,Mount>  mountMap  = (Map<Integer,Mount>)  request.getAttribute("mountMap");
     String adminMsg   = (String) request.getAttribute("adminMsg");
@@ -61,6 +62,13 @@
             <button class="sidebar-btn" onclick="showSection('usuarios')" id="sb-usuarios">
                 <span class="icon">🔑</span> Usuarios
             </button>
+            <span class="sidebar-section-label">Carrera</span>
+            <button class="sidebar-btn" onclick="showSection('etapas')" id="sb-etapas">
+                <span class="icon">🗺️</span> Etapas
+            </button>
+            <button class="sidebar-btn" onclick="showSection('chequeos')" id="sb-chequeos">
+                <span class="icon">🏥</span> Chequeos Médicos
+            </button>
             <div class="sidebar-logout">
                 <a href="logout"><button>🚪 Cerrar sesión</button></a>
             </div>
@@ -104,6 +112,10 @@
                     <div class="stat-card">
                         <div class="stat-num"><%= users    != null ? users.size()    : 0 %></div>
                         <div class="stat-label">Usuarios</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-num"><%= medicalChecks != null ? medicalChecks.size() : 0 %></div>
+                        <div class="stat-label">Chequeos Médicos</div>
                     </div>
                 </div>
             </section>
@@ -458,6 +470,149 @@
                 </div>
             </section>
 
+
+            <!-- ETAPAS -->
+            <section class="admin-section" id="sec-etapas">
+                <h2>Gestión de Etapas</h2>
+                <button class="add-row-btn" onclick="toggleForm('form-stage')">+ Nueva Etapa</button>
+
+                <div class="admin-form-box" id="form-stage" style="display:none;">
+                    <h3>Crear Etapa</h3>
+                    <form action="admin" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="entity" value="stage">
+                        <input type="hidden" name="action" value="create">
+                        <div class="field"><label>Nombre</label><input type="text" name="st_name" required></div>
+                        <div class="field"><label>Ubicación</label><input type="text" name="st_location"></div>
+                        <div class="field">
+                            <label>Estado</label>
+                            <select name="st_completed">
+                                <option value="false">En curso</option>
+                                <option value="true">Completada</option>
+                            </select>
+                        </div>
+                        <div class="field"><label>Imagen (PNG)</label><input type="file" name="st_image" accept="image/*"></div>
+                        <div class="form-actions">
+                            <input type="submit" value="Crear" class="btn btn-save">
+                            <button type="button" class="btn btn-reset" onclick="toggleForm('form-stage')">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <table class="admin-table">
+                    <thead><tr><th>ID</th><th>Nombre</th><th>Ubicación</th><th>Estado</th><th>Acciones</th></tr></thead>
+                    <tbody>
+                    <% if (stages != null) for (Stage st : stages) { %>
+                        <tr>
+                            <td><%= st.getId() %></td>
+                            <td><%= st.getName() %></td>
+                            <td><%= st.getLocation() != null ? st.getLocation() : "—" %></td>
+                            <td><span class="badge <%= st.isCompleted() ? "badge-ok" : "badge-pending" %>"><%= st.isCompleted() ? "Completada" : "En curso" %></span></td>
+                            <td>
+                                <div class="actions">
+                                    <button class="btn-sm btn-edit" onclick="editStage(<%= st.getId() %>,'<%= st.getName().replace("'","\\'") %>','<%= st.getLocation() != null ? st.getLocation().replace("'","\\'") : "" %>','<%= st.isCompleted() %>')">Editar</button>
+                                    <form action="admin" method="post" style="display:inline;" onsubmit="return confirm('¿Eliminar etapa?')">
+                                        <input type="hidden" name="entity" value="stage">
+                                        <input type="hidden" name="action" value="delete">
+                                        <input type="hidden" name="st_id" value="<%= st.getId() %>">
+                                        <button type="submit" class="btn-sm btn-del">Eliminar</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    <% } %>
+                    </tbody>
+                </table>
+
+                <!-- Edit stage modal -->
+                <div class="admin-form-box" id="form-edit-stage" style="display:none;">
+                    <h3>Editar Etapa</h3>
+                    <form action="admin" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="entity" value="stage">
+                        <input type="hidden" name="action" value="update">
+                        <input type="hidden" name="st_id" id="edit-st-id">
+                        <div class="field"><label>Nombre</label><input type="text" name="st_name" id="edit-st-name" required></div>
+                        <div class="field"><label>Ubicación</label><input type="text" name="st_location" id="edit-st-location"></div>
+                        <div class="field">
+                            <label>Estado</label>
+                            <select name="st_completed" id="edit-st-completed">
+                                <option value="false">En curso</option>
+                                <option value="true">Completada</option>
+                            </select>
+                        </div>
+                        <div class="field"><label>Nueva imagen (opcional)</label><input type="file" name="st_image" accept="image/*"></div>
+                        <div class="form-actions">
+                            <input type="submit" value="Guardar" class="btn btn-save">
+                            <button type="button" class="btn btn-reset" onclick="document.getElementById('form-edit-stage').style.display='none'">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- CHEQUEOS MÉDICOS -->
+            <section class="admin-section" id="sec-chequeos">
+                <h2>Gestión de Chequeos Médicos</h2>
+                <button class="add-row-btn" onclick="toggleForm('form-check')">+ Nuevo Chequeo</button>
+
+                <div class="admin-form-box" id="form-check" style="display:none;">
+                    <h3>Registrar Chequeo Médico</h3>
+                    <form action="admin" method="post">
+                        <input type="hidden" name="entity" value="medicalcheck">
+                        <input type="hidden" name="action" value="create">
+                        <div class="field">
+                            <label>Corredor (Dorsal)</label>
+                            <select name="mc_runnerId" required>
+                                <% if (runners != null) for (Runner r : runners) {
+                                    Person p2 = personMap != null ? personMap.get(r.getIdPerson()) : null;
+                                %>
+                                    <option value="<%= r.getBib() %>">#<%= r.getBib() %> — <%= p2 != null ? p2.getName() : "Corredor" %></option>
+                                <% } %>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Resultado</label>
+                            <select name="mc_passed">
+                                <option value="true">✅ Apto</option>
+                                <option value="false">❌ No apto</option>
+                            </select>
+                        </div>
+                        <div class="field"><label>Fecha y hora (opcional)</label><input type="datetime-local" name="mc_date"></div>
+                        <div class="field"><label>Notas</label><textarea name="mc_notes" rows="3" style="width:100%"></textarea></div>
+                        <div class="form-actions">
+                            <input type="submit" value="Registrar" class="btn btn-save">
+                            <button type="button" class="btn btn-reset" onclick="toggleForm('form-check')">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <table class="admin-table">
+                    <thead><tr><th>ID</th><th>Corredor</th><th>Fecha</th><th>Resultado</th><th>Notas</th><th>Acciones</th></tr></thead>
+                    <tbody>
+                    <% if (medicalChecks != null) for (java.util.Map<String,Object> mc : medicalChecks) {
+                        int mcRunnerId = (Integer) mc.get("runnerId");
+                        Person mcPerson = personMap != null ? personMap.get(
+                            runners != null ? runners.stream().filter(rr -> rr.getBib() == mcRunnerId).map(rr -> rr.getIdPerson()).findFirst().orElse(-1) : -1
+                        ) : null;
+                    %>
+                        <tr>
+                            <td><%= mc.get("id") %></td>
+                            <td>#<%= mcRunnerId %><%= mcPerson != null ? " — " + mcPerson.getName() : "" %></td>
+                            <td><%= mc.get("checkDate") %></td>
+                            <td><span class="badge <%= Boolean.TRUE.equals(mc.get("passed")) ? "badge-ok" : "badge-del" %>"><%= Boolean.TRUE.equals(mc.get("passed")) ? "✅ Apto" : "❌ No apto" %></span></td>
+                            <td><%= mc.get("notes") != null ? mc.get("notes") : "—" %></td>
+                            <td>
+                                <form action="admin" method="post" style="display:inline;" onsubmit="return confirm('¿Eliminar chequeo?')">
+                                    <input type="hidden" name="entity" value="medicalcheck">
+                                    <input type="hidden" name="action" value="delete">
+                                    <input type="hidden" name="mc_id" value="<%= mc.get("id") %>">
+                                    <button type="submit" class="btn-sm btn-del">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% } %>
+                    </tbody>
+                </table>
+            </section>
+
         </main>
     </div>
 
@@ -520,6 +675,16 @@
             document.getElementById('edit-u-runnerId').value = runnerId;
             document.getElementById('form-edit-user').style.display = 'block';
             document.getElementById('form-edit-user').scrollIntoView({behavior:'smooth'});
+        }
+
+        // Stage edit
+        function editStage(id, name, location, completed) {
+            document.getElementById('edit-st-id').value        = id;
+            document.getElementById('edit-st-name').value      = name;
+            document.getElementById('edit-st-location').value  = location;
+            document.getElementById('edit-st-completed').value = completed;
+            document.getElementById('form-edit-stage').style.display = 'block';
+            document.getElementById('form-edit-stage').scrollIntoView({behavior:'smooth'});
         }
 
         // Auto-show section from URL hash if present

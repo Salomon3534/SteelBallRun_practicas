@@ -1332,7 +1332,7 @@ input[type="reset"] {
 }
 
 /* ============================================================
-   21. USUARIO EN HEADER (icono + nombre)
+   21. USUARIO EN HEADER
    ============================================================ */
 .header-user-info {
     display: flex;
@@ -1357,11 +1357,8 @@ input[type="reset"] {
     background: rgba(245,230,200,0.15);
 }
 
-.header-user-icon {
-    font-size: 1.3rem;
-}
-
 .header-user-name {
+    color: #f5e6c8;
     font-family: 'SBR-Custom', sans-serif;
     font-size: 0.85rem;
     max-width: 120px;
@@ -1372,22 +1369,29 @@ input[type="reset"] {
 
 /* ============================================================
    22. BOTÓN CERRAR SESIÓN EN NAV
+   — Va al final para ganar en cascada sobre la regla general
+     del header (.main-header nav ul li a)
    ============================================================ */
-.btn-logout-nav {
-    background: transparent;
-    border: 1px solid #c0392b;
-    color: #e74c3c;
-    padding: 4px 12px;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background 0.2s, color 0.2s;
+
+/* Quitamos la clase "btn" del HTML y usamos solo btn-logout-nav */
+.main-header nav ul li a.btn-logout-nav,
+.main-header nav ul li a.btn-logout-nav:link,
+.main-header nav ul li a.btn-logout-nav:visited {
+    background: #c0392b !important;
+    color: #fff !important;
+    border: 1px solid #922b21 !important;
+    padding: 6px 14px !important;
+    border-radius: 6px !important;
+    font-size: 0.85rem !important;
+    text-decoration: none !important;
+    transition: background 0.2s, color 0.2s !important;
 }
 
-.btn-logout-nav:hover {
-    background: #c0392b;
-    color: #fff;
+.main-header nav ul li a.btn-logout-nav:hover,
+.main-header nav ul li a.btn-logout-nav:active {
+    background: #a93226 !important;
+    color: #fff !important;
+    text-decoration: none !important;
 }
 
 /* ============================================================
@@ -1507,3 +1511,18 @@ input[type="reset"] {
     color: #1a0e00;
     font-weight: bold;
 }
+.badge-del { background: #f8d7da; color: #721c24; }
+
+/* Profile PDF button */
+.btn-pdf-profile {
+    background: #8b6914;
+    color: #fff;
+    border: none;
+    padding: 10px 22px;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s;
+}
+.btn-pdf-profile:hover { background: #5a3a00; }

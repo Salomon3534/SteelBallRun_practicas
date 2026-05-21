@@ -10,17 +10,17 @@ import jakarta.servlet.http.*;
 @WebServlet("/stages")
 public class ServletStagesLoad extends HttpServlet {
 
-    private StageDAO stageDAO;
+	private StageDAO stageDAO;
 
-    @Override
-    public void init() {
-        stageDAO = new StageDAO();
-    }
+	@Override
+	public void init() {
+		stageDAO = new StageDAO();
+	}
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        req.setAttribute("stages", stageDAO.listStages());
-        req.getRequestDispatcher("/stages.jsp").forward(req, res);
-    }
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
+		req.setAttribute("stages", stageDAO.listStages());
+		req.getRequestDispatcher("/stages.jsp").forward(req, res);
+	}
 }

@@ -9,17 +9,18 @@ import jakarta.servlet.http.*;
 @WebServlet("/logout")
 public class ServletLogout extends HttpServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse res)
-            throws ServletException, IOException {
-        HttpSession session = req.getSession(false);
-        if (session != null) session.invalidate();
-        res.sendRedirect(req.getContextPath() + "/index");
-    }
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		HttpSession session = req.getSession(false);
+		if (session != null)
+			
+			// invalidar la sesión para cerrar sesión
+			session.invalidate();
+		res.sendRedirect(req.getContextPath() + "/index");
+	}
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse res)
-            throws ServletException, IOException {
-        doGet(req, res);
-    }
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		doGet(req, res);
+	}
 }

@@ -18,309 +18,411 @@ import jakarta.servlet.http.*;
 @MultipartConfig(maxFileSize = 5 * 1024 * 1024, maxRequestSize = 10 * 1024 * 1024)
 public class ServletAdmin extends HttpServlet {
 
-    private RunnerDAO  runnerDAO;
-    private PersonDAO  personDAO;
-    private MountDAO   mountDAO;
-    private SponsorDAO sponsorDAO;
-    private StageDAO   stageDAO;
-    private UserDAO    userDAO;
+	private RunnerDAO runnerDAO;
+	private PersonDAO personDAO;
+	private MountDAO mountDAO;
+	private SponsorDAO sponsorDAO;
+	private StageDAO stageDAO;
+	private UserDAO userDAO;
+	private MedicalCheckDAO medicalCheckDAO;
 
-    @Override
-    public void init() {
-        runnerDAO  = new RunnerDAO();
-        personDAO  = new PersonDAO();
-        mountDAO   = new MountDAO();
-        sponsorDAO = new SponsorDAO();
-        stageDAO   = new StageDAO();
-        userDAO    = new UserDAO();
-    }
+	@Override
+	public void init() {
+		runnerDAO = new RunnerDAO();
+		personDAO = new PersonDAO();
+		mountDAO = new MountDAO();
+		sponsorDAO = new SponsorDAO();
+		stageDAO = new StageDAO();
+		userDAO = new UserDAO();
+		medicalCheckDAO = new MedicalCheckDAO();
+	}
 
-    /* ── Guard ───────────────────────────────────────────── */
-    private boolean requireAdmin(HttpServletRequest req, HttpServletResponse res)
-            throws IOException {
-        HttpSession s = req.getSession(false);
-        if (s == null || s.getAttribute("loggedUser") == null) {
-            res.sendRedirect(req.getContextPath() + "/login");
-            return false;
-        }
-        User u = (User) s.getAttribute("loggedUser");
-        if (!"admin".equals(u.getRole())) {
-            res.sendRedirect(req.getContextPath() + "/index");
-            return false;
-        }
-        return true;
-    }
+	/* ── Guard ───────────────────────────────────────────── */
+	private boolean requireAdmin(HttpServletRequest req, HttpServletResponse res) throws IOException {
+		HttpSession s = req.getSession(false);
+		if (s == null || s.getAttribute("loggedUser") == null) {
+			res.sendRedirect(req.getContextPath() + "/login");
+			return false;
+		}
+		User u = (User) s.getAttribute("loggedUser");
+		if (!"admin".equals(u.getRole())) {
+			res.sendRedirect(req.getContextPath() + "/index");
+			return false;
+		}
+		return true;
+	}
 
-    /* ── GET — load admin panel ──────────────────────────── */
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse res)
-            throws ServletException, IOException {
-        if (!requireAdmin(req, res)) return;
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		if (!requireAdmin(req, res))
+			return;
 
-        loadAllData(req);
-        req.getRequestDispatcher("/admin.jsp").forward(req, res);
-    }
+		loadAllData(req);
+		req.getRequestDispatcher("/admin.jsp").forward(req, res);
+	}
 
-    /* ── POST — dispatch by action ──────────────────────── */
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse res)
-            throws ServletException, IOException {
-        if (!requireAdmin(req, res)) return;
-        req.setCharacterEncoding("UTF-8");
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		if (!requireAdmin(req, res))
+			return;
+		req.setCharacterEncoding("UTF-8");
 
-        String action = req.getParameter("action");
-        String entity = req.getParameter("entity");
+		String action = req.getParameter("action");
+		String entity = req.getParameter("entity");
 
-        try {
-            if      ("runner".equals(entity))    handleRunner(action, req, res);
-            else if ("person".equals(entity))    handlePerson(action, req, res);
-            else if ("mount".equals(entity))     handleMount(action, req, res);
-            else if ("sponsor".equals(entity))   handleSponsor(action, req, res);
-            else if ("user".equals(entity))      handleUser(action, req, res);
-        } catch (Exception e) {
-            req.setAttribute("adminError", "Error: " + e.getMessage());
-        }
+		// direccionador de acciones
+		try {
+			switch (entity) {
+			case "runner" -> handleRunner(action, req, res);
+			case "person" -> handlePerson(action, req, res);
+			case "mount" -> handleMount(action, req, res);
+			case "sponsor" -> handleSponsor(action, req, res);
+			case "user" -> handleUser(action, req, res);
+			case "stage" -> handleStage(action, req, res);
+			case "medicalcheck" -> handleMedicalCheck(action, req, res);
+			}
+		} catch (Exception e) {
+			req.setAttribute("adminError", "Error: " + e.getMessage());
+		}
 
-        loadAllData(req);
-        req.getRequestDispatcher("/admin.jsp").forward(req, res);
-    }
+		loadAllData(req);
+		req.getRequestDispatcher("/admin.jsp").forward(req, res);
+	}
 
-    /* ── Data loaders ───────────────────────────────────── */
-    private void loadAllData(HttpServletRequest req) {
-        req.setAttribute("runners",  runnerDAO.listRunners());
-        req.setAttribute("persons",  personDAO.listPersons());
-        req.setAttribute("mounts",   mountDAO.listMounts());
-        req.setAttribute("sponsors", sponsorDAO.listSponsors());
-        req.setAttribute("stages",   stageDAO.listStages());
-        req.setAttribute("users",    userDAO.listAll());
+	// cargadores de datos
+	private void loadAllData(HttpServletRequest req) {
+		req.setAttribute("runners", runnerDAO.listRunners());
+		req.setAttribute("persons", personDAO.listPersons());
+		req.setAttribute("mounts", mountDAO.listMounts());
+		req.setAttribute("sponsors", sponsorDAO.listSponsors());
+		req.setAttribute("stages", stageDAO.listStages());
+		req.setAttribute("users", userDAO.listAll());
+		req.setAttribute("medicalChecks", medicalCheckDAO.listAll());
 
-        // Build personMap for runner table
-        Map<Integer, Person> pm = new HashMap<>();
-        for (Person p : personDAO.listPersons()) pm.put(p.getId(), p);
-        req.setAttribute("personMap", pm);
-        Map<Integer, Mount> mm = new HashMap<>();
-        for (Mount m : mountDAO.listMounts()) mm.put(m.getId(), m);
-        req.setAttribute("mountMap", mm);
-    }
+		// Build personMap for runner table
+		Map<Integer, Person> pm = new HashMap<>();
+		for (Person p : personDAO.listPersons())
+			pm.put(p.getId(), p);
+		req.setAttribute("personMap", pm);
+		Map<Integer, Mount> mm = new HashMap<>();
+		for (Mount m : mountDAO.listMounts())
+			mm.put(m.getId(), m);
+		req.setAttribute("mountMap", mm);
+	}
 
-    /* ── Runner CRUD ────────────────────────────────────── */
-    private void handleRunner(String action, HttpServletRequest req, HttpServletResponse res)
-            throws Exception {
-        switch (action) {
-            case "create": {
-                int personId  = Integer.parseInt(req.getParameter("r_personId"));
-                int mountId   = Integer.parseInt(req.getParameter("r_mountId"));
-                int points    = Integer.parseInt(req.getParameter("r_points"));
-                int km        = Integer.parseInt(req.getParameter("r_km"));
-                String stageS = req.getParameter("r_stage");
-                Integer stageId = (stageS != null && !stageS.isEmpty()) ? Integer.parseInt(stageS) : null;
+	// crud corredores
+	private void handleRunner(String action, HttpServletRequest req, HttpServletResponse res) throws Exception {
+		switch (action) {
+		case "create": {
+			int personId = Integer.parseInt(req.getParameter("r_personId"));
+			int mountId = Integer.parseInt(req.getParameter("r_mountId"));
+			int points = Integer.parseInt(req.getParameter("r_points"));
+			int km = Integer.parseInt(req.getParameter("r_km"));
+			String stageS = req.getParameter("r_stage");
+			Integer stageId = (stageS != null && !stageS.isEmpty()) ? Integer.parseInt(stageS) : null;
 
-                byte[] img = null;
-                Part fp = req.getPart("r_image");
-                if (fp != null && fp.getSize() > 0) {
-                    try (InputStream is = fp.getInputStream()) { img = is.readAllBytes(); }
-                }
+			byte[] img = null;
+			Part fp = req.getPart("r_image");
+			if (fp != null && fp.getSize() > 0) {
+				try (InputStream is = fp.getInputStream()) {
+					img = is.readAllBytes();
+				}
+			}
 
-                String passkey = java.util.UUID.randomUUID().toString();
-                Runner r = new Runner();
-                r.setIdPerson(personId); r.setIdMount(mountId);
-                r.setPoints(points); r.setKm(km); r.setIdStage(stageId);
-                r.setImage(img); r.setPasskey(passkey);
+			String passkey = java.util.UUID.randomUUID().toString();
+			Runner r = new Runner();
+			r.setIdPerson(personId);
+			r.setIdMount(mountId);
+			r.setPoints(points);
+			r.setKm(km);
+			r.setIdStage(stageId);
+			r.setImage(img);
+			r.setPasskey(passkey);
 
-                try (Connection conn = DatabaseConnection.getConnection()) {
-                    conn.setAutoCommit(false);
-                    runnerDAO.insertRunner(r, conn);
+			try (Connection conn = DatabaseConnection.getConnection()) {
+				conn.setAutoCommit(false);
+				runnerDAO.insertRunner(r, conn);
 
-                    // create user for this runner
-                    Person p = personDAO.getPersonByID(personId);
-                    String username = (p != null ? p.getName().toLowerCase().replaceAll("\\s+","_") : "runner") + "_" + System.currentTimeMillis() % 10000;
-                    User u = new User(0, username, AuthUtil.sha256(passkey), "user", null);
-                    conn.commit();
+				// crear usuario asociado al corredor
+				Person p = personDAO.getPersonByID(personId);
+				String username = (p != null ? p.getName().toLowerCase().replaceAll("\\s+", "_") : "runner") + "_"
+						+ System.currentTimeMillis() % 10000;
+				User u = new User(0, username, AuthUtil.sha256(passkey), "user", null);
+				conn.commit();
 
-                    // get bib of inserted runner
-                    List<Runner> all = runnerDAO.listRunners();
-                    int bib = all.isEmpty() ? -1 : all.get(all.size()-1).getBib();
-                    u.setRunnerId(bib);
-                    userDAO.insert(u);
-                }
-                req.setAttribute("adminMsg", "Corredor creado. Passkey: " + passkey);
-                break;
-            }
-            case "update": {
-                int bib    = Integer.parseInt(req.getParameter("r_bib"));
-                int points = Integer.parseInt(req.getParameter("r_points"));
-                int km     = Integer.parseInt(req.getParameter("r_km"));
-                String stageS = req.getParameter("r_stage");
-                Integer stageId = (stageS != null && !stageS.isEmpty()) ? Integer.parseInt(stageS) : null;
+				// obtener el dorsal asignado al corredor recien creado
+				List<Runner> all = runnerDAO.listRunners();
+				int bib = all.isEmpty() ? -1 : all.get(all.size() - 1).getBib();
+				u.setRunnerId(bib);
+				userDAO.insert(u);
+			}
+			req.setAttribute("adminMsg", "Corredor creado. Passkey: " + passkey);
+			break;
+		}
+		case "update": {
+			int bib = Integer.parseInt(req.getParameter("r_bib"));
+			int points = Integer.parseInt(req.getParameter("r_points"));
+			int km = Integer.parseInt(req.getParameter("r_km"));
+			String stageS = req.getParameter("r_stage");
+			Integer stageId = (stageS != null && !stageS.isEmpty()) ? Integer.parseInt(stageS) : null;
 
-                Runner existing = runnerDAO.getRunnerByBib(bib);
-                if (existing != null) {
-                    existing.setPoints(points);
-                    existing.setKm(km);
-                    existing.setIdStage(stageId);
+			Runner existing = runnerDAO.getRunnerByBib(bib);
+			if (existing != null) {
+				existing.setPoints(points);
+				existing.setKm(km);
+				existing.setIdStage(stageId);
 
-                    Part fp = req.getPart("r_image");
-                    if (fp != null && fp.getSize() > 0) {
-                        try (InputStream is = fp.getInputStream()) { existing.setImage(is.readAllBytes()); }
-                    }
-                    runnerDAO.updateRunner(existing);
-                }
-                req.setAttribute("adminMsg", "Corredor actualizado.");
-                break;
-            }
-            case "delete": {
-                int bib = Integer.parseInt(req.getParameter("r_bib"));
-                runnerDAO.deleteRunner(bib);
-                req.setAttribute("adminMsg", "Corredor eliminado.");
-                break;
-            }
-        }
-    }
+				Part fp = req.getPart("r_image");
+				if (fp != null && fp.getSize() > 0) {
+					try (InputStream is = fp.getInputStream()) {
+						existing.setImage(is.readAllBytes());
+					}
+				}
+				runnerDAO.updateRunner(existing);
+			}
+			req.setAttribute("adminMsg", "Corredor actualizado.");
+			break;
+		}
+		case "delete": {
+			int bib = Integer.parseInt(req.getParameter("r_bib"));
+			runnerDAO.deleteRunner(bib);
+			req.setAttribute("adminMsg", "Corredor eliminado.");
+			break;
+		}
+		}
+	}
 
-    /* ── Person CRUD ────────────────────────────────────── */
-    private void handlePerson(String action, HttpServletRequest req, HttpServletResponse res)
-            throws Exception {
-        switch (action) {
-            case "create": {
-                String name    = req.getParameter("p_name");
-                int age        = Integer.parseInt(req.getParameter("p_age"));
-                String country = req.getParameter("p_country");
-                String dni     = req.getParameter("p_dni");
-                try (Connection conn = DatabaseConnection.getConnection()) {
-                    conn.setAutoCommit(true);
-                    personDAO.insertPersonAndGetId(new Person(0, name, age, country, dni), conn);
-                }
-                req.setAttribute("adminMsg", "Persona creada.");
-                break;
-            }
-            case "update": {
-                int id         = Integer.parseInt(req.getParameter("p_id"));
-                String name    = req.getParameter("p_name");
-                int age        = Integer.parseInt(req.getParameter("p_age"));
-                String country = req.getParameter("p_country");
-                String dni     = req.getParameter("p_dni");
-                try (Connection conn = DatabaseConnection.getConnection();
-                     java.sql.PreparedStatement ps = conn.prepareStatement(
-                         "UPDATE person SET name=?,age=?,country=?,dni=? WHERE id=?")) {
-                    ps.setString(1,name); ps.setInt(2,age);
-                    ps.setString(3,country); ps.setString(4,dni); ps.setInt(5,id);
-                    ps.executeUpdate();
-                }
-                req.setAttribute("adminMsg", "Persona actualizada.");
-                break;
-            }
-            case "delete": {
-                int id = Integer.parseInt(req.getParameter("p_id"));
-                try (Connection conn = DatabaseConnection.getConnection();
-                     java.sql.PreparedStatement ps = conn.prepareStatement("DELETE FROM person WHERE id=?")) {
-                    ps.setInt(1, id); ps.executeUpdate();
-                }
-                req.setAttribute("adminMsg", "Persona eliminada.");
-                break;
-            }
-        }
-    }
+	// crud personas
+	private void handlePerson(String action, HttpServletRequest req, HttpServletResponse res) throws Exception {
+		switch (action) {
+		case "create": {
+			String name = req.getParameter("p_name");
+			int age = Integer.parseInt(req.getParameter("p_age"));
+			String country = req.getParameter("p_country");
+			String dni = req.getParameter("p_dni");
+			try (Connection conn = DatabaseConnection.getConnection()) {
+				conn.setAutoCommit(true);
+				personDAO.insertPersonAndGetId(new Person(0, name, age, country, dni), conn);
+			}
+			req.setAttribute("adminMsg", "Persona creada.");
+			break;
+		}
+		case "update": {
+			int id = Integer.parseInt(req.getParameter("p_id"));
+			String name = req.getParameter("p_name");
+			int age = Integer.parseInt(req.getParameter("p_age"));
+			String country = req.getParameter("p_country");
+			String dni = req.getParameter("p_dni");
+			try (Connection conn = DatabaseConnection.getConnection();
+					java.sql.PreparedStatement ps = conn
+							.prepareStatement("UPDATE person SET name=?,age=?,country=?,dni=? WHERE id=?")) {
+				ps.setString(1, name);
+				ps.setInt(2, age);
+				ps.setString(3, country);
+				ps.setString(4, dni);
+				ps.setInt(5, id);
+				ps.executeUpdate();
+			}
+			req.setAttribute("adminMsg", "Persona actualizada.");
+			break;
+		}
+		case "delete": {
+			int id = Integer.parseInt(req.getParameter("p_id"));
+			try (Connection conn = DatabaseConnection.getConnection();
+					java.sql.PreparedStatement ps = conn.prepareStatement("DELETE FROM person WHERE id=?")) {
+				ps.setInt(1, id);
+				ps.executeUpdate();
+			}
+			req.setAttribute("adminMsg", "Persona eliminada.");
+			break;
+		}
+		}
+	}
 
-    /* ── Mount CRUD ─────────────────────────────────────── */
-    private void handleMount(String action, HttpServletRequest req, HttpServletResponse res)
-            throws Exception {
-        switch (action) {
-            case "create": {
-                String name = req.getParameter("m_name");
-                String type = req.getParameter("m_type");
-                try (Connection conn = DatabaseConnection.getConnection()) {
-                    conn.setAutoCommit(true);
-                    mountDAO.insertMountAndGetId(new Mount(0, name, type), conn);
-                }
-                req.setAttribute("adminMsg", "Montura creada.");
-                break;
-            }
-            case "update": {
-                int id      = Integer.parseInt(req.getParameter("m_id"));
-                String name = req.getParameter("m_name");
-                String type = req.getParameter("m_type");
-                try (Connection conn = DatabaseConnection.getConnection();
-                     java.sql.PreparedStatement ps = conn.prepareStatement(
-                         "UPDATE mount SET name=?,type=? WHERE id=?")) {
-                    ps.setString(1,name); ps.setString(2,type); ps.setInt(3,id);
-                    ps.executeUpdate();
-                }
-                req.setAttribute("adminMsg", "Montura actualizada.");
-                break;
-            }
-            case "delete": {
-                int id = Integer.parseInt(req.getParameter("m_id"));
-                try (Connection conn = DatabaseConnection.getConnection();
-                     java.sql.PreparedStatement ps = conn.prepareStatement("DELETE FROM mount WHERE id=?")) {
-                    ps.setInt(1,id); ps.executeUpdate();
-                }
-                req.setAttribute("adminMsg", "Montura eliminada.");
-                break;
-            }
-        }
-    }
+	// crud monturas
+	private void handleMount(String action, HttpServletRequest req, HttpServletResponse res) throws Exception {
+		switch (action) {
+		case "create": {
+			String name = req.getParameter("m_name");
+			String type = req.getParameter("m_type");
+			try (Connection conn = DatabaseConnection.getConnection()) {
+				conn.setAutoCommit(true);
+				mountDAO.insertMountAndGetId(new Mount(0, name, type), conn);
+			}
+			req.setAttribute("adminMsg", "Montura creada.");
+			break;
+		}
+		case "update": {
+			int id = Integer.parseInt(req.getParameter("m_id"));
+			String name = req.getParameter("m_name");
+			String type = req.getParameter("m_type");
+			try (Connection conn = DatabaseConnection.getConnection();
+					java.sql.PreparedStatement ps = conn
+							.prepareStatement("UPDATE mount SET name=?,type=? WHERE id=?")) {
+				ps.setString(1, name);
+				ps.setString(2, type);
+				ps.setInt(3, id);
+				ps.executeUpdate();
+			}
+			req.setAttribute("adminMsg", "Montura actualizada.");
+			break;
+		}
+		case "delete": {
+			int id = Integer.parseInt(req.getParameter("m_id"));
+			try (Connection conn = DatabaseConnection.getConnection();
+					java.sql.PreparedStatement ps = conn.prepareStatement("DELETE FROM mount WHERE id=?")) {
+				ps.setInt(1, id);
+				ps.executeUpdate();
+			}
+			req.setAttribute("adminMsg", "Montura eliminada.");
+			break;
+		}
+		}
+	}
 
-    /* ── Sponsor CRUD ───────────────────────────────────── */
-    private void handleSponsor(String action, HttpServletRequest req, HttpServletResponse res)
-            throws Exception {
-        switch (action) {
-            case "create":
-                sponsorDAO.insertSponsor(new Sponsor(0, req.getParameter("sp_name")));
-                req.setAttribute("adminMsg", "Patrocinador creado.");
-                break;
-            case "update":
-                sponsorDAO.updateSponsor(new Sponsor(
-                    Integer.parseInt(req.getParameter("sp_id")), req.getParameter("sp_name")));
-                req.setAttribute("adminMsg", "Patrocinador actualizado.");
-                break;
-            case "delete":
-                sponsorDAO.deleteSponsor(Integer.parseInt(req.getParameter("sp_id")));
-                req.setAttribute("adminMsg", "Patrocinador eliminado.");
-                break;
-        }
-    }
+	// crud sponsors
+	private void handleSponsor(String action, HttpServletRequest req, HttpServletResponse res) throws Exception {
+		switch (action) {
+		case "create":
+			sponsorDAO.insertSponsor(new Sponsor(0, req.getParameter("sp_name")));
+			req.setAttribute("adminMsg", "Patrocinador creado.");
+			break;
+		case "update":
+			sponsorDAO.updateSponsor(
+					new Sponsor(Integer.parseInt(req.getParameter("sp_id")), req.getParameter("sp_name")));
+			req.setAttribute("adminMsg", "Patrocinador actualizado.");
+			break;
+		case "delete":
+			sponsorDAO.deleteSponsor(Integer.parseInt(req.getParameter("sp_id")));
+			req.setAttribute("adminMsg", "Patrocinador eliminado.");
+			break;
+		}
+	}
 
-    /* ── User CRUD ──────────────────────────────────────── */
-    private void handleUser(String action, HttpServletRequest req, HttpServletResponse res)
-            throws Exception {
-        switch (action) {
-            case "create": {
-                String username = req.getParameter("u_username");
-                String passkey  = req.getParameter("u_passkey");
-                String role     = req.getParameter("u_role");
-                String runnerS  = req.getParameter("u_runnerId");
-                Integer runnerId = (runnerS != null && !runnerS.isEmpty()) ? Integer.parseInt(runnerS) : null;
-                User u = new User(0, username, AuthUtil.sha256(passkey), role, runnerId);
-                userDAO.insert(u);
-                req.setAttribute("adminMsg", "Usuario creado.");
-                break;
-            }
-            case "update": {
-                int id          = Integer.parseInt(req.getParameter("u_id"));
-                String username = req.getParameter("u_username");
-                String role     = req.getParameter("u_role");
-                String runnerS  = req.getParameter("u_runnerId");
-                Integer runnerId = (runnerS != null && !runnerS.isEmpty()) ? Integer.parseInt(runnerS) : null;
-                String newPass  = req.getParameter("u_passkey");
-                // Load existing to preserve hash if no new pass
-                User existing = userDAO.listAll().stream().filter(u -> u.getId() == id).findFirst().orElse(null);
-                if (existing != null) {
-                    existing.setUsername(username);
-                    existing.setRole(role);
-                    existing.setRunnerId(runnerId);
-                    if (newPass != null && !newPass.trim().isEmpty())
-                        existing.setPasskey(AuthUtil.sha256(newPass.trim()));
-                    userDAO.update(existing);
-                }
-                req.setAttribute("adminMsg", "Usuario actualizado.");
-                break;
-            }
-            case "delete": {
-                int id = Integer.parseInt(req.getParameter("u_id"));
-                userDAO.delete(id);
-                req.setAttribute("adminMsg", "Usuario eliminado.");
-                break;
-            }
-        }
-    }
+	// crud usuarios
+	private void handleUser(String action, HttpServletRequest req, HttpServletResponse res) throws Exception {
+		switch (action) {
+		case "create": {
+			String username = req.getParameter("u_username");
+			String passkey = req.getParameter("u_passkey");
+			String role = req.getParameter("u_role");
+			String runnerS = req.getParameter("u_runnerId");
+			Integer runnerId = (runnerS != null && !runnerS.isEmpty()) ? Integer.parseInt(runnerS) : null;
+			User u = new User(0, username, AuthUtil.sha256(passkey), role, runnerId);
+			userDAO.insert(u);
+			req.setAttribute("adminMsg", "Usuario creado.");
+			break;
+		}
+		case "update": {
+			int id = Integer.parseInt(req.getParameter("u_id"));
+			String username = req.getParameter("u_username");
+			String role = req.getParameter("u_role");
+			String runnerS = req.getParameter("u_runnerId");
+			Integer runnerId = (runnerS != null && !runnerS.isEmpty()) ? Integer.parseInt(runnerS) : null;
+			String newPass = req.getParameter("u_passkey");
+			// carga datos actuales si algo se ha dejado en blanco
+			User existing = userDAO.listAll().stream().filter(u -> u.getId() == id).findFirst().orElse(null);
+			if (existing != null) {
+				existing.setUsername(username);
+				existing.setRole(role);
+				existing.setRunnerId(runnerId);
+				if (newPass != null && !newPass.trim().isEmpty())
+					existing.setPasskey(AuthUtil.sha256(newPass.trim()));
+				userDAO.update(existing);
+			}
+			req.setAttribute("adminMsg", "Usuario actualizado.");
+			break;
+		}
+		case "delete": {
+			int id = Integer.parseInt(req.getParameter("u_id"));
+			userDAO.delete(id);
+			req.setAttribute("adminMsg", "Usuario eliminado.");
+			break;
+		}
+		}
+	}
+
+	// crud etapas
+	private void handleStage(String action, HttpServletRequest req, HttpServletResponse res) throws Exception {
+		switch (action) {
+		case "create": {
+			String name = req.getParameter("st_name");
+			String location = req.getParameter("st_location");
+			boolean completed = "true".equals(req.getParameter("st_completed"));
+			byte[] img = null;
+			Part fp = req.getPart("st_image");
+			if (fp != null && fp.getSize() > 0) {
+				try (InputStream is = fp.getInputStream()) {
+					img = is.readAllBytes();
+				}
+			}
+			Stage s = new Stage();
+			s.setName(name);
+			s.setLocation(location);
+			s.setCompleted(completed);
+			s.setImage(img);
+			stageDAO.insertStage(s);
+			req.setAttribute("adminMsg", "Etapa creada.");
+			break;
+		}
+		case "update": {
+			int id = Integer.parseInt(req.getParameter("st_id"));
+			String name = req.getParameter("st_name");
+			String location = req.getParameter("st_location");
+			boolean completed = "true".equals(req.getParameter("st_completed"));
+			Stage s = stageDAO.getStageByID(id);
+			if (s != null) {
+				s.setName(name);
+				s.setLocation(location);
+				s.setCompleted(completed);
+				Part fp = req.getPart("st_image");
+				if (fp != null && fp.getSize() > 0) {
+					try (InputStream is = fp.getInputStream()) {
+						s.setImage(is.readAllBytes());
+					}
+					stageDAO.updateStageWithImage(s);
+				} else {
+					stageDAO.updateStage(s);
+				}
+			}
+			req.setAttribute("adminMsg", "Etapa actualizada.");
+			break;
+		}
+		case "delete": {
+			int id = Integer.parseInt(req.getParameter("st_id"));
+			stageDAO.deleteStage(id);
+			req.setAttribute("adminMsg", "Etapa eliminada.");
+			break;
+		}
+		}
+	}
+
+	// crud chequeos medicos
+	private void handleMedicalCheck(String action, HttpServletRequest req, HttpServletResponse res) throws Exception {
+		switch (action) {
+		case "create": {
+			int runnerId = Integer.parseInt(req.getParameter("mc_runnerId"));
+			boolean passed = "true".equals(req.getParameter("mc_passed"));
+			String notes = req.getParameter("mc_notes");
+			String dateStr = req.getParameter("mc_date");
+			java.util.Date checkDate = null;
+			if (dateStr != null && !dateStr.isEmpty()) {
+				try {
+					checkDate = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(dateStr);
+				} catch (Exception ex) {
+					checkDate = null;
+				}
+			}
+			medicalCheckDAO.insertCheck(runnerId, passed, notes, checkDate);
+			req.setAttribute("adminMsg", "Chequeo medico registrado.");
+			break;
+		}
+		case "delete": {
+			int id = Integer.parseInt(req.getParameter("mc_id"));
+			medicalCheckDAO.deleteCheck(id);
+			req.setAttribute("adminMsg", "Chequeo medico eliminado.");
+			break;
+		}
+		}
+	}
 }
