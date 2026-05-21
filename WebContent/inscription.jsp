@@ -57,11 +57,11 @@
                         <hr><br>
                         <div class="field">
                             <label for="horse-name">Nombre</label>
-                            <input type="text" id="horse-name" name="horse-name" required>
+                            <input type="text" id="mount-name" name="horse-name" required>
                         </div>
                         <div class="field">
                             <label for="horse-type">Tipo de montura</label>
-                            <input type="text" id="horse-type" name="horse-type" required>
+                            <input type="text" id="mount-type" name="horse-type" required>
                         </div>
                     </fieldset>
                     <div class="form-actions">
