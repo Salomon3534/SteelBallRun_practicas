@@ -68,8 +68,8 @@ public class ServletProfile extends HttpServlet {
 				Mount mount = mountDAO.getMountByID(runner.getIdMount());
 				req.setAttribute("mount", mount);
 
-				// Ranking
-				java.util.List<Runner> all = runnerDAO.listRunnersTop(9999);
+				// ranking
+				java.util.List<Runner> all = runnerDAO.listRunnersTop(25);
 				int rank = 1;
 				for (Runner r : all) {
 					if (r.getBib() == runner.getBib())

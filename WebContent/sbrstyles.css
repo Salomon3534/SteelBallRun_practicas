@@ -1526,3 +1526,83 @@ input[type="reset"] {
     transition: background 0.2s;
 }
 .btn-pdf-profile:hover { background: #5a3a00; }
+
+/* ============================================================
+   24. PÁGINA DE PASSKEY (registro completado)
+   ============================================================ */
+.passkey-page {
+    max-width: 600px;
+    margin: 60px auto;
+    text-align: center;
+    padding: 0 20px;
+    flex: 1;
+}
+
+.passkey-box {
+    background: #fdf6e3;
+    border: 3px solid #8b6914;
+    border-radius: 12px;
+    padding: 40px;
+    margin: 30px 0;
+}
+
+.passkey-box h2 {
+    color: #5a3a00;
+    margin-bottom: 10px;
+}
+
+.passkey-code {
+    font-family: monospace;
+    font-size: 1.3rem;
+    background: #fff8e1;
+    border: 2px dashed #c9a227;
+    border-radius: 8px;
+    padding: 18px 24px;
+    letter-spacing: 2px;
+    color: #2c1a00;
+    word-break: break-all;
+    margin: 20px 0;
+}
+
+.passkey-warning {
+    color: #8b0000;
+    font-weight: bold;
+    font-size: 0.95rem;
+    margin-bottom: 24px;
+}
+
+.btn-pdf {
+    background: #8b6914;
+    color: #fff;
+    border: none;
+    padding: 14px 32px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 8px;
+    text-decoration: none;
+    display: inline-block;
+    font-family: inherit;
+    transition: background 0.2s;
+    flex: unset;
+}
+
+.btn-pdf:hover { background: #5a3a00; }
+
+.btn-home {
+    background: #3a5a00;
+    color: #fff;
+    border: none;
+    padding: 14px 32px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 8px;
+    text-decoration: none;
+    display: inline-block;
+    font-family: inherit;
+    transition: background 0.2s;
+    flex: unset;
+}
+
+.btn-home:hover { background: #1e3a00; }

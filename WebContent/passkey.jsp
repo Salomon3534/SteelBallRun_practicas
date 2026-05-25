@@ -16,19 +16,6 @@
     <title>SBR - Registro Completado</title>
     <link rel="stylesheet" href="sbrstyles.css">
     <link rel="icon" type="image/png" href="assets/web_images/sbr_logo.png">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="assets/js/sbr-pdf.js"></script>
-    <style>
-        .passkey-page { max-width: 600px; margin: 60px auto; text-align: center; padding: 0 20px; }
-        .passkey-box { background: #fdf6e3; border: 3px solid #8b6914; border-radius: 12px; padding: 40px; margin: 30px 0; }
-        .passkey-box h2 { color: #5a3a00; margin-bottom: 10px; }
-        .passkey-code { font-family: monospace; font-size: 1.3rem; background: #fff8e1; border: 2px dashed #c9a227; border-radius: 8px; padding: 18px 24px; letter-spacing: 2px; color: #2c1a00; word-break: break-all; margin: 20px 0; }
-        .passkey-warning { color: #8b0000; font-weight: bold; font-size: 0.95rem; margin-bottom: 24px; }
-        .btn-pdf { background: #8b6914; color: #fff; border: none; padding: 14px 32px; font-size: 1.1rem; border-radius: 8px; cursor: pointer; margin: 8px; text-decoration: none; display: inline-block; }
-        .btn-pdf:hover { background: #5a3a00; }
-        .btn-home { background: #3a5a00; color: #fff; border: none; padding: 14px 32px; font-size: 1.1rem; border-radius: 8px; cursor: pointer; margin: 8px; text-decoration: none; display: inline-block; }
-        .btn-home:hover { background: #1e3a00; }
-    </style>
 </head>
 <body>
     <%@ include file="WEB-INF/nav.jspf" %>
@@ -56,10 +43,16 @@
         </div>
     </footer>
 
+    <%-- 1. Variables primero --%>
     <script>
         const NOMBRE   = "<%= nombre   != null ? nombre.replace("\"", "\\\"")   : "Corredor" %>";
         const PASSKEY  = "<%= passkey  != null ? passkey.replace("\"", "\\\"")  : "" %>";
         const USERNAME = "<%= username != null ? username.replace("\"", "\\\"") : "" %>";
     </script>
+    <%-- 2. jsPDF (window.jspdf) --%>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <%-- 3. sbr-pdf.js que usa ambos --%>
+    <script src="<%= request.getContextPath() %>/assets/sbr-pdf.js"></script>
+
 </body>
 </html>

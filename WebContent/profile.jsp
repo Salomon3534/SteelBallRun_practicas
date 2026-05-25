@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.steelballrun.model.User, com.steelballrun.model.Runner, com.steelballrun.model.Person, com.steelballrun.model.Mount, com.steelballrun.model.Stage, java.util.List, java.util.Map" %>
+<%@ page import="com.steelballrun.model.User, com.steelballrun.model.Runner, com.steelballrun.model.Person, com.steelballrun.model.Mount, com.steelballrun.model.Stage, java.util.List, java.util.Map, java.util.Base64" %>
 <%
     User    loggedUser  = (User)    request.getAttribute("loggedUser");
     Runner  runner      = (Runner)  request.getAttribute("runner");
@@ -21,8 +21,6 @@
     <title>SBR — Mi Perfil</title>
     <link rel="stylesheet" href="sbrstyles.css">
     <link rel="icon" type="image/png" href="assets/web_images/sbr_logo.png">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="assets/js/sbr-pdf.js"></script>
 </head>
 <body>
     <header class="main-header">
@@ -49,8 +47,10 @@
 
         <% if (runner != null && person != null) { %>
         <div class="profile-hero">
-            <% if (runner.getImage() != null && runner.getImage().length > 0) { %>
-                <img class="profile-avatar-img" src="runnerImage?bib=<%= runner.getBib() %>" alt="Foto de perfil">
+            <% if (runner.getImage() != null && runner.getImage().length > 0) { 
+                String base64Image = Base64.getEncoder().encodeToString(runner.getImage());
+            %>
+                <img class="profile-avatar-img" src="data:image/png;base64,<%= base64Image %>" alt="Foto de perfil">
             <% } %>
             <div class="profile-name">
                 <h2><%= person.getName() %></h2>
@@ -66,11 +66,9 @@
         <% } %>
 
         <div class="points-display">
-
             <div class="points-info">
                 <div class="points-num"><%= runner.getPoints() != null ? runner.getPoints() : 0 %></div>
                 <div class="points-label">Puntos acumulados</div>
-                
             </div>
             <div class="points-rank">
                 <div class="rank-num">#<%= rank != null ? rank : "—" %></div>
@@ -212,8 +210,7 @@
         </div>
 
         <% } else { %>
-            <div class="profile-card" style="text-align:center;
-            padding:40px;">
+            <div class="profile-card" style="text-align:center;padding:40px;">
                 <p>No hay datos de corredor asociados a tu cuenta.</p>
             </div>
         <% } %>
@@ -227,11 +224,15 @@
         </div>
     </footer>
 
-<script>
-    const SBR_NOMBRE   = "<%= person != null ? person.getName().replace("\"", "\\\"") : "Corredor" %>";
-    const SBR_USERNAME = "<%= profileUsername != null ? profileUsername.replace("\"", "\\\"") : "" %>";
-    const SBR_PASSKEY  = "<%= profilePasskey  != null ? profilePasskey.replace("\"", "\\\"")  : "" %>";
-</script>
+    <%-- Las variables JS se definen ANTES de cargar el script que las usa --%>
+    <script>
+        const SBR_NOMBRE   = "<%= person != null ? person.getName().replace("\"", "\\\"") : "Corredor" %>";
+        const SBR_USERNAME = "<%= profileUsername != null ? profileUsername.replace("\"", "\\\"") : "" %>";
+        const SBR_PASSKEY  = "<%= profilePasskey  != null ? profilePasskey.replace("\"", "\\\"")  : "" %>";
+    </script>
+    <%-- jsPDF debe cargarse ANTES que sbr-pdf.js, que depende de window.jspdf --%>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="<%= request.getContextPath() %>/assets/sbr-pdf.js"></script>
 
 </body>
 </html>
