@@ -37,7 +37,6 @@ public class ServletAdmin extends HttpServlet {
 		medicalCheckDAO = new MedicalCheckDAO();
 	}
 
-	/* ── Guard ───────────────────────────────────────────── */
 	private boolean requireAdmin(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		HttpSession s = req.getSession(false);
 		if (s == null || s.getAttribute("loggedUser") == null) {
@@ -99,7 +98,7 @@ public class ServletAdmin extends HttpServlet {
 		req.setAttribute("users", userDAO.listAll());
 		req.setAttribute("medicalChecks", medicalCheckDAO.listAll());
 
-		// Build personMap for runner table
+		// tabla de personas
 		Map<Integer, Person> pm = new HashMap<>();
 		for (Person p : personDAO.listPersons())
 			pm.put(p.getId(), p);
@@ -143,8 +142,6 @@ public class ServletAdmin extends HttpServlet {
 			r.setIdStage(stageId);
 			r.setImage(img);
 			r.setStatus("active");
-
-			// Passkey para el usuario (solo en user, nunca en runner)
 			String passkey = java.util.UUID.randomUUID().toString();
 
 			try (Connection conn = DatabaseConnection.getConnection()) {
@@ -152,12 +149,12 @@ public class ServletAdmin extends HttpServlet {
 				runnerDAO.insertRunner(r, conn);
 				conn.commit();
 
-				// Obtener dorsal y crear usuario asociado
+				// obtener dorsal y crear usuario asociado
 				List<Runner> all = runnerDAO.listRunners();
 				int bib = all.isEmpty() ? -1 : all.get(all.size() - 1).getBib();
 				Person p = personDAO.getPersonByID(personId);
-				String username = (p != null ? p.getName().toLowerCase().replaceAll("[^a-z0-9]", "_") : "runner")
-						+ "_" + bib;
+				String username = (p != null ? p.getName().toLowerCase().replaceAll("[^a-z0-9]", "_") : "runner") + "_"
+						+ bib;
 				User u = new User(0, username, AuthUtil.sha256(passkey), "user", bib);
 				userDAO.insert(u);
 			}

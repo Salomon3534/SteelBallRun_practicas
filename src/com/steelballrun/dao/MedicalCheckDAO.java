@@ -6,32 +6,18 @@ import com.steelballrun.util.DatabaseConnection;
 
 public class MedicalCheckDAO {
 
-	/**
-	 * Insert a medical check. If passed=false, also sets runner status to 'retired'
-	 * in the same transaction (Java-side complement to the DB trigger).
-	 */
 	public boolean insertCheck(int runnerId, boolean passed, String notes, java.util.Date checkDate) {
 		String sql = "INSERT INTO medical_check (runner_id, check_date, passed, notes) VALUES (?,?,?,?)";
 		try (Connection conn = DatabaseConnection.getConnection()) {
-			conn.setAutoCommit(false);
 			try (PreparedStatement ps = conn.prepareStatement(sql)) {
 				ps.setInt(1, runnerId);
-				ps.setTimestamp(2,
-					checkDate != null ? new Timestamp(checkDate.getTime()) : new Timestamp(System.currentTimeMillis()));
+				ps.setTimestamp(2, checkDate != null ? new Timestamp(checkDate.getTime())
+						: new Timestamp(System.currentTimeMillis()));
 				ps.setBoolean(3, passed);
 				ps.setString(4, notes);
 				ps.executeUpdate();
+				return true;
 			}
-			// If failed, retire the runner (Java-side fallback; DB trigger also does this)
-			if (!passed) {
-				try (PreparedStatement ps2 = conn.prepareStatement(
-						"UPDATE runner SET status='retired' WHERE bib=? AND status='active'")) {
-					ps2.setInt(1, runnerId);
-					ps2.executeUpdate();
-				}
-			}
-			conn.commit();
-			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;

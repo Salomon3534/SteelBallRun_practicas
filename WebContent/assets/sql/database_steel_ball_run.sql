@@ -47,8 +47,8 @@ CREATE TABLE medical_check (
     FOREIGN KEY (runner_id) REFERENCES runner(bib) ON DELETE CASCADE
 );
 
--- Trigger: chequeo médico suspendido → corredor retirado automáticamente
-DELIMITER $$
+-- chequeo médico suspendido, corredor retirado automáticamente
+DELIMITER //
 CREATE TRIGGER trg_medical_check_fail
 AFTER INSERT ON medical_check
 FOR EACH ROW
@@ -59,7 +59,7 @@ BEGIN
          WHERE bib = NEW.runner_id
            AND status = 'active';
     END IF;
-END$$
+END//
 DELIMITER ;
 
 CREATE TABLE sponsor (
