@@ -7,16 +7,18 @@ import com.steelballrun.util.DatabaseConnection;
 
 public class RunnerDAO {
 
-	private static final String SELECT =
-		"SELECT bib, id_person, id_mount, image, points, km, id_stage, status FROM runner";
+	private static final String SELECT = "SELECT bib, id_person, id_mount, image, points, km, id_stage, status FROM runner";
 
 	public List<Runner> listRunners() {
 		List<Runner> list = new ArrayList<>();
 		try (Connection conn = DatabaseConnection.getConnection();
 				PreparedStatement ps = conn.prepareStatement(SELECT + " ORDER BY bib");
 				ResultSet rs = ps.executeQuery()) {
-			while (rs.next()) list.add(mapRow(rs));
-		} catch (SQLException e) { e.printStackTrace(); }
+			while (rs.next())
+				list.add(mapRow(rs));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return list;
 	}
 
@@ -26,10 +28,18 @@ public class RunnerDAO {
 				PreparedStatement ps = conn.prepareStatement(SELECT + " ORDER BY points DESC LIMIT ?")) {
 			ps.setInt(1, limit);
 			try (ResultSet rs = ps.executeQuery()) {
-				while (rs.next()) list.add(mapRow(rs));
-			}
-		} catch (SQLException e) { e.printStackTrace(); }
+				while (rs.next()) {
+					Runner r = mapRow(rs);
+					
+					if (r.isActive()) {
+						list.add(r);
+						}
+				}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return list;
+		}
 	}
 
 	public Runner getRunnerByBib(int bib) {
@@ -37,9 +47,12 @@ public class RunnerDAO {
 				PreparedStatement ps = conn.prepareStatement(SELECT + " WHERE bib = ?")) {
 			ps.setInt(1, bib);
 			try (ResultSet rs = ps.executeQuery()) {
-				if (rs.next()) return mapRow(rs);
+				if (rs.next())
+					return mapRow(rs);
 			}
-		} catch (SQLException e) { e.printStackTrace(); }
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
@@ -59,8 +72,7 @@ public class RunnerDAO {
 
 	public boolean updateRunner(Runner r) {
 		String sql = "UPDATE runner SET id_person=?, id_mount=?, image=?, points=?, km=?, id_stage=?, status=? WHERE bib=?";
-		try (Connection conn = DatabaseConnection.getConnection();
-				PreparedStatement ps = conn.prepareStatement(sql)) {
+		try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setInt(1, r.getIdPerson());
 			ps.setInt(2, r.getIdMount());
 			ps.setBytes(3, r.getImage());
@@ -70,7 +82,10 @@ public class RunnerDAO {
 			ps.setString(7, r.getStatus() != null ? r.getStatus() : "active");
 			ps.setInt(8, r.getBib());
 			return ps.executeUpdate() > 0;
-		} catch (SQLException e) { e.printStackTrace(); return false; }
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	public boolean updateStatus(int bib, String status) {
@@ -79,18 +94,29 @@ public class RunnerDAO {
 			ps.setString(1, status);
 			ps.setInt(2, bib);
 			return ps.executeUpdate() > 0;
-		} catch (SQLException e) { e.printStackTrace(); return false; }
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
-	public boolean dropout(int bib)    { return updateStatus(bib, "retired"); }
-	public boolean disqualify(int bib) { return updateStatus(bib, "disqualified"); }
+	public boolean dropout(int bib) {
+		return updateStatus(bib, "retired");
+	}
+
+	public boolean disqualify(int bib) {
+		return updateStatus(bib, "disqualified");
+	}
 
 	public boolean deleteRunner(int bib) {
 		try (Connection conn = DatabaseConnection.getConnection();
 				PreparedStatement ps = conn.prepareStatement("DELETE FROM runner WHERE bib = ?")) {
 			ps.setInt(1, bib);
 			return ps.executeUpdate() > 0;
-		} catch (SQLException e) { e.printStackTrace(); return false; }
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	private Runner mapRow(ResultSet rs) throws SQLException {
@@ -108,7 +134,9 @@ public class RunnerDAO {
 	}
 
 	private void setNullableInt(PreparedStatement ps, int idx, Integer val) throws SQLException {
-		if (val != null) ps.setInt(idx, val);
-		else ps.setNull(idx, Types.INTEGER);
+		if (val != null)
+			ps.setInt(idx, val);
+		else
+			ps.setNull(idx, Types.INTEGER);
 	}
 }

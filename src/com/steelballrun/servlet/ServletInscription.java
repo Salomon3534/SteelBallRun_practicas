@@ -77,8 +77,7 @@ public class ServletInscription extends HttpServlet {
 			}
 		}
 
-		// Passkey: contraseña en texto plano que se muestra una vez al usuario.
-		// Se guarda HASHEADA en user.passkey. NO se guarda en runner.
+		// generacion de usuario y contraseña
 		String passkey = UUID.randomUUID().toString();
 
 		try (Connection conn = DatabaseConnection.getConnection()) {
@@ -98,22 +97,22 @@ public class ServletInscription extends HttpServlet {
 				runnerDAO.insertRunner(runner, conn);
 				conn.commit();
 
-				// Obtener el dorsal del corredor recién insertado
+				// obtener el dorsal
 				java.util.List<Runner> allRunners = runnerDAO.listRunners();
 				int newBib = allRunners.isEmpty() ? -1 : allRunners.get(allRunners.size() - 1).getBib();
 
-				// Crear usuario: passkey hasheada en user, nunca en runner
+				// crear usuario
 				String username = name.toLowerCase().replaceAll("[^a-z0-9]", "_") + "_" + newBib;
 				User newUser = new User(0, username, AuthUtil.sha256(passkey), "user", newBib);
 				userDAO.insert(newUser);
 
-				// Iniciar sesión automáticamente
+				// iniciar sesión automáticamente
 				User createdUser = userDAO.findByCredentials(username, AuthUtil.sha256(passkey));
 				HttpSession session = req.getSession(true);
 				session.setAttribute("loggedUser", createdUser);
 				session.setMaxInactiveInterval(60 * 60);
 
-				// Pasar datos a passkey.jsp para mostrarlos UNA sola vez
+				// pasar datos a passkey.jsp para mostrarlos UNA sola vez
 				session.setAttribute("registeredName",     name);
 				session.setAttribute("registeredPasskey",  passkey);   // texto plano, solo en sesión
 				session.setAttribute("registeredUsername", username);

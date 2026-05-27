@@ -70,8 +70,8 @@ public class ServletProfile extends HttpServlet {
 		User user = (User) session.getAttribute("loggedUser");
 		String action = req.getParameter("action");
 
+		// retirada
 		if ("dropout".equals(action)) {
-			// Runner voluntarily drops out of the race
 			if (user.getRunnerId() != null) {
 				Runner runner = runnerDAO.getRunnerByBib(user.getRunnerId());
 				if (runner != null && runner.isActive()) {
@@ -87,14 +87,13 @@ public class ServletProfile extends HttpServlet {
 			req.getRequestDispatcher("/profile.jsp").forward(req, res);
 
 		} else if ("deleteAccount".equals(action)) {
-			// User deletes their own account; runner data is kept
+			// borrado de cuenta
 			int userId = user.getId();
 			session.invalidate();
 			userDAO.delete(userId);
 			res.sendRedirect(req.getContextPath() + "/login?msg=deleted");
 
 		} else {
-			// Unknown action — just show profile
 			res.sendRedirect(req.getContextPath() + "/profile");
 		}
 	}

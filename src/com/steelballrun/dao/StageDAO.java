@@ -42,8 +42,10 @@ public class StageDAO {
 			ps.setString(1, s.getName());
 			ps.setString(2, s.getLocation());
 			ps.setBoolean(3, s.isCompleted());
-			if (s.getImage() != null) ps.setBytes(4, s.getImage());
-			else ps.setNull(4, Types.BLOB);
+			if (s.getImage() != null)
+				ps.setBytes(4, s.getImage());
+			else
+				ps.setNull(4, Types.BLOB);
 			return ps.executeUpdate() > 0;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -71,8 +73,10 @@ public class StageDAO {
 			ps.setString(1, s.getName());
 			ps.setString(2, s.getLocation());
 			ps.setBoolean(3, s.isCompleted());
-			if (s.getImage() != null) ps.setBytes(4, s.getImage());
-			else ps.setNull(4, Types.BLOB);
+			if (s.getImage() != null)
+				ps.setBytes(4, s.getImage());
+			else
+				ps.setNull(4, Types.BLOB);
 			ps.setInt(5, s.getId());
 			return ps.executeUpdate() > 0;
 		} catch (SQLException e) {
