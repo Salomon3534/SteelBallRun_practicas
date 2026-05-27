@@ -30,16 +30,15 @@ public class RunnerDAO {
 			try (ResultSet rs = ps.executeQuery()) {
 				while (rs.next()) {
 					Runner r = mapRow(rs);
-					
 					if (r.isActive()) {
 						list.add(r);
-						}
+					}
 				}
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return list;
-		}
 	}
 
 	public Runner getRunnerByBib(int bib) {
