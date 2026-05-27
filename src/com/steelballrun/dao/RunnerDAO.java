@@ -7,7 +7,8 @@ import com.steelballrun.util.DatabaseConnection;
 
 public class RunnerDAO {
 
-	private static final String SELECT = "SELECT bib, id_person, id_mount, image, points, km, id_stage, passkey FROM runner";
+	private static final String SELECT =
+		"SELECT bib, id_person, id_mount, image, points, km, id_stage, passkey, status FROM runner";
 
 	public List<Runner> listRunners() {
 		List<Runner> list = new ArrayList<>();
@@ -52,7 +53,7 @@ public class RunnerDAO {
 	}
 
 	public boolean insertRunner(Runner r, Connection conn) throws SQLException {
-		String sql = "INSERT INTO runner (id_person, id_mount, image, points, km, id_stage, passkey) VALUES (?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO runner (id_person, id_mount, image, points, km, id_stage, passkey, status) VALUES (?,?,?,?,?,?,?,?)";
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setInt(1, r.getIdPerson());
 			ps.setInt(2, r.getIdMount());
@@ -61,12 +62,13 @@ public class RunnerDAO {
 			setNullableInt(ps, 5, r.getKm());
 			setNullableInt(ps, 6, r.getIdStage());
 			ps.setString(7, r.getPasskey());
+			ps.setString(8, r.getStatus() != null ? r.getStatus() : "active");
 			return ps.executeUpdate() > 0;
 		}
 	}
 
 	public boolean updateRunner(Runner r) {
-		String sql = "UPDATE runner SET id_person=?, id_mount=?, image=?, points=?, km=?, id_stage=?, passkey=? WHERE bib=?";
+		String sql = "UPDATE runner SET id_person=?, id_mount=?, image=?, points=?, km=?, id_stage=?, passkey=?, status=? WHERE bib=?";
 		try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setInt(1, r.getIdPerson());
 			ps.setInt(2, r.getIdMount());
@@ -75,12 +77,38 @@ public class RunnerDAO {
 			setNullableInt(ps, 5, r.getKm());
 			setNullableInt(ps, 6, r.getIdStage());
 			ps.setString(7, r.getPasskey());
-			ps.setInt(8, r.getBib());
+			ps.setString(8, r.getStatus() != null ? r.getStatus() : "active");
+			ps.setInt(9, r.getBib());
 			return ps.executeUpdate() > 0;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	/**
+	 * Update only the status column for a runner. Used for dropout, disqualify, etc.
+	 */
+	public boolean updateStatus(int bib, String status) {
+		try (Connection conn = DatabaseConnection.getConnection();
+				PreparedStatement ps = conn.prepareStatement("UPDATE runner SET status=? WHERE bib=?")) {
+			ps.setString(1, status);
+			ps.setInt(2, bib);
+			return ps.executeUpdate() > 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	/** Runner voluntarily drops out → status = 'retired' */
+	public boolean dropout(int bib) {
+		return updateStatus(bib, "retired");
+	}
+
+	/** Admin disqualifies a runner → status = 'disqualified'. Runner is NOT deleted. */
+	public boolean disqualify(int bib) {
+		return updateStatus(bib, "disqualified");
 	}
 
 	public boolean deleteRunner(int bib) {
@@ -104,6 +132,8 @@ public class RunnerDAO {
 		r.setKm(rs.getObject("km") != null ? rs.getInt("km") : null);
 		r.setIdStage(rs.getObject("id_stage") != null ? rs.getInt("id_stage") : null);
 		r.setPasskey(rs.getString("passkey"));
+		String st = rs.getString("status");
+		r.setStatus(st != null ? st : "active");
 		return r;
 	}
 

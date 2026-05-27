@@ -113,6 +113,12 @@ public class ServletAdmin extends HttpServlet {
 	// crud corredores
 	private void handleRunner(String action, HttpServletRequest req, HttpServletResponse res) throws Exception {
 		switch (action) {
+		case "disqualify": {
+			int bib = Integer.parseInt(req.getParameter("r_bib"));
+			runnerDAO.disqualify(bib);
+			req.setAttribute("adminMsg", "Corredor #" + bib + " descalificado.");
+			break;
+		}
 		case "create": {
 			int personId = Integer.parseInt(req.getParameter("r_personId"));
 			int mountId = Integer.parseInt(req.getParameter("r_mountId"));

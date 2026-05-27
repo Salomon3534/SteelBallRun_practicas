@@ -9,71 +9,40 @@ public class Runner {
 	private Integer km;
 	private Integer idStage;
 	private String passkey;
+	/** 'active' | 'retired' | 'disqualified' */
+	private String status;
 
 	public Runner() {
 	}
 
-	public int getBib() {
-		return bib;
-	}
+	public int getBib() { return bib; }
+	public void setBib(int bib) { this.bib = bib; }
 
-	public void setBib(int bib) {
-		this.bib = bib;
-	}
+	public int getIdPerson() { return idPerson; }
+	public void setIdPerson(int idPerson) { this.idPerson = idPerson; }
 
-	public int getIdPerson() {
-		return idPerson;
-	}
+	public int getIdMount() { return idMount; }
+	public void setIdMount(int idMount) { this.idMount = idMount; }
 
-	public void setIdPerson(int idPerson) {
-		this.idPerson = idPerson;
-	}
+	public byte[] getImage() { return image; }
+	public void setImage(byte[] image) { this.image = image; }
 
-	public int getIdMount() {
-		return idMount;
-	}
+	public Integer getPoints() { return points; }
+	public void setPoints(Integer points) { this.points = points; }
 
-	public void setIdMount(int idMount) {
-		this.idMount = idMount;
-	}
+	public Integer getKm() { return km; }
+	public void setKm(Integer km) { this.km = km; }
 
-	public byte[] getImage() {
-		return image;
-	}
+	public Integer getIdStage() { return idStage; }
+	public void setIdStage(Integer idStage) { this.idStage = idStage; }
 
-	public void setImage(byte[] image) {
-		this.image = image;
-	}
+	public String getPasskey() { return passkey; }
+	public void setPasskey(String passkey) { this.passkey = passkey; }
 
-	public Integer getPoints() {
-		return points;
-	}
+	public String getStatus() { return status != null ? status : "active"; }
+	public void setStatus(String status) { this.status = status; }
 
-	public void setPoints(Integer points) {
-		this.points = points;
-	}
-
-	public Integer getKm() {
-		return km;
-	}
-
-	public void setKm(Integer km) {
-		this.km = km;
-	}
-
-	public Integer getIdStage() {
-		return idStage;
-	}
-
-	public void setIdStage(Integer idStage) {
-		this.idStage = idStage;
-	}
-
-	public String getPasskey() {
-		return passkey;
-	}
-
-	public void setPasskey(String passkey) {
-		this.passkey = passkey;
-	}
+	public boolean isActive()       { return "active".equals(getStatus()); }
+	public boolean isRetired()      { return "retired".equals(getStatus()); }
+	public boolean isDisqualified() { return "disqualified".equals(getStatus()); }
 }
