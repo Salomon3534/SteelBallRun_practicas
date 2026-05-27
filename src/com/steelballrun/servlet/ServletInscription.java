@@ -23,21 +23,20 @@ import jakarta.servlet.http.*;
 
 @SuppressWarnings("serial")
 @WebServlet("/inscription")
-// declarados limites de subida de archivos (*1024 es para ponerlo en MB)
-@MultipartConfig
-(maxFileSize = 5 * 1024 * 1024, maxRequestSize = 10 * 1024 * 1024)public class ServletInscription extends HttpServlet {
+@MultipartConfig(maxFileSize = 5 * 1024 * 1024, maxRequestSize = 10 * 1024 * 1024)
+public class ServletInscription extends HttpServlet {
 
 	private PersonDAO personDAO;
 	private RunnerDAO runnerDAO;
-	private MountDAO mountDAO;
-	private UserDAO userDAO;
+	private MountDAO  mountDAO;
+	private UserDAO   userDAO;
 
 	@Override
 	public void init() {
 		personDAO = new PersonDAO();
 		runnerDAO = new RunnerDAO();
-		mountDAO = new MountDAO();
-		userDAO = new UserDAO();
+		mountDAO  = new MountDAO();
+		userDAO   = new UserDAO();
 	}
 
 	@Override
@@ -50,13 +49,13 @@ import jakarta.servlet.http.*;
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 
-		String name = req.getParameter("runner-name");
-		String country = req.getParameter("runner-country");
-		String ageStr = req.getParameter("runner-age");
-		String dni = req.getParameter("runner-dni");
+		String name      = req.getParameter("runner-name");
+		String country   = req.getParameter("runner-country");
+		String ageStr    = req.getParameter("runner-age");
+		String dni       = req.getParameter("runner-dni");
 		String mountName = req.getParameter("mount-name");
 		String mountType = req.getParameter("mount-type");
-		Part filePart = req.getPart("user-file");
+		Part   filePart  = req.getPart("user-file");
 
 		if (isBlank(name) || isBlank(country) || isBlank(dni) || isBlank(mountName) || isBlank(mountType)) {
 			error(req, res, "Todos los campos son requeridos.");
@@ -66,13 +65,9 @@ import jakarta.servlet.http.*;
 		int age;
 		try {
 			age = Integer.parseInt(ageStr);
-			if (age < 16) {
-				error(req, res, "La edad mínima es 16 años.");
-				return;
-			}
+			if (age < 16) { error(req, res, "La edad mínima es 16 años."); return; }
 		} catch (NumberFormatException e) {
-			error(req, res, "La edad debe ser un número válido.");
-			return;
+			error(req, res, "La edad debe ser un número válido."); return;
 		}
 
 		byte[] imageData = null;
@@ -82,43 +77,46 @@ import jakarta.servlet.http.*;
 			}
 		}
 
+		// Passkey: contraseña en texto plano que se muestra una vez al usuario.
+		// Se guarda HASHEADA en user.passkey. NO se guarda en runner.
 		String passkey = UUID.randomUUID().toString();
 
 		try (Connection conn = DatabaseConnection.getConnection()) {
 			conn.setAutoCommit(false);
 			try {
 				int personId = personDAO.insertPersonAndGetId(new Person(0, name, age, country, dni), conn);
-				int mountId = mountDAO.insertMountAndGetId(new Mount(0, mountName, mountType), conn);
+				int mountId  = mountDAO.insertMountAndGetId(new Mount(0, mountName, mountType), conn);
 
 				Runner runner = new Runner();
 				runner.setIdPerson(personId);
 				runner.setIdMount(mountId);
 				runner.setImage(imageData);
-				runner.setPasskey(passkey);
 				runner.setPoints(0);
 				runner.setKm(0);
+				runner.setStatus("active");
 
 				runnerDAO.insertRunner(runner, conn);
 				conn.commit();
 
-				// obtener el nuevo dorsal del ultimo insertado
+				// Obtener el dorsal del corredor recién insertado
 				java.util.List<Runner> allRunners = runnerDAO.listRunners();
 				int newBib = allRunners.isEmpty() ? -1 : allRunners.get(allRunners.size() - 1).getBib();
 
-				// crear usuario conectado al nuevo corredor
+				// Crear usuario: passkey hasheada en user, nunca en runner
 				String username = name.toLowerCase().replaceAll("[^a-z0-9]", "_") + "_" + newBib;
 				User newUser = new User(0, username, AuthUtil.sha256(passkey), "user", newBib);
 				userDAO.insert(newUser);
 
-				// iniciar sesión automáticamente
+				// Iniciar sesión automáticamente
 				User createdUser = userDAO.findByCredentials(username, AuthUtil.sha256(passkey));
 				HttpSession session = req.getSession(true);
 				session.setAttribute("loggedUser", createdUser);
 				session.setMaxInactiveInterval(60 * 60);
 
-				req.getSession().setAttribute("registeredName", name);
-				req.getSession().setAttribute("registeredPasskey", passkey);
-				req.getSession().setAttribute("registeredUsername", username);
+				// Pasar datos a passkey.jsp para mostrarlos UNA sola vez
+				session.setAttribute("registeredName",     name);
+				session.setAttribute("registeredPasskey",  passkey);   // texto plano, solo en sesión
+				session.setAttribute("registeredUsername", username);
 				res.sendRedirect(req.getContextPath() + "/passkey.jsp");
 
 			} catch (Exception e) {
@@ -130,9 +128,7 @@ import jakarta.servlet.http.*;
 		}
 	}
 
-	private static boolean isBlank(String s) {
-		return s == null || s.trim().isEmpty();
-	}
+	private static boolean isBlank(String s) { return s == null || s.trim().isEmpty(); }
 
 	private void error(HttpServletRequest req, HttpServletResponse res, String msg)
 			throws ServletException, IOException {

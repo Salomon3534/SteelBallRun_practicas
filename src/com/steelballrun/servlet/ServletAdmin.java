@@ -113,6 +113,12 @@ public class ServletAdmin extends HttpServlet {
 	// crud corredores
 	private void handleRunner(String action, HttpServletRequest req, HttpServletResponse res) throws Exception {
 		switch (action) {
+		case "disqualify": {
+			int bib = Integer.parseInt(req.getParameter("r_bib"));
+			runnerDAO.disqualify(bib);
+			req.setAttribute("adminMsg", "Corredor #" + bib + " descalificado.");
+			break;
+		}
 		case "create": {
 			int personId = Integer.parseInt(req.getParameter("r_personId"));
 			int mountId = Integer.parseInt(req.getParameter("r_mountId"));
@@ -129,7 +135,6 @@ public class ServletAdmin extends HttpServlet {
 				}
 			}
 
-			String passkey = java.util.UUID.randomUUID().toString();
 			Runner r = new Runner();
 			r.setIdPerson(personId);
 			r.setIdMount(mountId);
@@ -137,26 +142,26 @@ public class ServletAdmin extends HttpServlet {
 			r.setKm(km);
 			r.setIdStage(stageId);
 			r.setImage(img);
-			r.setPasskey(passkey);
+			r.setStatus("active");
+
+			// Passkey para el usuario (solo en user, nunca en runner)
+			String passkey = java.util.UUID.randomUUID().toString();
 
 			try (Connection conn = DatabaseConnection.getConnection()) {
 				conn.setAutoCommit(false);
 				runnerDAO.insertRunner(r, conn);
-
-				// crear usuario asociado al corredor
-				Person p = personDAO.getPersonByID(personId);
-				String username = (p != null ? p.getName().toLowerCase().replaceAll("\\s+", "_") : "runner") + "_"
-						+ System.currentTimeMillis() % 10000;
-				User u = new User(0, username, AuthUtil.sha256(passkey), "user", null);
 				conn.commit();
 
-				// obtener el dorsal asignado al corredor recien creado
+				// Obtener dorsal y crear usuario asociado
 				List<Runner> all = runnerDAO.listRunners();
 				int bib = all.isEmpty() ? -1 : all.get(all.size() - 1).getBib();
-				u.setRunnerId(bib);
+				Person p = personDAO.getPersonByID(personId);
+				String username = (p != null ? p.getName().toLowerCase().replaceAll("[^a-z0-9]", "_") : "runner")
+						+ "_" + bib;
+				User u = new User(0, username, AuthUtil.sha256(passkey), "user", bib);
 				userDAO.insert(u);
 			}
-			req.setAttribute("adminMsg", "Corredor creado. Passkey: " + passkey);
+			req.setAttribute("adminMsg", "Corredor creado. Usuario y passkey generados: " + passkey);
 			break;
 		}
 		case "update": {

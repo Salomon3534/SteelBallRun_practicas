@@ -88,10 +88,31 @@
             <!-- DASHBOARD -->
             <section class="admin-section active" id="sec-dashboard">
                 <h2>Dashboard</h2>
+                <%
+                    int activeCount = 0, retiredCount = 0, disqualifiedCount = 0;
+                    if (runners != null) for (com.steelballrun.model.Runner _r : runners) {
+                        String _st = _r.getStatus();
+                        if ("active".equals(_st))       activeCount++;
+                        else if ("retired".equals(_st)) retiredCount++;
+                        else if ("disqualified".equals(_st)) disqualifiedCount++;
+                    }
+                %>
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-num"><%= runners  != null ? runners.size()  : 0 %></div>
                         <div class="stat-label">Corredores</div>
+                    </div>
+                    <div class="stat-card" style="border-top:3px solid #27ae60;">
+                        <div class="stat-num" style="color:#27ae60;"><%= activeCount %></div>
+                        <div class="stat-label">✅ En carrera</div>
+                    </div>
+                    <div class="stat-card" style="border-top:3px solid #c0392b;">
+                        <div class="stat-num" style="color:#c0392b;"><%= retiredCount %></div>
+                        <div class="stat-label">🏳️ Retirados</div>
+                    </div>
+                    <div class="stat-card" style="border-top:3px solid #7a0000;">
+                        <div class="stat-num" style="color:#7a0000;"><%= disqualifiedCount %></div>
+                        <div class="stat-label">🚫 Descalificados</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-num"><%= persons  != null ? persons.size()  : 0 %></div>
@@ -160,7 +181,7 @@
                 </div>
 
                 <table class="admin-table">
-                    <thead><tr><th>Dorsal</th><th>Corredor</th><th>Montura</th><th>Puntos</th><th>Km</th><th>Etapa</th><th>Acciones</th></tr></thead>
+                    <thead><tr><th>Dorsal</th><th>Corredor</th><th>Montura</th><th>Puntos</th><th>Km</th><th>Etapa</th><th>Estado</th><th>Acciones</th></tr></thead>
                     <tbody>
                     <% if (runners != null) for (Runner r : runners) {
                         Person p = personMap != null ? personMap.get(r.getIdPerson()) : null;
@@ -174,8 +195,28 @@
                             <td><%= r.getKm() != null ? r.getKm() : 0 %></td>
                             <td><%= r.getIdStage() != null ? r.getIdStage() : "—" %></td>
                             <td>
+                                <% String st = r.getStatus(); %>
+                                <% if ("active".equals(st)) { %>
+                                    <span class="badge badge-ok">✅ Activo</span>
+                                <% } else if ("retired".equals(st)) { %>
+                                    <span class="badge badge-fail">🏳️ Retirado</span>
+                                <% } else if ("disqualified".equals(st)) { %>
+                                    <span class="badge" style="background:#7a0000;color:#fff;border-radius:6px;padding:3px 9px;">🚫 Descalificado</span>
+                                <% } else { %>
+                                    <span><%= st %></span>
+                                <% } %>
+                            </td>
+                            <td>
                                 <div class="actions">
                                     <button class="btn-sm btn-edit" onclick="editRunner(<%= r.getBib() %>, <%= r.getPoints() != null ? r.getPoints() : 0 %>, <%= r.getKm() != null ? r.getKm() : 0 %>, '<%= r.getIdStage() != null ? r.getIdStage() : "" %>')">Editar</button>
+                                    <% if (!"disqualified".equals(r.getStatus())) { %>
+                                    <form action="admin" method="post" style="display:inline;" onsubmit="return confirm('¿Descalificar corredor #<%= r.getBib() %>? No será eliminado.')">
+                                        <input type="hidden" name="entity" value="runner">
+                                        <input type="hidden" name="action" value="disqualify">
+                                        <input type="hidden" name="r_bib" value="<%= r.getBib() %>">
+                                        <button type="submit" class="btn-sm" style="background:#7a0000;color:#fff;border:none;border-radius:5px;padding:4px 10px;cursor:pointer;">🚫 Descalificar</button>
+                                    </form>
+                                    <% } %>
                                     <form action="admin" method="post" style="display:inline;" onsubmit="return confirm('¿Eliminar corredor #<%= r.getBib() %>?')">
                                         <input type="hidden" name="entity" value="runner">
                                         <input type="hidden" name="action" value="delete">

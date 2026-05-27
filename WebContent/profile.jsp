@@ -9,8 +9,8 @@
     Integer rank        = (Integer) request.getAttribute("rank");
     Integer total       = (Integer) request.getAttribute("totalRunners");
     List<Map<String,Object>> medicalChecks = (List<Map<String,Object>>) request.getAttribute("medicalChecks");
-    String profilePasskey  = (String) request.getAttribute("profilePasskey");
     String profileUsername = (String) request.getAttribute("profileUsername");
+    String profileMsg      = (String) request.getAttribute("profileMsg");
     if (loggedUser == null) { response.sendRedirect(request.getContextPath() + "/login"); return; }
 %>
 <!DOCTYPE html>
@@ -45,6 +45,12 @@
     <main class="profile-page">
         <h1>Mi Perfil</h1>
 
+        <% if (profileMsg != null) { %>
+        <div class="form-message" style="margin-bottom:16px; padding:12px 18px; border-radius:8px; background:#f0f8e8; border:1px solid #7ab648; color:#3a6a1a;">
+            <%= profileMsg %>
+        </div>
+        <% } %>
+
         <% if (runner != null && person != null) { %>
         <div class="profile-hero">
             <% if (runner.getImage() != null && runner.getImage().length > 0) { 
@@ -57,13 +63,16 @@
                 <p><%= person.getCountry() %></p>
             </div>
             <span class="profile-role-badge role-user">Participante</span>
+            <%-- Status badge --%>
+            <% String runnerStatus = runner.getStatus(); %>
+            <% if ("active".equals(runnerStatus)) { %>
+                <span class="badge badge-ok" style="font-size:0.95rem;padding:5px 14px;">✅ En carrera</span>
+            <% } else if ("retired".equals(runnerStatus)) { %>
+                <span class="badge badge-fail" style="font-size:0.95rem;padding:5px 14px;">🏳️ Retirado</span>
+            <% } else if ("disqualified".equals(runnerStatus)) { %>
+                <span class="badge" style="background:#7a0000;color:#fff;font-size:0.95rem;padding:5px 14px;border-radius:6px;">🚫 Descalificado</span>
+            <% } %>
         </div>
-
-        <% if (profilePasskey != null) { %>
-        <div style="text-align:right;margin-bottom:8px;">
-            <button class="btn-pdf-profile" onclick="generarPDF(SBR_NOMBRE, SBR_USERNAME, SBR_PASSKEY)">📄 Descargar certificado PDF</button>
-        </div>
-        <% } %>
 
         <div class="points-display">
             <div class="points-info">
@@ -209,9 +218,46 @@
             <% } %>
         </div>
 
+        <%-- ── ACCIONES DEL CORREDOR ──────────────────────────── --%>
+        <div class="profile-card" style="border: 1.5px solid #c0392b22;">
+            <h3>⚙️ Acciones de cuenta</h3>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;padding-top:4px;">
+
+                <%-- Dropout button: only if runner is currently active --%>
+                <% if (runner.isActive()) { %>
+                <form action="profile" method="post" style="display:inline;"
+                      onsubmit="return confirm('¿Seguro que quieres abandonar la carrera? Esta acción no se puede deshacer.')">
+                    <input type="hidden" name="action" value="dropout">
+                    <button type="submit" class="btn btn-del" style="background:#c0392b;color:#fff;border:none;padding:10px 22px;border-radius:7px;font-size:0.97rem;cursor:pointer;">
+                        🏳️ Abandonar la carrera
+                    </button>
+                </form>
+                <% } else { %>
+                <span style="color:#888;font-size:0.93rem;font-style:italic;">No puedes abandonar: estado actual — <strong><%= runner.getStatus() %></strong></span>
+                <% } %>
+
+                <%-- Delete account button --%>
+                <form action="profile" method="post" style="display:inline;"
+                      onsubmit="return confirm('¿Eliminar tu cuenta permanentemente? Los datos de corredor se conservarán. Esta acción no puede deshacerse.')">
+                    <input type="hidden" name="action" value="deleteAccount">
+                    <button type="submit" style="background:#222;color:#fff;border:none;padding:10px 22px;border-radius:7px;font-size:0.97rem;cursor:pointer;">
+                        🗑️ Eliminar mi cuenta
+                    </button>
+                </form>
+            </div>
+        </div>
+
         <% } else { %>
             <div class="profile-card" style="text-align:center;padding:40px;">
                 <p>No hay datos de corredor asociados a tu cuenta.</p>
+                <%-- Still allow account deletion even without runner data --%>
+                <form action="profile" method="post" style="display:inline;margin-top:20px;"
+                      onsubmit="return confirm('¿Eliminar tu cuenta permanentemente?')">
+                    <input type="hidden" name="action" value="deleteAccount">
+                    <button type="submit" style="background:#222;color:#fff;border:none;padding:10px 22px;border-radius:7px;font-size:0.97rem;cursor:pointer;margin-top:16px;">
+                        🗑️ Eliminar mi cuenta
+                    </button>
+                </form>
             </div>
         <% } %>
 
@@ -228,11 +274,7 @@
     <script>
         const SBR_NOMBRE   = "<%= person != null ? person.getName().replace("\"", "\\\"") : "Corredor" %>";
         const SBR_USERNAME = "<%= profileUsername != null ? profileUsername.replace("\"", "\\\"") : "" %>";
-        const SBR_PASSKEY  = "<%= profilePasskey  != null ? profilePasskey.replace("\"", "\\\"")  : "" %>";
     </script>
-    <%-- jsPDF debe cargarse ANTES que sbr-pdf.js, que depende de window.jspdf --%>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="<%= request.getContextPath() %>/assets/sbr-pdf.js"></script>
 
 </body>
 </html>

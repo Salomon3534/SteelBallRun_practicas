@@ -9,6 +9,7 @@ import com.steelballrun.dao.MountDAO;
 import com.steelballrun.dao.PersonDAO;
 import com.steelballrun.dao.RunnerDAO;
 import com.steelballrun.dao.StageDAO;
+import com.steelballrun.dao.UserDAO;
 import com.steelballrun.model.Mount;
 import com.steelballrun.model.Person;
 import com.steelballrun.model.Runner;
@@ -27,6 +28,7 @@ public class ServletProfile extends HttpServlet {
 	private MountDAO mountDAO;
 	private StageDAO stageDAO;
 	private MedicalCheckDAO medicalCheckDAO;
+	private UserDAO userDAO;
 
 	@Override
 	public void init() {
@@ -35,11 +37,11 @@ public class ServletProfile extends HttpServlet {
 		mountDAO = new MountDAO();
 		stageDAO = new StageDAO();
 		medicalCheckDAO = new MedicalCheckDAO();
+		userDAO = new UserDAO();
 	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-
 		HttpSession session = req.getSession(false);
 		if (session == null || session.getAttribute("loggedUser") == null) {
 			res.sendRedirect(req.getContextPath() + "/login");
@@ -48,49 +50,82 @@ public class ServletProfile extends HttpServlet {
 
 		User user = (User) session.getAttribute("loggedUser");
 		req.setAttribute("loggedUser", user);
-
-		// obtener el nombre del usuario para el PDF
 		req.setAttribute("profileUsername", user.getUsername());
 
 		if ("user".equals(user.getRole()) && user.getRunnerId() != null) {
-
-			Runner runner = runnerDAO.getRunnerByBib(user.getRunnerId());
-			if (runner != null) {
-				req.setAttribute("runner", runner);
-
-				// mostrar passkey
-				req.setAttribute("profilePasskey", runner.getPasskey());
-
-				// persona y montura
-				Person person = personDAO.getPersonByID(runner.getIdPerson());
-				req.setAttribute("person", person);
-
-				Mount mount = mountDAO.getMountByID(runner.getIdMount());
-				req.setAttribute("mount", mount);
-
-				// ranking
-				java.util.List<Runner> all = runnerDAO.listRunnersTop(25);
-				int rank = 1;
-				for (Runner r : all) {
-					if (r.getBib() == runner.getBib())
-						break;
-					rank++;
-				}
-				req.setAttribute("rank", rank);
-				req.setAttribute("totalRunners", all.size());
-
-				// etapa actual
-				if (runner.getIdStage() != null) {
-					Stage stage = stageDAO.getStageByID(runner.getIdStage());
-					req.setAttribute("currentStage", stage);
-				}
-
-				// chequeos médicos
-				List<Map<String, Object>> checks = medicalCheckDAO.listByRunner(runner.getBib());
-				req.setAttribute("medicalChecks", checks);
-			}
+			loadRunnerData(req, user);
 		}
 
 		req.getRequestDispatcher("/profile.jsp").forward(req, res);
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		HttpSession session = req.getSession(false);
+		if (session == null || session.getAttribute("loggedUser") == null) {
+			res.sendRedirect(req.getContextPath() + "/login");
+			return;
+		}
+
+		User user = (User) session.getAttribute("loggedUser");
+		String action = req.getParameter("action");
+
+		if ("dropout".equals(action)) {
+			// Runner voluntarily drops out of the race
+			if (user.getRunnerId() != null) {
+				Runner runner = runnerDAO.getRunnerByBib(user.getRunnerId());
+				if (runner != null && runner.isActive()) {
+					runnerDAO.dropout(user.getRunnerId());
+					req.setAttribute("profileMsg", "Has abandonado la carrera. Tu participación ha sido registrada como retirada.");
+				} else {
+					req.setAttribute("profileMsg", "No puedes abandonar: tu estado actual es «" + (runner != null ? runner.getStatus() : "desconocido") + "».");
+				}
+			}
+			req.setAttribute("loggedUser", user);
+			req.setAttribute("profileUsername", user.getUsername());
+			if (user.getRunnerId() != null) loadRunnerData(req, user);
+			req.getRequestDispatcher("/profile.jsp").forward(req, res);
+
+		} else if ("deleteAccount".equals(action)) {
+			// User deletes their own account; runner data is kept
+			int userId = user.getId();
+			session.invalidate();
+			userDAO.delete(userId);
+			res.sendRedirect(req.getContextPath() + "/login?msg=deleted");
+
+		} else {
+			// Unknown action — just show profile
+			res.sendRedirect(req.getContextPath() + "/profile");
+		}
+	}
+
+	private void loadRunnerData(HttpServletRequest req, User user) {
+		Runner runner = runnerDAO.getRunnerByBib(user.getRunnerId());
+		if (runner != null) {
+			req.setAttribute("runner", runner);
+
+			Person person = personDAO.getPersonByID(runner.getIdPerson());
+			req.setAttribute("person", person);
+
+			Mount mount = mountDAO.getMountByID(runner.getIdMount());
+			req.setAttribute("mount", mount);
+
+			java.util.List<Runner> all = runnerDAO.listRunnersTop(25);
+			int rank = 1;
+			for (Runner r : all) {
+				if (r.getBib() == runner.getBib()) break;
+				rank++;
+			}
+			req.setAttribute("rank", rank);
+			req.setAttribute("totalRunners", all.size());
+
+			if (runner.getIdStage() != null) {
+				Stage stage = stageDAO.getStageByID(runner.getIdStage());
+				req.setAttribute("currentStage", stage);
+			}
+
+			List<Map<String, Object>> checks = medicalCheckDAO.listByRunner(runner.getBib());
+			req.setAttribute("medicalChecks", checks);
+		}
 	}
 }
