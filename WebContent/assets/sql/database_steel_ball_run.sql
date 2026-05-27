@@ -7,7 +7,7 @@ CREATE TABLE person (
     name    VARCHAR(100) NOT NULL,
     age     INT NOT NULL CHECK (age >= 16),
     country VARCHAR(100) NOT NULL,
-    dni     VARCHAR(9) NOT NULL
+    dni     CHAR(9) NOT NULL
 );
 
 CREATE TABLE mount (
@@ -17,14 +17,14 @@ CREATE TABLE mount (
 );
 
 CREATE TABLE runner (
-    bib       INT AUTO_INCREMENT PRIMARY KEY,
-    id_person INT NOT NULL,
-    id_mount  INT NOT NULL,
-    image     LONGBLOB,
-    points    INT,
-    km        INT,
-    id_stage  INT,
-    passkey   VARCHAR(100) NOT NULL,
+    bib			INT AUTO_INCREMENT PRIMARY KEY,
+    id_person	INT NOT NULL,
+    id_mount	INT NOT NULL,
+    image		LONGBLOB,
+    points		INT,
+    km			INT,
+    id_stage 	INT,
+    state		VARCHAR(50),
     FOREIGN KEY (id_person) REFERENCES person(id) ON DELETE CASCADE,
     FOREIGN KEY (id_mount)  REFERENCES mount(id)  ON DELETE CASCADE
 );
@@ -60,6 +60,6 @@ CREATE TABLE IF NOT EXISTS user (
     FOREIGN KEY (runner_id) REFERENCES runner(bib) ON DELETE SET NULL
 );
 
--- Default admin (passkey plain text: AdminSBR1890)
+-- admin
 INSERT IGNORE INTO user (username, passkey, role, runner_id)
 VALUES ('admin', SHA2('AdminSBR1890', 256), 'admin', NULL);

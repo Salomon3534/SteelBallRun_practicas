@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class DatabaseConnection {
     private static final String URL  = "jdbc:mysql://localhost:3306/sbr";
     private static final String USER = "root";
-    private static final String PASS = "1DAW3";
+    private static final String PASS = "_Plaiaundi25";
 
     static {
         try { Class.forName("com.mysql.cj.jdbc.Driver"); }
